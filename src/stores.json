@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "stores": {
+    "dropbox": {
+      "name": "dropbox",
+      "url": "dropbox/index.html"
+    },
+    "gdrive": {
+      "name": "gdrive",
+      "displayName": "google drive",
+      "url": "gdrive/index.html"
+    },
+    "onedrive": {
+      "name": "onedrive",
+      "displayName": "one drive",
+      "url": "onedrive/index.html"
+    },
+    "onenote": {
+      "name": "onenote",
+      "displayName": "one note",
+      "url": "onenote/index.html"
+    }
+  }
+}
