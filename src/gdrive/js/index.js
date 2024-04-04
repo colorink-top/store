@@ -116,7 +116,11 @@ const getAccessTokenOnServerFn = async (opts)=>{
     redirect_uri,
     ...opts
   }))
-  return await req.json()
+  const result = await req.json()
+  if (result.error) {
+    throw result.error
+  }
+  return result
 }
 
 const authFn = async () => {
