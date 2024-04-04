@@ -92,8 +92,15 @@ export class BaseStore {
     if (initInfo) {
       let uploadResult = null
       let results = []
-      if (initInfo.files && initInfo.files.length > 0) {
-        results = await this.uploadFiles(initInfo.files, initInfo)
+      const files = initInfo.pdfInfos?.map((pdfInfo)=>{
+        const file = new File([pdfInfo.data], pdfInfo.meta.filename, {type: pdfInfo.data.type})
+        //mapInfo[file] = pdfInfo
+        file._pdfInfo = pdfInfo
+        //files.push(file)
+        return file
+      }) || []
+      if (files.length > 0) {
+        results = await this.uploadFiles(files, initInfo)
         if (['free', 'VIP1'].indexOf(vipType) >=0) {
           const count = parseInt(localStorage.getItem(STORAGEUSAGECOUNTKEY))|| 0
           localStorage.setItem(STORAGEUSAGECOUNTKEY, count+1)
