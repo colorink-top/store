@@ -118,7 +118,6 @@ const authFn = async ()=>{
             })
           }).then((res)=> res.json()).then((result)=>{
             console.log('accesstoken::;', result)
-            debugger
             tokenInfo = {
               accessToken: result.access_token,
               accessTokenSecret: result.refresh_token,
@@ -203,7 +202,13 @@ class OnedriveStore extends BaseStore {
     return await authFn()
   }
   async uploadFiles(files, opts){
-    return await uploadFileFn(files, opts)
+    const result =  await uploadFileFn(files, opts)
+    const url = result.links.oneNoteWebUrl.href
+    return {
+      msg: `Upload success location: <a href="${url}" target="_blank">root/colorink.top/${ _.escape(result.title)}</a>`,
+      fileId: result.id,
+      url 
+    }
   }
   async uploadFile(file, opts) {
     const result = await this.uploadFiles([file], opts)

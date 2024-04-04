@@ -66,12 +66,8 @@ const authFn = async ()=>{
 }
 
 const uploadFileFn = async (file) => {
-  const UPLOAD_FILE_SIZE_LIMIT = 150 * 1024 * 1024;
-  // 0bfLT_GOvUEAAAAAAAAAUh0TLQxhcgDeFVRAqBqTCLo
-  //var ACCESS_TOKEN = document.getElementById("access-token").value;
-  //const ACCESS_TOKEN = '0bfLT_GOvUEAAAAAAAAAUh0TLQxhcgDeFVRAqBqTCLo'
-  //const ACCESS_TOKEN = 'HAEP2c8nBPAAAAAAAAACj6GrPP1uMVIZqFv2Uyz3lTKyBwBXerxw3PKoJ8NE98or'
-  //var dbx = new Dropbox.Dropbox({ accessToken: ACCESS_TOKEN });
+  //const UPLOAD_FILE_SIZE_LIMIT = 150 * 1024 * 1024;
+  const UPLOAD_FILE_SIZE_LIMIT = 50 * 1024 * 1024;
   return new Promise((resolve, reject)=>{
     if (file.size < UPLOAD_FILE_SIZE_LIMIT) {
       //dbx.auth.setAccessToken('xxxx')
@@ -83,18 +79,16 @@ const uploadFileFn = async (file) => {
           var br = document.createElement("br");
           results.appendChild(document.createTextNode("File uploaded!"));
           results.appendChild(br);
-          resolve(response.result)
           console.log(response);
+          resolve(response.result)
         })
         .catch(function (error) {
           reject(error.message || error.error || error)
           console.error(error.error || error);
         });
     } else {
-      reject("file is bigger than 150MB")
-      return
       // File is bigger than 150 MB - use filesUploadSession* API
-      const maxBlob = 12 * 1024 * 1024; // 8MB - Dropbox JavaScript API suggested chunk size
+      const maxBlob = 10 * 1024 * 1024; // 8MB - Dropbox JavaScript API suggested chunk size
 
       var workItems = [];
 
@@ -146,10 +140,11 @@ const uploadFileFn = async (file) => {
       }, Promise.resolve());
 
       task
-        .then(function (result) {
+        .then(function (response) {
           const results = document.getElementById("results");
           results.appendChild(document.createTextNode("File uploaded!"));
-          resolve()
+          console.log('large file success:::', response)
+          resolve(response.result)
         })
         .catch(function (error) {
           reject(error.message || error.error || error)
@@ -168,7 +163,14 @@ class DropboxStore extends BaseStore {
     return await authFn()
   }
   async uploadFile(file){
-    return await uploadFileFn(file)
+    const result = await uploadFileFn(file)
+    const url = ``
+    return {
+      pdfInfo: file._pdfInfo,
+      msg: `Upload success location: Apps/colorink.top/${_.escape(result.name)}`,
+      fileId: result.id,
+      url
+    }
   }
 }
 

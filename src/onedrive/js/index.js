@@ -230,7 +230,14 @@ class OnedriveStore extends BaseStore {
     return await authFn()
   }
   async uploadFile(file){
-    return await uploadFileFn(file)
+    const result = await uploadFileFn(file)
+    const url = result.webUrl
+    return {
+      pdfInfo: file._pdfInfo,
+      msg: `Upload success location: <a href="${url}" target="_blank">My files/colorink.top/${_.escape(file.name)}</a>`,
+      fileId: result.id,
+      url
+    }
   }
 }
 

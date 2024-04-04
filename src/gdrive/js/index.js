@@ -213,9 +213,20 @@ const uploadFileFn = async (file) => {
       );
       const result = await req.json();
       console.log("success upload ::::", result);
+
+//{
+//  "kind": "drive#file",
+//  "id": "1Z95R5PiwLRZQKVpBKjJAXnYt2EHQHUUn",
+//  "name": "IT之家.pdf",
+//  "mimeType": "application/pdf"
+//}
+
+      const url = "https://drive.google.com/file/d/" + result.id
       resolve({
+        pdfInfo: file._pdfInfo,
+        msg: `Upload success location: <a href="${url}" target="_blank">My drive/colorink.top/${_.escape(file.name)}</a>`,
         fileId: result.id,
-        url: "https://drive.google.com/file/d/" + result.id,
+        url,
       });
     } catch (e) {
       reject(e);
