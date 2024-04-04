@@ -9,7 +9,7 @@ const client_secret = '';
 const redirect_uri = document.location.origin + '/onedrive/callback.html';
 const apiHost = 'https://graph.microsoft.com/v1.0'
 //const accessTokenUrl = 'http://localhost:3034/oauth2/microsoft'
-const accessTokenUrl = 'https://store.colorink.top/oauth2/microsoft'
+const accessTokenUrl = 'https://oauth.colorink.top/oauth2/microsoft'
 
 let tokenInfo = null
 
