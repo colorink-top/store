@@ -251,4 +251,4 @@ const start = async () => {
   gdriveStore.start();
 };
 
-gapi.load("client", start);
+start();
