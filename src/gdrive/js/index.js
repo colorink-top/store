@@ -140,6 +140,8 @@ const authFn = async () => {
           return;
         }
         getAccessTokenOnServerFn({code: response.code}).then((result)=>{
+          tokenInfo = result
+          localStorage.setItem(STORAGEKEY, JSON.stringify(tokenInfo));
           resolve(result)
         }).catch((err)=>{
           reject(err.message || err);
