@@ -64,7 +64,7 @@ export class BaseStore {
       vipType = initInfo.certification.vipType
       if (['free', 'VIP1'].indexOf(vipType) >=0) {
         const count = parseInt(localStorage.getItem(STORAGEUSAGECOUNTKEY)) || 0
-        if (count > 10) {
+        if (count > 50) {
           showDimmer('This feature is only available to VIP2 user.<br/> You have exceeded the maximum usages limit, <br/>please upgrade first.', {html: true})
           return
         }

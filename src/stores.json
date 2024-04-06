@@ -5,6 +5,11 @@
       "name": "dropbox",
       "url": "dropbox/index.html"
     },
+    "box": {
+      "name": "box",
+      "displayName": "box",
+      "url": "box/index.html"
+    },
     "gdrive": {
       "name": "gdrive",
       "displayName": "google drive",

@@ -93,6 +93,9 @@ const authFn = async ()=>{
             redirect_uri,
             code: searchInfo.code
           })).then((res)=> res.json()).then((reqJson)=>{
+            if (reqJson.error) {
+              throw reqJson
+            }
             tokenInfo = reqJson
             localStorage.setItem(STORAGEKEY, JSON.stringify(tokenInfo))
             resolve(tokenInfo)
