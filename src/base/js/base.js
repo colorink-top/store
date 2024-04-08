@@ -33,6 +33,10 @@ const initMessageListener = (uniqueId) => {
   })
 };
 
+const fixFilenameFn = (_filename) =>{
+  return _filename.replace(/([\u2700-\u27BF]|[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDD10-\uDDFF])/g, '');// remove all emoji
+}
+
 /**
  * return  {authInfo, certification, files}
  **/
@@ -93,7 +97,7 @@ export class BaseStore {
       let uploadResult = null
       let results = []
       const files = initInfo.pdfInfos?.map((pdfInfo)=>{
-        const file = new File([pdfInfo.data], pdfInfo.meta.filename, {type: pdfInfo.data.type})
+        const file = new File([pdfInfo.data], fixFilenameFn(pdfInfo.meta.filename), {type: pdfInfo.data.type})
         //mapInfo[file] = pdfInfo
         file._pdfInfo = pdfInfo
         //files.push(file)
