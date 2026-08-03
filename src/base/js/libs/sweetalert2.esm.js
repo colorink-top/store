@@ -1,8 +1,4778 @@
+/*!
+* sweetalert2 v11.26.25
+* Released under the MIT License.
+*/
+function _assertClassBrand(e, t, n) {
+  if ("function" == typeof e ? e === t : e.has(t)) return arguments.length < 3 ? t : n;
+  throw new TypeError("Private element is not present on this object");
+}
+function _checkPrivateRedeclaration(e, t) {
+  if (t.has(e)) throw new TypeError("Cannot initialize the same private elements twice on an object");
+}
+function _classPrivateFieldGet2(s, a) {
+  return s.get(_assertClassBrand(s, a));
+}
+function _classPrivateFieldInitSpec(e, t, a) {
+  _checkPrivateRedeclaration(e, t), t.set(e, a);
+}
+function _classPrivateFieldSet2(s, a, r) {
+  return s.set(_assertClassBrand(s, a), r), r;
+}
+
+const RESTORE_FOCUS_TIMEOUT = 100;
+
+/** @type {GlobalState} */
+const globalState = {};
+const focusPreviousActiveElement = () => {
+  if (globalState.previousActiveElement instanceof HTMLElement) {
+    globalState.previousActiveElement.focus();
+    globalState.previousActiveElement = null;
+  } else if (document.body) {
+    document.body.focus();
+  }
+};
+
 /**
- * Bundled by jsDelivr using Rollup v2.79.1 and Terser v5.19.2.
- * Original file: /npm/sweetalert2@11.10.5/dist/sweetalert2.all.js
+ * Restore previous active (focused) element
  *
- * Do NOT use SRI with dynamically generated files! More information: https://www.jsdelivr.com/using-sri-with-dynamic-files
+ * @param {boolean} returnFocus
+ * @returns {Promise<void>}
  */
-var e="undefined"!=typeof globalThis?globalThis:"undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:{},t={exports:{}};t.exports=function(){function e(e,t,o){return t=d(t),m(e,n()?Reflect.construct(t,o||[],d(e).constructor):t.apply(e,o))}function t(e,t,o){if(n())return Reflect.construct.apply(null,arguments);var a=[null];a.push.apply(a,t);var r=new(e.bind.apply(e,a));return o&&w(r,o.prototype),r}function n(){try{var e=!Boolean.prototype.valueOf.call(Reflect.construct(Boolean,[],(function(){})))}catch(e){}return(n=function(){return!!e})()}function o(e,t){var n=null==e?null:"undefined"!=typeof Symbol&&e[Symbol.iterator]||e["@@iterator"];if(null!=n){var o,a,r,i,s=[],l=!0,c=!1;try{if(r=(n=n.call(e)).next,0===t){if(Object(n)!==n)return;l=!1}else for(;!(l=(o=r.call(n)).done)&&(s.push(o.value),s.length!==t);l=!0);}catch(e){c=!0,a=e}finally{try{if(!l&&null!=n.return&&(i=n.return(),Object(i)!==i))return}finally{if(c)throw a}}return s}}function a(e,t){if("object"!=typeof e||!e)return e;var n=e[Symbol.toPrimitive];if(void 0!==n){var o=n.call(e,t||"default");if("object"!=typeof o)return o;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===t?String:Number)(e)}function r(e){var t=a(e,"string");return"symbol"==typeof t?t:String(t)}function i(e){return i="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},i(e)}function s(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function l(e,t){for(var n=0;n<t.length;n++){var o=t[n];o.enumerable=o.enumerable||!1,o.configurable=!0,"value"in o&&(o.writable=!0),Object.defineProperty(e,r(o.key),o)}}function c(e,t,n){return t&&l(e.prototype,t),n&&l(e,n),Object.defineProperty(e,"prototype",{writable:!1}),e}function u(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),Object.defineProperty(e,"prototype",{writable:!1}),t&&w(e,t)}function d(e){return d=Object.setPrototypeOf?Object.getPrototypeOf.bind():function(e){return e.__proto__||Object.getPrototypeOf(e)},d(e)}function w(e,t){return w=Object.setPrototypeOf?Object.setPrototypeOf.bind():function(e,t){return e.__proto__=t,e},w(e,t)}function p(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function m(e,t){if(t&&("object"==typeof t||"function"==typeof t))return t;if(void 0!==t)throw new TypeError("Derived constructors may only return object or undefined");return p(e)}function f(e,t){for(;!Object.prototype.hasOwnProperty.call(e,t)&&null!==(e=d(e)););return e}function h(){return h="undefined"!=typeof Reflect&&Reflect.get?Reflect.get.bind():function(e,t,n){var o=f(e,t);if(o){var a=Object.getOwnPropertyDescriptor(o,t);return a.get?a.get.call(arguments.length<3?e:n):a.value}},h.apply(this,arguments)}function g(e,t){return y(e)||o(e,t)||k(e,t)||E()}function b(e){return v(e)||x(e)||k(e)||A()}function v(e){if(Array.isArray(e))return C(e)}function y(e){if(Array.isArray(e))return e}function x(e){if("undefined"!=typeof Symbol&&null!=e[Symbol.iterator]||null!=e["@@iterator"])return Array.from(e)}function k(e,t){if(e){if("string"==typeof e)return C(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);return"Object"===n&&e.constructor&&(n=e.constructor.name),"Map"===n||"Set"===n?Array.from(e):"Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)?C(e,t):void 0}}function C(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,o=new Array(t);n<t;n++)o[n]=e[n];return o}function A(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}function E(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}function B(e,t){return S(e,T(e,t,"get"))}function P(e,t,n){return O(e,T(e,t,"set"),n),n}function T(e,t,n){if(!t.has(e))throw new TypeError("attempted to "+n+" private field on non-instance");return t.get(e)}function S(e,t){return t.get?t.get.call(e):t.value}function O(e,t,n){if(t.set)t.set.call(e,n);else{if(!t.writable)throw new TypeError("attempted to set read only private field");t.value=n}}function L(e,t){if(t.has(e))throw new TypeError("Cannot initialize the same private elements twice on an object")}function j(e,t,n){L(e,t),t.set(e,n)}var M=100,z={},I=function(){z.previousActiveElement instanceof HTMLElement?(z.previousActiveElement.focus(),z.previousActiveElement=null):document.body&&document.body.focus()},H=function(e){return new Promise((function(t){if(!e)return t();var n=window.scrollX,o=window.scrollY;z.restoreFocusTimeout=setTimeout((function(){I(),t()}),M),window.scrollTo(n,o)}))},q="swal2-",D=["container","shown","height-auto","iosfix","popup","modal","no-backdrop","no-transition","toast","toast-shown","show","hide","close","title","html-container","actions","confirm","deny","cancel","default-outline","footer","icon","icon-content","image","input","file","range","select","radio","checkbox","label","textarea","inputerror","input-label","validation-message","progress-steps","active-progress-step","progress-step","progress-step-line","loader","loading","styled","top","top-start","top-end","top-left","top-right","center","center-start","center-end","center-left","center-right","bottom","bottom-start","bottom-end","bottom-left","bottom-right","grow-row","grow-column","grow-fullscreen","rtl","timer-progress-bar","timer-progress-bar-container","scrollbar-measure","icon-success","icon-warning","icon-info","icon-question","icon-error"].reduce((function(e,t){return e[t]=q+t,e}),{}),V=["success","warning","info","question","error"].reduce((function(e,t){return e[t]=q+t,e}),{}),_="SweetAlert2:",R=function(e){return e.charAt(0).toUpperCase()+e.slice(1)},N=function(e){console.warn("".concat(_," ").concat("object"===i(e)?e.join(" "):e))},F=function(e){console.error("".concat(_," ").concat(e))},U=[],$=function(e){U.includes(e)||(U.push(e),N(e))},Y=function(e,t){$('"'.concat(e,'" is deprecated and will be removed in the next major release. Please use "').concat(t,'" instead.'))},Z=function(e){return"function"==typeof e?e():e},W=function(e){return e&&"function"==typeof e.toPromise},K=function(e){return W(e)?e.toPromise():Promise.resolve(e)},X=function(e){return e&&Promise.resolve(e)===e},J=function(){return document.body.querySelector(".".concat(D.container))},G=function(e){var t=J();return t?t.querySelector(e):null},Q=function(e){return G(".".concat(e))},ee=function(){return Q(D.popup)},te=function(){return Q(D.icon)},ne=function(){return Q(D["icon-content"])},oe=function(){return Q(D.title)},ae=function(){return Q(D["html-container"])},re=function(){return Q(D.image)},ie=function(){return Q(D["progress-steps"])},se=function(){return Q(D["validation-message"])},le=function(){return G(".".concat(D.actions," .").concat(D.confirm))},ce=function(){return G(".".concat(D.actions," .").concat(D.cancel))},ue=function(){return G(".".concat(D.actions," .").concat(D.deny))},de=function(){return Q(D["input-label"])},we=function(){return G(".".concat(D.loader))},pe=function(){return Q(D.actions)},me=function(){return Q(D.footer)},fe=function(){return Q(D["timer-progress-bar"])},he=function(){return Q(D.close)},ge='\n  a[href],\n  area[href],\n  input:not([disabled]),\n  select:not([disabled]),\n  textarea:not([disabled]),\n  button:not([disabled]),\n  iframe,\n  object,\n  embed,\n  [tabindex="0"],\n  [contenteditable],\n  audio[controls],\n  video[controls],\n  summary\n',be=function(){var e=ee();if(!e)return[];var t=e.querySelectorAll('[tabindex]:not([tabindex="-1"]):not([tabindex="0"])'),n=Array.from(t).sort((function(e,t){var n=parseInt(e.getAttribute("tabindex")||"0"),o=parseInt(t.getAttribute("tabindex")||"0");return n>o?1:n<o?-1:0})),o=e.querySelectorAll(ge),a=Array.from(o).filter((function(e){return"-1"!==e.getAttribute("tabindex")}));return b(new Set(n.concat(a))).filter((function(e){return De(e)}))},ve=function(){return Ce(document.body,D.shown)&&!Ce(document.body,D["toast-shown"])&&!Ce(document.body,D["no-backdrop"])},ye=function(){var e=ee();return!!e&&Ce(e,D.toast)},xe=function(){var e=ee();return!!e&&e.hasAttribute("data-loading")},ke=function(e,t){if(e.textContent="",t){var n=(new DOMParser).parseFromString(t,"text/html"),o=n.querySelector("head");o&&Array.from(o.childNodes).forEach((function(t){e.appendChild(t)}));var a=n.querySelector("body");a&&Array.from(a.childNodes).forEach((function(t){t instanceof HTMLVideoElement||t instanceof HTMLAudioElement?e.appendChild(t.cloneNode(!0)):e.appendChild(t)}))}},Ce=function(e,t){if(!t)return!1;for(var n=t.split(/\s+/),o=0;o<n.length;o++)if(!e.classList.contains(n[o]))return!1;return!0},Ae=function(e,t){Array.from(e.classList).forEach((function(n){Object.values(D).includes(n)||Object.values(V).includes(n)||Object.values(t.showClass||{}).includes(n)||e.classList.remove(n)}))},Ee=function(e,t,n){if(Ae(e,t),t.customClass&&t.customClass[n]){if("string"!=typeof t.customClass[n]&&!t.customClass[n].forEach)return void N("Invalid type of customClass.".concat(n,'! Expected string or iterable object, got "').concat(i(t.customClass[n]),'"'));Se(e,t.customClass[n])}},Be=function(e,t){if(!t)return null;switch(t){case"select":case"textarea":case"file":return e.querySelector(".".concat(D.popup," > .").concat(D[t]));case"checkbox":return e.querySelector(".".concat(D.popup," > .").concat(D.checkbox," input"));case"radio":return e.querySelector(".".concat(D.popup," > .").concat(D.radio," input:checked"))||e.querySelector(".".concat(D.popup," > .").concat(D.radio," input:first-child"));case"range":return e.querySelector(".".concat(D.popup," > .").concat(D.range," input"));default:return e.querySelector(".".concat(D.popup," > .").concat(D.input))}},Pe=function(e){if(e.focus(),"file"!==e.type){var t=e.value;e.value="",e.value=t}},Te=function(e,t,n){e&&t&&("string"==typeof t&&(t=t.split(/\s+/).filter(Boolean)),t.forEach((function(t){Array.isArray(e)?e.forEach((function(e){n?e.classList.add(t):e.classList.remove(t)})):n?e.classList.add(t):e.classList.remove(t)})))},Se=function(e,t){Te(e,t,!0)},Oe=function(e,t){Te(e,t,!1)},Le=function(e,t){for(var n=Array.from(e.children),o=0;o<n.length;o++){var a=n[o];if(a instanceof HTMLElement&&Ce(a,t))return a}},je=function(e,t,n){n==="".concat(parseInt(n))&&(n=parseInt(n)),n||0===parseInt(n)?e.style.setProperty(t,"number"==typeof n?"".concat(n,"px"):n):e.style.removeProperty(t)},Me=function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"flex";e&&(e.style.display=t)},ze=function(e){e&&(e.style.display="none")},Ie=function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"block";e&&new MutationObserver((function(){qe(e,e.innerHTML,t)})).observe(e,{childList:!0,subtree:!0})},He=function(e,t,n,o){var a=e.querySelector(t);a&&a.style.setProperty(n,o)},qe=function(e,t){t?Me(e,arguments.length>2&&void 0!==arguments[2]?arguments[2]:"flex"):ze(e)},De=function(e){return!(!e||!(e.offsetWidth||e.offsetHeight||e.getClientRects().length))},Ve=function(){return!De(le())&&!De(ue())&&!De(ce())},_e=function(e){return!!(e.scrollHeight>e.clientHeight)},Re=function(e){var t=window.getComputedStyle(e),n=parseFloat(t.getPropertyValue("animation-duration")||"0"),o=parseFloat(t.getPropertyValue("transition-duration")||"0");return n>0||o>0},Ne=function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=fe();n&&De(n)&&(t&&(n.style.transition="none",n.style.width="100%"),setTimeout((function(){n.style.transition="width ".concat(e/1e3,"s linear"),n.style.width="0%"}),10))},Fe=function(){var e=fe();if(e){var t=parseInt(window.getComputedStyle(e).width);e.style.removeProperty("transition"),e.style.width="100%";var n=t/parseInt(window.getComputedStyle(e).width)*100;e.style.width="".concat(n,"%")}},Ue=function(){return"undefined"==typeof window||"undefined"==typeof document},$e='\n <div aria-labelledby="'.concat(D.title,'" aria-describedby="').concat(D["html-container"],'" class="').concat(D.popup,'" tabindex="-1">\n   <button type="button" class="').concat(D.close,'"></button>\n   <ul class="').concat(D["progress-steps"],'"></ul>\n   <div class="').concat(D.icon,'"></div>\n   <img class="').concat(D.image,'" />\n   <h2 class="').concat(D.title,'" id="').concat(D.title,'"></h2>\n   <div class="').concat(D["html-container"],'" id="').concat(D["html-container"],'"></div>\n   <input class="').concat(D.input,'" id="').concat(D.input,'" />\n   <input type="file" class="').concat(D.file,'" />\n   <div class="').concat(D.range,'">\n     <input type="range" />\n     <output></output>\n   </div>\n   <select class="').concat(D.select,'" id="').concat(D.select,'"></select>\n   <div class="').concat(D.radio,'"></div>\n   <label class="').concat(D.checkbox,'">\n     <input type="checkbox" id="').concat(D.checkbox,'" />\n     <span class="').concat(D.label,'"></span>\n   </label>\n   <textarea class="').concat(D.textarea,'" id="').concat(D.textarea,'"></textarea>\n   <div class="').concat(D["validation-message"],'" id="').concat(D["validation-message"],'"></div>\n   <div class="').concat(D.actions,'">\n     <div class="').concat(D.loader,'"></div>\n     <button type="button" class="').concat(D.confirm,'"></button>\n     <button type="button" class="').concat(D.deny,'"></button>\n     <button type="button" class="').concat(D.cancel,'"></button>\n   </div>\n   <div class="').concat(D.footer,'"></div>\n   <div class="').concat(D["timer-progress-bar-container"],'">\n     <div class="').concat(D["timer-progress-bar"],'"></div>\n   </div>\n </div>\n').replace(/(^|\n)\s*/g,""),Ye=function(){var e=J();return!!e&&(e.remove(),Oe([document.documentElement,document.body],[D["no-backdrop"],D["toast-shown"],D["has-column"]]),!0)},Ze=function(){z.currentInstance.resetValidationMessage()},We=function(){var e=ee(),t=Le(e,D.input),n=Le(e,D.file),o=e.querySelector(".".concat(D.range," input")),a=e.querySelector(".".concat(D.range," output")),r=Le(e,D.select),i=e.querySelector(".".concat(D.checkbox," input")),s=Le(e,D.textarea);t.oninput=Ze,n.onchange=Ze,r.onchange=Ze,i.onchange=Ze,s.oninput=Ze,o.oninput=function(){Ze(),a.value=o.value},o.onchange=function(){Ze(),a.value=o.value}},Ke=function(e){return"string"==typeof e?document.querySelector(e):e},Xe=function(e){var t=ee();t.setAttribute("role",e.toast?"alert":"dialog"),t.setAttribute("aria-live",e.toast?"polite":"assertive"),e.toast||t.setAttribute("aria-modal","true")},Je=function(e){"rtl"===window.getComputedStyle(e).direction&&Se(J(),D.rtl)},Ge=function(e){var t=Ye();if(Ue())F("SweetAlert2 requires document to initialize");else{var n=document.createElement("div");n.className=D.container,t&&Se(n,D["no-transition"]),ke(n,$e);var o=Ke(e.target);o.appendChild(n),Xe(e),Je(o),We()}},Qe=function(e,t){e instanceof HTMLElement?t.appendChild(e):"object"===i(e)?et(e,t):e&&ke(t,e)},et=function(e,t){e.jquery?tt(t,e):ke(t,e.toString())},tt=function(e,t){if(e.textContent="",0 in t)for(var n=0;n in t;n++)e.appendChild(t[n].cloneNode(!0));else e.appendChild(t.cloneNode(!0))},nt=function(){if(Ue())return!1;var e=document.createElement("div");return void 0!==e.style.webkitAnimation?"webkitAnimationEnd":void 0!==e.style.animation&&"animationend"}(),ot=function(e,t){var n=pe(),o=we();n&&o&&(t.showConfirmButton||t.showDenyButton||t.showCancelButton?Me(n):ze(n),Ee(n,t,"actions"),at(n,o,t),ke(o,t.loaderHtml||""),Ee(o,t,"loader"))};function at(e,t,n){var o=le(),a=ue(),r=ce();o&&a&&r&&(it(o,"confirm",n),it(a,"deny",n),it(r,"cancel",n),rt(o,a,r,n),n.reverseButtons&&(n.toast?(e.insertBefore(r,o),e.insertBefore(a,o)):(e.insertBefore(r,t),e.insertBefore(a,t),e.insertBefore(o,t))))}function rt(e,t,n,o){o.buttonsStyling?(Se([e,t,n],D.styled),o.confirmButtonColor&&(e.style.backgroundColor=o.confirmButtonColor,Se(e,D["default-outline"])),o.denyButtonColor&&(t.style.backgroundColor=o.denyButtonColor,Se(t,D["default-outline"])),o.cancelButtonColor&&(n.style.backgroundColor=o.cancelButtonColor,Se(n,D["default-outline"]))):Oe([e,t,n],D.styled)}function it(e,t,n){var o=R(t);qe(e,n["show".concat(o,"Button")],"inline-block"),ke(e,n["".concat(t,"ButtonText")]||""),e.setAttribute("aria-label",n["".concat(t,"ButtonAriaLabel")]||""),e.className=D[t],Ee(e,n,"".concat(t,"Button"))}var st=function(e,t){var n=he();n&&(ke(n,t.closeButtonHtml||""),Ee(n,t,"closeButton"),qe(n,t.showCloseButton),n.setAttribute("aria-label",t.closeButtonAriaLabel||""))},lt=function(e,t){var n=J();n&&(ct(n,t.backdrop),ut(n,t.position),dt(n,t.grow),Ee(n,t,"container"))};function ct(e,t){"string"==typeof t?e.style.background=t:t||Se([document.documentElement,document.body],D["no-backdrop"])}function ut(e,t){t&&(t in D?Se(e,D[t]):(N('The "position" parameter is not valid, defaulting to "center"'),Se(e,D.center)))}function dt(e,t){t&&Se(e,D["grow-".concat(t)])}var wt={innerParams:new WeakMap,domCache:new WeakMap},pt=["input","file","range","select","radio","checkbox","textarea"],mt=function(e,t){var n=ee();if(n){var o=wt.innerParams.get(e),a=!o||t.input!==o.input;pt.forEach((function(e){var o=Le(n,D[e]);o&&(gt(e,t.inputAttributes),o.className=D[e],a&&ze(o))})),t.input&&(a&&ft(t),bt(t))}},ft=function(e){if(e.input)if(Ct[e.input]){var t=xt(e.input),n=Ct[e.input](t,e);Me(t),e.inputAutoFocus&&setTimeout((function(){Pe(n)}))}else F("Unexpected type of input! Expected ".concat(Object.keys(Ct).join(" | "),', got "').concat(e.input,'"'))},ht=function(e){for(var t=0;t<e.attributes.length;t++){var n=e.attributes[t].name;["id","type","value","style"].includes(n)||e.removeAttribute(n)}},gt=function(e,t){var n=Be(ee(),e);if(n)for(var o in ht(n),t)n.setAttribute(o,t[o])},bt=function(e){var t=xt(e.input);"object"===i(e.customClass)&&Se(t,e.customClass.input)},vt=function(e,t){e.placeholder&&!t.inputPlaceholder||(e.placeholder=t.inputPlaceholder)},yt=function(e,t,n){if(n.inputLabel){var o=document.createElement("label"),a=D["input-label"];o.setAttribute("for",e.id),o.className=a,"object"===i(n.customClass)&&Se(o,n.customClass.inputLabel),o.innerText=n.inputLabel,t.insertAdjacentElement("beforebegin",o)}},xt=function(e){return Le(ee(),D[e]||D.input)},kt=function(e,t){["string","number"].includes(i(t))?e.value="".concat(t):X(t)||N('Unexpected type of inputValue! Expected "string", "number" or "Promise", got "'.concat(i(t),'"'))},Ct={};Ct.text=Ct.email=Ct.password=Ct.number=Ct.tel=Ct.url=Ct.search=Ct.date=Ct["datetime-local"]=Ct.time=Ct.week=Ct.month=function(e,t){return kt(e,t.inputValue),yt(e,e,t),vt(e,t),e.type=t.input,e},Ct.file=function(e,t){return yt(e,e,t),vt(e,t),e},Ct.range=function(e,t){var n=e.querySelector("input"),o=e.querySelector("output");return kt(n,t.inputValue),n.type=t.input,kt(o,t.inputValue),yt(n,e,t),e},Ct.select=function(e,t){if(e.textContent="",t.inputPlaceholder){var n=document.createElement("option");ke(n,t.inputPlaceholder),n.value="",n.disabled=!0,n.selected=!0,e.appendChild(n)}return yt(e,e,t),e},Ct.radio=function(e){return e.textContent="",e},Ct.checkbox=function(e,t){var n=Be(ee(),"checkbox");n.value="1",n.checked=Boolean(t.inputValue);var o=e.querySelector("span");return ke(o,t.inputPlaceholder),n},Ct.textarea=function(e,t){kt(e,t.inputValue),vt(e,t),yt(e,e,t);var n=function(e){return parseInt(window.getComputedStyle(e).marginLeft)+parseInt(window.getComputedStyle(e).marginRight)};return setTimeout((function(){if("MutationObserver"in window){var o=parseInt(window.getComputedStyle(ee()).width);new MutationObserver((function(){if(document.body.contains(e)){var a=e.offsetWidth+n(e);a>o?ee().style.width="".concat(a,"px"):je(ee(),"width",t.width)}})).observe(e,{attributes:!0,attributeFilter:["style"]})}})),e};var At=function(e,t){var n=ae();n&&(Ie(n),Ee(n,t,"htmlContainer"),t.html?(Qe(t.html,n),Me(n,"block")):t.text?(n.textContent=t.text,Me(n,"block")):ze(n),mt(e,t))},Et=function(e,t){var n=me();n&&(Ie(n),qe(n,t.footer,"block"),t.footer&&Qe(t.footer,n),Ee(n,t,"footer"))},Bt=function(e,t){var n=wt.innerParams.get(e),o=te();if(o){if(n&&t.icon===n.icon)return Lt(o,t),void Pt(o,t);if(t.icon||t.iconHtml){if(t.icon&&-1===Object.keys(V).indexOf(t.icon))return F('Unknown icon! Expected "success", "error", "warning", "info" or "question", got "'.concat(t.icon,'"')),void ze(o);Me(o),Lt(o,t),Pt(o,t),Se(o,t.showClass&&t.showClass.icon)}else ze(o)}},Pt=function(e,t){for(var n=0,o=Object.entries(V);n<o.length;n++){var a=g(o[n],2),r=a[0],i=a[1];t.icon!==r&&Oe(e,i)}Se(e,t.icon&&V[t.icon]),jt(e,t),Tt(),Ee(e,t,"icon")},Tt=function(){var e=ee();if(e)for(var t=window.getComputedStyle(e).getPropertyValue("background-color"),n=e.querySelectorAll("[class^=swal2-success-circular-line], .swal2-success-fix"),o=0;o<n.length;o++)n[o].style.backgroundColor=t},St='\n  <div class="swal2-success-circular-line-left"></div>\n  <span class="swal2-success-line-tip"></span> <span class="swal2-success-line-long"></span>\n  <div class="swal2-success-ring"></div> <div class="swal2-success-fix"></div>\n  <div class="swal2-success-circular-line-right"></div>\n',Ot='\n  <span class="swal2-x-mark">\n    <span class="swal2-x-mark-line-left"></span>\n    <span class="swal2-x-mark-line-right"></span>\n  </span>\n',Lt=function(e,t){if(t.icon||t.iconHtml){var n=e.innerHTML,o="";t.iconHtml?o=Mt(t.iconHtml):"success"===t.icon?(o=St,n=n.replace(/ style=".*?"/g,"")):"error"===t.icon?o=Ot:t.icon&&(o=Mt({question:"?",warning:"!",info:"i"}[t.icon])),n.trim()!==o.trim()&&ke(e,o)}},jt=function(e,t){if(t.iconColor){e.style.color=t.iconColor,e.style.borderColor=t.iconColor;for(var n=0,o=[".swal2-success-line-tip",".swal2-success-line-long",".swal2-x-mark-line-left",".swal2-x-mark-line-right"];n<o.length;n++){var a=o[n];He(e,a,"background-color",t.iconColor)}He(e,".swal2-success-ring","border-color",t.iconColor)}},Mt=function(e){return'<div class="'.concat(D["icon-content"],'">').concat(e,"</div>")},zt=function(e,t){var n=re();n&&(t.imageUrl?(Me(n,""),n.setAttribute("src",t.imageUrl),n.setAttribute("alt",t.imageAlt||""),je(n,"width",t.imageWidth),je(n,"height",t.imageHeight),n.className=D.image,Ee(n,t,"image")):ze(n))},It=function(e,t){var n=J(),o=ee();if(n&&o){if(t.toast){je(n,"width",t.width),o.style.width="100%";var a=we();a&&o.insertBefore(a,te())}else je(o,"width",t.width);je(o,"padding",t.padding),t.color&&(o.style.color=t.color),t.background&&(o.style.background=t.background),ze(se()),Ht(o,t)}},Ht=function(e,t){var n=t.showClass||{};e.className="".concat(D.popup," ").concat(De(e)?n.popup:""),t.toast?(Se([document.documentElement,document.body],D["toast-shown"]),Se(e,D.toast)):Se(e,D.modal),Ee(e,t,"popup"),"string"==typeof t.customClass&&Se(e,t.customClass),t.icon&&Se(e,D["icon-".concat(t.icon)])},qt=function(e,t){var n=ie();if(n){var o=t.progressSteps,a=t.currentProgressStep;o&&0!==o.length&&void 0!==a?(Me(n),n.textContent="",a>=o.length&&N("Invalid currentProgressStep parameter, it should be less than progressSteps.length (currentProgressStep like JS arrays starts from 0)"),o.forEach((function(e,r){var i=Dt(e);if(n.appendChild(i),r===a&&Se(i,D["active-progress-step"]),r!==o.length-1){var s=Vt(t);n.appendChild(s)}}))):ze(n)}},Dt=function(e){var t=document.createElement("li");return Se(t,D["progress-step"]),ke(t,e),t},Vt=function(e){var t=document.createElement("li");return Se(t,D["progress-step-line"]),e.progressStepsDistance&&je(t,"width",e.progressStepsDistance),t},_t=function(e,t){var n=oe();n&&(Ie(n),qe(n,t.title||t.titleText,"block"),t.title&&Qe(t.title,n),t.titleText&&(n.innerText=t.titleText),Ee(n,t,"title"))},Rt=function(e,t){It(e,t),lt(e,t),qt(e,t),Bt(e,t),zt(e,t),_t(e,t),st(e,t),At(e,t),ot(e,t),Et(e,t);var n=ee();"function"==typeof t.didRender&&n&&t.didRender(n)},Nt=function(){return De(ee())},Ft=function(){var e;return null===(e=le())||void 0===e?void 0:e.click()},Ut=function(){var e;return null===(e=ue())||void 0===e?void 0:e.click()},$t=function(){var e;return null===(e=ce())||void 0===e?void 0:e.click()},Yt=Object.freeze({cancel:"cancel",backdrop:"backdrop",close:"close",esc:"esc",timer:"timer"}),Zt=function(e){e.keydownTarget&&e.keydownHandlerAdded&&(e.keydownTarget.removeEventListener("keydown",e.keydownHandler,{capture:e.keydownListenerCapture}),e.keydownHandlerAdded=!1)},Wt=function(e,t,n){Zt(e),t.toast||(e.keydownHandler=function(e){return Gt(t,e,n)},e.keydownTarget=t.keydownListenerCapture?window:ee(),e.keydownListenerCapture=t.keydownListenerCapture,e.keydownTarget.addEventListener("keydown",e.keydownHandler,{capture:e.keydownListenerCapture}),e.keydownHandlerAdded=!0)},Kt=function(e,t){var n,o=be();if(o.length)return(e+=t)===o.length?e=0:-1===e&&(e=o.length-1),void o[e].focus();null===(n=ee())||void 0===n||n.focus()},Xt=["ArrowRight","ArrowDown"],Jt=["ArrowLeft","ArrowUp"],Gt=function(e,t,n){e&&(t.isComposing||229===t.keyCode||(e.stopKeydownPropagation&&t.stopPropagation(),"Enter"===t.key?Qt(t,e):"Tab"===t.key?en(t):[].concat(Xt,Jt).includes(t.key)?tn(t.key):"Escape"===t.key&&nn(t,e,n)))},Qt=function(e,t){if(Z(t.allowEnterKey)){var n=Be(ee(),t.input);if(e.target&&n&&e.target instanceof HTMLElement&&e.target.outerHTML===n.outerHTML){if(["textarea","file"].includes(t.input))return;Ft(),e.preventDefault()}}},en=function(e){for(var t=e.target,n=be(),o=-1,a=0;a<n.length;a++)if(t===n[a]){o=a;break}e.shiftKey?Kt(o,-1):Kt(o,1),e.stopPropagation(),e.preventDefault()},tn=function(e){var t=pe(),n=le(),o=ue(),a=ce();if(t&&n&&o&&a){var r=[n,o,a];if(!(document.activeElement instanceof HTMLElement)||r.includes(document.activeElement)){var i=Xt.includes(e)?"nextElementSibling":"previousElementSibling",s=document.activeElement;if(s){for(var l=0;l<t.children.length;l++){if(!(s=s[i]))return;if(s instanceof HTMLButtonElement&&De(s))break}s instanceof HTMLButtonElement&&s.focus()}}}},nn=function(e,t,n){Z(t.allowEscapeKey)&&(e.preventDefault(),n(Yt.esc))},on={swalPromiseResolve:new WeakMap,swalPromiseReject:new WeakMap},an=function(){Array.from(document.body.children).forEach((function(e){e===J()||e.contains(J())||(e.hasAttribute("aria-hidden")&&e.setAttribute("data-previous-aria-hidden",e.getAttribute("aria-hidden")||""),e.setAttribute("aria-hidden","true"))}))},rn=function(){Array.from(document.body.children).forEach((function(e){e.hasAttribute("data-previous-aria-hidden")?(e.setAttribute("aria-hidden",e.getAttribute("data-previous-aria-hidden")||""),e.removeAttribute("data-previous-aria-hidden")):e.removeAttribute("aria-hidden")}))},sn="undefined"!=typeof window&&!!window.GestureEvent,ln=function(){if(sn&&!Ce(document.body,D.iosfix)){var e=document.body.scrollTop;document.body.style.top="".concat(-1*e,"px"),Se(document.body,D.iosfix),cn()}},cn=function(){var e,t=J();t&&(t.ontouchstart=function(t){e=un(t)},t.ontouchmove=function(t){e&&(t.preventDefault(),t.stopPropagation())})},un=function(e){var t=e.target,n=J(),o=ae();return!(!n||!o||dn(e)||wn(e)||t!==n&&(_e(n)||!(t instanceof HTMLElement)||"INPUT"===t.tagName||"TEXTAREA"===t.tagName||_e(o)&&o.contains(t)))},dn=function(e){return e.touches&&e.touches.length&&"stylus"===e.touches[0].touchType},wn=function(e){return e.touches&&e.touches.length>1},pn=function(){if(Ce(document.body,D.iosfix)){var e=parseInt(document.body.style.top,10);Oe(document.body,D.iosfix),document.body.style.top="",document.body.scrollTop=-1*e}},mn=function(){var e=document.createElement("div");e.className=D["scrollbar-measure"],document.body.appendChild(e);var t=e.getBoundingClientRect().width-e.clientWidth;return document.body.removeChild(e),t},fn=null,hn=function(e){null===fn&&(document.body.scrollHeight>window.innerHeight||"scroll"===e)&&(fn=parseInt(window.getComputedStyle(document.body).getPropertyValue("padding-right")),document.body.style.paddingRight="".concat(fn+mn(),"px"))},gn=function(){null!==fn&&(document.body.style.paddingRight="".concat(fn,"px"),fn=null)};function bn(e,t,n,o){ye()?Pn(e,o):(H(n).then((function(){return Pn(e,o)})),Zt(z)),sn?(t.setAttribute("style","display:none !important"),t.removeAttribute("class"),t.innerHTML=""):t.remove(),ve()&&(gn(),pn(),rn()),vn()}function vn(){Oe([document.documentElement,document.body],[D.shown,D["height-auto"],D["no-backdrop"],D["toast-shown"]])}function yn(e){e=An(e);var t=on.swalPromiseResolve.get(this),n=xn(this);this.isAwaitingPromise?e.isDismissed||(Cn(this),t(e)):n&&t(e)}var xn=function(e){var t=ee();if(!t)return!1;var n=wt.innerParams.get(e);if(!n||Ce(t,n.hideClass.popup))return!1;Oe(t,n.showClass.popup),Se(t,n.hideClass.popup);var o=J();return Oe(o,n.showClass.backdrop),Se(o,n.hideClass.backdrop),En(e,t,n),!0};function kn(e){var t=on.swalPromiseReject.get(this);Cn(this),t&&t(e)}var Cn=function(e){e.isAwaitingPromise&&(delete e.isAwaitingPromise,wt.innerParams.get(e)||e._destroy())},An=function(e){return void 0===e?{isConfirmed:!1,isDenied:!1,isDismissed:!0}:Object.assign({isConfirmed:!1,isDenied:!1,isDismissed:!1},e)},En=function(e,t,n){var o=J(),a=nt&&Re(t);"function"==typeof n.willClose&&n.willClose(t),a?Bn(e,t,o,n.returnFocus,n.didClose):bn(e,o,n.returnFocus,n.didClose)},Bn=function(e,t,n,o,a){nt&&(z.swalCloseEventFinishedCallback=bn.bind(null,e,n,o,a),t.addEventListener(nt,(function(e){e.target===t&&(z.swalCloseEventFinishedCallback(),delete z.swalCloseEventFinishedCallback)})))},Pn=function(e,t){setTimeout((function(){"function"==typeof t&&t.bind(e.params)(),e._destroy&&e._destroy()}))},Tn=function(e){var t=ee();if(t||new Oa,t=ee()){var n=we();ye()?ze(te()):Sn(t,e),Me(n),t.setAttribute("data-loading","true"),t.setAttribute("aria-busy","true"),t.focus()}},Sn=function(e,t){var n=pe(),o=we();n&&o&&(!t&&De(le())&&(t=le()),Me(n),t&&(ze(t),o.setAttribute("data-button-to-replace",t.className),n.insertBefore(o,t)),Se([e,n],D.loading))},On=function(e,t){"select"===t.input||"radio"===t.input?In(e,t):["text","email","number","tel","textarea"].some((function(e){return e===t.input}))&&(W(t.inputValue)||X(t.inputValue))&&(Tn(le()),Hn(e,t))},Ln=function(e,t){var n=e.getInput();if(!n)return null;switch(t.input){case"checkbox":return jn(n);case"radio":return Mn(n);case"file":return zn(n);default:return t.inputAutoTrim?n.value.trim():n.value}},jn=function(e){return e.checked?1:0},Mn=function(e){return e.checked?e.value:null},zn=function(e){return e.files&&e.files.length?null!==e.getAttribute("multiple")?e.files:e.files[0]:null},In=function(e,t){var n=ee();if(n){var o=function(e){"select"===t.input?qn(n,Vn(e),t):"radio"===t.input&&Dn(n,Vn(e),t)};W(t.inputOptions)||X(t.inputOptions)?(Tn(le()),K(t.inputOptions).then((function(t){e.hideLoading(),o(t)}))):"object"===i(t.inputOptions)?o(t.inputOptions):F("Unexpected type of inputOptions! Expected object, Map or Promise, got ".concat(i(t.inputOptions)))}},Hn=function(e,t){var n=e.getInput();n&&(ze(n),K(t.inputValue).then((function(o){n.value="number"===t.input?"".concat(parseFloat(o)||0):"".concat(o),Me(n),n.focus(),e.hideLoading()})).catch((function(t){F("Error in inputValue promise: ".concat(t)),n.value="",Me(n),n.focus(),e.hideLoading()})))};function qn(e,t,n){var o=Le(e,D.select);if(o){var a=function(e,t,o){var a=document.createElement("option");a.value=o,ke(a,t),a.selected=_n(o,n.inputValue),e.appendChild(a)};t.forEach((function(e){var t=e[0],n=e[1];if(Array.isArray(n)){var r=document.createElement("optgroup");r.label=t,r.disabled=!1,o.appendChild(r),n.forEach((function(e){return a(r,e[1],e[0])}))}else a(o,n,t)})),o.focus()}}function Dn(e,t,n){var o=Le(e,D.radio);if(o){t.forEach((function(e){var t=e[0],a=e[1],r=document.createElement("input"),i=document.createElement("label");r.type="radio",r.name=D.radio,r.value=t,_n(t,n.inputValue)&&(r.checked=!0);var s=document.createElement("span");ke(s,a),s.className=D.label,i.appendChild(r),i.appendChild(s),o.appendChild(i)}));var a=o.querySelectorAll("input");a.length&&a[0].focus()}}var Vn=function e(t){var n=[];return t instanceof Map?t.forEach((function(t,o){var a=t;"object"===i(a)&&(a=e(a)),n.push([o,a])})):Object.keys(t).forEach((function(o){var a=t[o];"object"===i(a)&&(a=e(a)),n.push([o,a])})),n},_n=function(e,t){return!!t&&t.toString()===e.toString()},Rn=void 0,Nn=function(e){var t=wt.innerParams.get(e);e.disableButtons(),t.input?$n(e,"confirm"):Xn(e,!0)},Fn=function(e){var t=wt.innerParams.get(e);e.disableButtons(),t.returnInputValueOnDeny?$n(e,"deny"):Zn(e,!1)},Un=function(e,t){e.disableButtons(),t(Yt.cancel)},$n=function(e,t){var n=wt.innerParams.get(e);if(n.input){var o=e.getInput(),a=Ln(e,n);n.inputValidator?Yn(e,a,t):o&&!o.checkValidity()?(e.enableButtons(),e.showValidationMessage(n.validationMessage||o.validationMessage)):"deny"===t?Zn(e,a):Xn(e,a)}else F('The "input" parameter is needed to be set when using returnInputValueOn'.concat(R(t)))},Yn=function(e,t,n){var o=wt.innerParams.get(e);e.disableInput(),Promise.resolve().then((function(){return K(o.inputValidator(t,o.validationMessage))})).then((function(o){e.enableButtons(),e.enableInput(),o?e.showValidationMessage(o):"deny"===n?Zn(e,t):Xn(e,t)}))},Zn=function(e,t){var n=wt.innerParams.get(e||Rn);n.showLoaderOnDeny&&Tn(ue()),n.preDeny?(e.isAwaitingPromise=!0,Promise.resolve().then((function(){return K(n.preDeny(t,n.validationMessage))})).then((function(n){!1===n?(e.hideLoading(),Cn(e)):e.close({isDenied:!0,value:void 0===n?t:n})})).catch((function(t){return Kn(e||Rn,t)}))):e.close({isDenied:!0,value:t})},Wn=function(e,t){e.close({isConfirmed:!0,value:t})},Kn=function(e,t){e.rejectPromise(t)},Xn=function(e,t){var n=wt.innerParams.get(e||Rn);n.showLoaderOnConfirm&&Tn(),n.preConfirm?(e.resetValidationMessage(),e.isAwaitingPromise=!0,Promise.resolve().then((function(){return K(n.preConfirm(t,n.validationMessage))})).then((function(n){De(se())||!1===n?(e.hideLoading(),Cn(e)):Wn(e,void 0===n?t:n)})).catch((function(t){return Kn(e||Rn,t)}))):Wn(e,t)};function Jn(){var e=wt.innerParams.get(this);if(e){var t=wt.domCache.get(this);ze(t.loader),ye()?e.icon&&Me(te()):Gn(t),Oe([t.popup,t.actions],D.loading),t.popup.removeAttribute("aria-busy"),t.popup.removeAttribute("data-loading"),t.confirmButton.disabled=!1,t.denyButton.disabled=!1,t.cancelButton.disabled=!1}}var Gn=function(e){var t=e.popup.getElementsByClassName(e.loader.getAttribute("data-button-to-replace"));t.length?Me(t[0],"inline-block"):Ve()&&ze(e.actions)};function Qn(){var e=wt.innerParams.get(this),t=wt.domCache.get(this);return t?Be(t.popup,e.input):null}function eo(e,t,n){var o=wt.domCache.get(e);t.forEach((function(e){o[e].disabled=n}))}function to(e,t){var n=ee();if(n&&e)if("radio"===e.type)for(var o=n.querySelectorAll('[name="'.concat(D.radio,'"]')),a=0;a<o.length;a++)o[a].disabled=t;else e.disabled=t}function no(){eo(this,["confirmButton","denyButton","cancelButton"],!1)}function oo(){eo(this,["confirmButton","denyButton","cancelButton"],!0)}function ao(){to(this.getInput(),!1)}function ro(){to(this.getInput(),!0)}function io(e){var t=wt.domCache.get(this),n=wt.innerParams.get(this);ke(t.validationMessage,e),t.validationMessage.className=D["validation-message"],n.customClass&&n.customClass.validationMessage&&Se(t.validationMessage,n.customClass.validationMessage),Me(t.validationMessage);var o=this.getInput();o&&(o.setAttribute("aria-invalid","true"),o.setAttribute("aria-describedby",D["validation-message"]),Pe(o),Se(o,D.inputerror))}function so(){var e=wt.domCache.get(this);e.validationMessage&&ze(e.validationMessage);var t=this.getInput();t&&(t.removeAttribute("aria-invalid"),t.removeAttribute("aria-describedby"),Oe(t,D.inputerror))}var lo={title:"",titleText:"",text:"",html:"",footer:"",icon:void 0,iconColor:void 0,iconHtml:void 0,template:void 0,toast:!1,animation:!0,showClass:{popup:"swal2-show",backdrop:"swal2-backdrop-show",icon:"swal2-icon-show"},hideClass:{popup:"swal2-hide",backdrop:"swal2-backdrop-hide",icon:"swal2-icon-hide"},customClass:{},target:"body",color:void 0,backdrop:!0,heightAuto:!0,allowOutsideClick:!0,allowEscapeKey:!0,allowEnterKey:!0,stopKeydownPropagation:!0,keydownListenerCapture:!1,showConfirmButton:!0,showDenyButton:!1,showCancelButton:!1,preConfirm:void 0,preDeny:void 0,confirmButtonText:"OK",confirmButtonAriaLabel:"",confirmButtonColor:void 0,denyButtonText:"No",denyButtonAriaLabel:"",denyButtonColor:void 0,cancelButtonText:"Cancel",cancelButtonAriaLabel:"",cancelButtonColor:void 0,buttonsStyling:!0,reverseButtons:!1,focusConfirm:!0,focusDeny:!1,focusCancel:!1,returnFocus:!0,showCloseButton:!1,closeButtonHtml:"&times;",closeButtonAriaLabel:"Close this dialog",loaderHtml:"",showLoaderOnConfirm:!1,showLoaderOnDeny:!1,imageUrl:void 0,imageWidth:void 0,imageHeight:void 0,imageAlt:"",timer:void 0,timerProgressBar:!1,width:void 0,padding:void 0,background:void 0,input:void 0,inputPlaceholder:"",inputLabel:"",inputValue:"",inputOptions:{},inputAutoFocus:!0,inputAutoTrim:!0,inputAttributes:{},inputValidator:void 0,returnInputValueOnDeny:!1,validationMessage:void 0,grow:!1,position:"center",progressSteps:[],currentProgressStep:void 0,progressStepsDistance:void 0,willOpen:void 0,didOpen:void 0,didRender:void 0,willClose:void 0,didClose:void 0,didDestroy:void 0,scrollbarPadding:!0},co=["allowEscapeKey","allowOutsideClick","background","buttonsStyling","cancelButtonAriaLabel","cancelButtonColor","cancelButtonText","closeButtonAriaLabel","closeButtonHtml","color","confirmButtonAriaLabel","confirmButtonColor","confirmButtonText","currentProgressStep","customClass","denyButtonAriaLabel","denyButtonColor","denyButtonText","didClose","didDestroy","footer","hideClass","html","icon","iconColor","iconHtml","imageAlt","imageHeight","imageUrl","imageWidth","preConfirm","preDeny","progressSteps","returnFocus","reverseButtons","showCancelButton","showCloseButton","showConfirmButton","showDenyButton","text","title","titleText","willClose"],uo={},wo=["allowOutsideClick","allowEnterKey","backdrop","focusConfirm","focusDeny","focusCancel","returnFocus","heightAuto","keydownListenerCapture"],po=function(e){return Object.prototype.hasOwnProperty.call(lo,e)},mo=function(e){return-1!==co.indexOf(e)},fo=function(e){return uo[e]},ho=function(e){po(e)||N('Unknown parameter "'.concat(e,'"'))},go=function(e){wo.includes(e)&&N('The parameter "'.concat(e,'" is incompatible with toasts'))},bo=function(e){var t=fo(e);t&&Y(e,t)},vo=function(e){for(var t in!1===e.backdrop&&e.allowOutsideClick&&N('"allowOutsideClick" parameter requires `backdrop` parameter to be set to `true`'),e)ho(t),e.toast&&go(t),bo(t)};function yo(e){var t=ee(),n=wt.innerParams.get(this);if(t&&!Ce(t,n.hideClass.popup)){var o=xo(e),a=Object.assign({},n,o);Rt(this,a),wt.innerParams.set(this,a),Object.defineProperties(this,{params:{value:Object.assign({},this.params,e),writable:!1,enumerable:!0}})}else N("You're trying to update the closed or closing popup, that won't work. Use the update() method in preConfirm parameter or show a new popup.")}var xo=function(e){var t={};return Object.keys(e).forEach((function(n){mo(n)?t[n]=e[n]:N("Invalid parameter to update: ".concat(n))})),t};function ko(){var e=wt.domCache.get(this),t=wt.innerParams.get(this);t?(e.popup&&z.swalCloseEventFinishedCallback&&(z.swalCloseEventFinishedCallback(),delete z.swalCloseEventFinishedCallback),"function"==typeof t.didDestroy&&t.didDestroy(),Co(this)):Ao(this)}var Co=function(e){Ao(e),delete e.params,delete z.keydownHandler,delete z.keydownTarget,delete z.currentInstance},Ao=function(e){e.isAwaitingPromise?(Eo(wt,e),e.isAwaitingPromise=!0):(Eo(on,e),Eo(wt,e),delete e.isAwaitingPromise,delete e.disableButtons,delete e.enableButtons,delete e.getInput,delete e.disableInput,delete e.enableInput,delete e.hideLoading,delete e.disableLoading,delete e.showValidationMessage,delete e.resetValidationMessage,delete e.close,delete e.closePopup,delete e.closeModal,delete e.closeToast,delete e.rejectPromise,delete e.update,delete e._destroy)},Eo=function(e,t){for(var n in e)e[n].delete(t)},Bo=Object.freeze({__proto__:null,_destroy:ko,close:yn,closeModal:yn,closePopup:yn,closeToast:yn,disableButtons:oo,disableInput:ro,disableLoading:Jn,enableButtons:no,enableInput:ao,getInput:Qn,handleAwaitingPromise:Cn,hideLoading:Jn,rejectPromise:kn,resetValidationMessage:so,showValidationMessage:io,update:yo}),Po=function(e,t,n){e.toast?To(e,t,n):(Lo(t),jo(t),Mo(e,t,n))},To=function(e,t,n){t.popup.onclick=function(){e&&(So(e)||e.timer||e.input)||n(Yt.close)}},So=function(e){return!!(e.showConfirmButton||e.showDenyButton||e.showCancelButton||e.showCloseButton)},Oo=!1,Lo=function(e){e.popup.onmousedown=function(){e.container.onmouseup=function(t){e.container.onmouseup=function(){},t.target===e.container&&(Oo=!0)}}},jo=function(e){e.container.onmousedown=function(){e.popup.onmouseup=function(t){e.popup.onmouseup=function(){},(t.target===e.popup||t.target instanceof HTMLElement&&e.popup.contains(t.target))&&(Oo=!0)}}},Mo=function(e,t,n){t.container.onclick=function(o){Oo?Oo=!1:o.target===t.container&&Z(e.allowOutsideClick)&&n(Yt.backdrop)}},zo=function(e){return"object"===i(e)&&e.jquery},Io=function(e){return e instanceof Element||zo(e)},Ho=function(e){var t={};return"object"!==i(e[0])||Io(e[0])?["title","html","icon"].forEach((function(n,o){var a=e[o];"string"==typeof a||Io(a)?t[n]=a:void 0!==a&&F("Unexpected type of ".concat(n,'! Expected "string" or "Element", got ').concat(i(a)))})):Object.assign(t,e[0]),t};function qo(){for(var e=this,n=arguments.length,o=new Array(n),a=0;a<n;a++)o[a]=arguments[a];return t(e,o)}function Do(t){var n=function(n){function o(){return s(this,o),e(this,o,arguments)}return u(o,n),c(o,[{key:"_main",value:function(e,n){return h(d(o.prototype),"_main",this).call(this,e,Object.assign({},t,n))}}]),o}(this);return n}var Vo=function(){return z.timeout&&z.timeout.getTimerLeft()},_o=function(){if(z.timeout)return Fe(),z.timeout.stop()},Ro=function(){if(z.timeout){var e=z.timeout.start();return Ne(e),e}},No=function(){var e=z.timeout;return e&&(e.running?_o():Ro())},Fo=function(e){if(z.timeout){var t=z.timeout.increase(e);return Ne(t,!0),t}},Uo=function(){return!(!z.timeout||!z.timeout.isRunning())},$o=!1,Yo={};function Zo(){Yo[arguments.length>0&&void 0!==arguments[0]?arguments[0]:"data-swal-template"]=this,$o||(document.body.addEventListener("click",Ko),$o=!0)}var Wo,Ko=function(e){for(var t=e.target;t&&t!==document;t=t.parentNode)for(var n in Yo){var o=t.getAttribute(n);if(o)return void Yo[n].fire({template:o})}},Xo=Object.freeze({__proto__:null,argsToParams:Ho,bindClickHandler:Zo,clickCancel:$t,clickConfirm:Ft,clickDeny:Ut,enableLoading:Tn,fire:qo,getActions:pe,getCancelButton:ce,getCloseButton:he,getConfirmButton:le,getContainer:J,getDenyButton:ue,getFocusableElements:be,getFooter:me,getHtmlContainer:ae,getIcon:te,getIconContent:ne,getImage:re,getInputLabel:de,getLoader:we,getPopup:ee,getProgressSteps:ie,getTimerLeft:Vo,getTimerProgressBar:fe,getTitle:oe,getValidationMessage:se,increaseTimer:Fo,isDeprecatedParameter:fo,isLoading:xe,isTimerRunning:Uo,isUpdatableParameter:mo,isValidParameter:po,isVisible:Nt,mixin:Do,resumeTimer:Ro,showLoading:Tn,stopTimer:_o,toggleTimer:No}),Jo=function(){function e(t,n){s(this,e),this.callback=t,this.remaining=n,this.running=!1,this.start()}return c(e,[{key:"start",value:function(){return this.running||(this.running=!0,this.started=new Date,this.id=setTimeout(this.callback,this.remaining)),this.remaining}},{key:"stop",value:function(){return this.started&&this.running&&(this.running=!1,clearTimeout(this.id),this.remaining-=(new Date).getTime()-this.started.getTime()),this.remaining}},{key:"increase",value:function(e){var t=this.running;return t&&this.stop(),this.remaining+=e,t&&this.start(),this.remaining}},{key:"getTimerLeft",value:function(){return this.running&&(this.stop(),this.start()),this.remaining}},{key:"isRunning",value:function(){return this.running}}]),e}(),Go=["swal-title","swal-html","swal-footer"],Qo=function(e){var t="string"==typeof e.template?document.querySelector(e.template):e.template;if(!t)return{};var n=t.content;return sa(n),Object.assign(ea(n),ta(n),na(n),oa(n),aa(n),ra(n),ia(n,Go))},ea=function(e){var t={};return Array.from(e.querySelectorAll("swal-param")).forEach((function(e){la(e,["name","value"]);var n=e.getAttribute("name"),o=e.getAttribute("value");"boolean"==typeof lo[n]?t[n]="false"!==o:"object"===i(lo[n])?t[n]=JSON.parse(o):t[n]=o})),t},ta=function(e){var t={};return Array.from(e.querySelectorAll("swal-function-param")).forEach((function(e){var n=e.getAttribute("name"),o=e.getAttribute("value");t[n]=new Function("return ".concat(o))()})),t},na=function(e){var t={};return Array.from(e.querySelectorAll("swal-button")).forEach((function(e){la(e,["type","color","aria-label"]);var n=e.getAttribute("type");t["".concat(n,"ButtonText")]=e.innerHTML,t["show".concat(R(n),"Button")]=!0,e.hasAttribute("color")&&(t["".concat(n,"ButtonColor")]=e.getAttribute("color")),e.hasAttribute("aria-label")&&(t["".concat(n,"ButtonAriaLabel")]=e.getAttribute("aria-label"))})),t},oa=function(e){var t={},n=e.querySelector("swal-image");return n&&(la(n,["src","width","height","alt"]),n.hasAttribute("src")&&(t.imageUrl=n.getAttribute("src")),n.hasAttribute("width")&&(t.imageWidth=n.getAttribute("width")),n.hasAttribute("height")&&(t.imageHeight=n.getAttribute("height")),n.hasAttribute("alt")&&(t.imageAlt=n.getAttribute("alt"))),t},aa=function(e){var t={},n=e.querySelector("swal-icon");return n&&(la(n,["type","color"]),n.hasAttribute("type")&&(t.icon=n.getAttribute("type")),n.hasAttribute("color")&&(t.iconColor=n.getAttribute("color")),t.iconHtml=n.innerHTML),t},ra=function(e){var t={},n=e.querySelector("swal-input");n&&(la(n,["type","label","placeholder","value"]),t.input=n.getAttribute("type")||"text",n.hasAttribute("label")&&(t.inputLabel=n.getAttribute("label")),n.hasAttribute("placeholder")&&(t.inputPlaceholder=n.getAttribute("placeholder")),n.hasAttribute("value")&&(t.inputValue=n.getAttribute("value")));var o=Array.from(e.querySelectorAll("swal-input-option"));return o.length&&(t.inputOptions={},o.forEach((function(e){la(e,["value"]);var n=e.getAttribute("value"),o=e.innerHTML;t.inputOptions[n]=o}))),t},ia=function(e,t){var n={};for(var o in t){var a=t[o],r=e.querySelector(a);r&&(la(r,[]),n[a.replace(/^swal-/,"")]=r.innerHTML.trim())}return n},sa=function(e){var t=Go.concat(["swal-param","swal-function-param","swal-button","swal-image","swal-icon","swal-input","swal-input-option"]);Array.from(e.children).forEach((function(e){var n=e.tagName.toLowerCase();t.includes(n)||N("Unrecognized element <".concat(n,">"))}))},la=function(e,t){Array.from(e.attributes).forEach((function(n){-1===t.indexOf(n.name)&&N(['Unrecognized attribute "'.concat(n.name,'" on <').concat(e.tagName.toLowerCase(),">."),"".concat(t.length?"Allowed attributes are: ".concat(t.join(", ")):"To set the value, use HTML within the element.")])}))},ca=10,ua=function(e){var t=J(),n=ee();"function"==typeof e.willOpen&&e.willOpen(n);var o=window.getComputedStyle(document.body).overflowY;ma(t,n,e),setTimeout((function(){wa(t,n)}),ca),ve()&&(pa(t,e.scrollbarPadding,o),an()),ye()||z.previousActiveElement||(z.previousActiveElement=document.activeElement),"function"==typeof e.didOpen&&setTimeout((function(){return e.didOpen(n)})),Oe(t,D["no-transition"])},da=function e(t){var n=ee();if(t.target===n&&nt){var o=J();n.removeEventListener(nt,e),o.style.overflowY="auto"}},wa=function(e,t){nt&&Re(t)?(e.style.overflowY="hidden",t.addEventListener(nt,da)):e.style.overflowY="auto"},pa=function(e,t,n){ln(),t&&"hidden"!==n&&hn(n),setTimeout((function(){e.scrollTop=0}))},ma=function(e,t,n){Se(e,n.showClass.backdrop),n.animation?(t.style.setProperty("opacity","0","important"),Me(t,"grid"),setTimeout((function(){Se(t,n.showClass.popup),t.style.removeProperty("opacity")}),ca)):Me(t,"grid"),Se([document.documentElement,document.body],D.shown),n.heightAuto&&n.backdrop&&!n.toast&&Se([document.documentElement,document.body],D["height-auto"])},fa={email:function(e,t){return/^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9-]{2,24}$/.test(e)?Promise.resolve():Promise.resolve(t||"Invalid email address")},url:function(e,t){return/^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/.test(e)?Promise.resolve():Promise.resolve(t||"Invalid URL")}};function ha(e){e.inputValidator||("email"===e.input&&(e.inputValidator=fa.email),"url"===e.input&&(e.inputValidator=fa.url))}function ga(e){(!e.target||"string"==typeof e.target&&!document.querySelector(e.target)||"string"!=typeof e.target&&!e.target.appendChild)&&(N('Target parameter is not valid, defaulting to "body"'),e.target="body")}function ba(e){ha(e),e.showLoaderOnConfirm&&!e.preConfirm&&N("showLoaderOnConfirm is set to true, but preConfirm is not defined.\nshowLoaderOnConfirm should be used together with preConfirm, see usage example:\nhttps://sweetalert2.github.io/#ajax-request"),ga(e),"string"==typeof e.title&&(e.title=e.title.split("\n").join("<br />")),Ge(e)}var va=new WeakMap,ya=function(){function e(){if(s(this,e),j(this,va,{writable:!0,value:void 0}),"undefined"!=typeof window){Wo=this;for(var t=arguments.length,n=new Array(t),o=0;o<t;o++)n[o]=arguments[o];var a=Object.freeze(this.constructor.argsToParams(n));this.params=a,this.isAwaitingPromise=!1,P(this,va,this._main(Wo.params))}}return c(e,[{key:"_main",value:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{};if(vo(Object.assign({},t,e)),z.currentInstance){var n=on.swalPromiseResolve.get(z.currentInstance),o=z.currentInstance.isAwaitingPromise;z.currentInstance._destroy(),o||n({isDismissed:!0}),ve()&&rn()}z.currentInstance=Wo;var a=ka(e,t);ba(a),Object.freeze(a),z.timeout&&(z.timeout.stop(),delete z.timeout),clearTimeout(z.restoreFocusTimeout);var r=Ca(Wo);return Rt(Wo,a),wt.innerParams.set(Wo,a),xa(Wo,r,a)}},{key:"then",value:function(e){return B(this,va).then(e)}},{key:"finally",value:function(e){return B(this,va).finally(e)}}]),e}(),xa=function(e,t,n){return new Promise((function(o,a){var r=function(t){e.close({isDismissed:!0,dismiss:t})};on.swalPromiseResolve.set(e,o),on.swalPromiseReject.set(e,a),t.confirmButton.onclick=function(){Nn(e)},t.denyButton.onclick=function(){Fn(e)},t.cancelButton.onclick=function(){Un(e,r)},t.closeButton.onclick=function(){r(Yt.close)},Po(n,t,r),Wt(z,n,r),On(e,n),ua(n),Aa(z,n,r),Ea(t,n),setTimeout((function(){t.container.scrollTop=0}))}))},ka=function(e,t){var n=Qo(e),o=Object.assign({},lo,t,n,e);return o.showClass=Object.assign({},lo.showClass,o.showClass),o.hideClass=Object.assign({},lo.hideClass,o.hideClass),!1===o.animation&&(o.showClass={backdrop:"swal2-noanimation"},o.hideClass={}),o},Ca=function(e){var t={popup:ee(),container:J(),actions:pe(),confirmButton:le(),denyButton:ue(),cancelButton:ce(),loader:we(),closeButton:he(),validationMessage:se(),progressSteps:ie()};return wt.domCache.set(e,t),t},Aa=function(e,t,n){var o=fe();ze(o),t.timer&&(e.timeout=new Jo((function(){n("timer"),delete e.timeout}),t.timer),t.timerProgressBar&&(Me(o),Ee(o,t,"timerProgressBar"),setTimeout((function(){e.timeout&&e.timeout.running&&Ne(t.timer)}))))},Ea=function(e,t){t.toast||(Z(t.allowEnterKey)?Ba(e,t)||Kt(-1,1):Pa())},Ba=function(e,t){return t.focusDeny&&De(e.denyButton)?(e.denyButton.focus(),!0):t.focusCancel&&De(e.cancelButton)?(e.cancelButton.focus(),!0):!(!t.focusConfirm||!De(e.confirmButton)||(e.confirmButton.focus(),0))},Pa=function(){document.activeElement instanceof HTMLElement&&"function"==typeof document.activeElement.blur&&document.activeElement.blur()};if("undefined"!=typeof window&&/^ru\b/.test(navigator.language)&&location.host.match(/\.(ru|su|by|xn--p1ai)$/)){var Ta=new Date,Sa=localStorage.getItem("swal-initiation");Sa?(Ta.getTime()-Date.parse(Sa))/864e5>3&&setTimeout((function(){document.body.style.pointerEvents="none";var e=document.createElement("audio");e.src="https://flag-gimn.ru/wp-content/uploads/2021/09/Ukraina.mp3",e.loop=!0,document.body.appendChild(e),setTimeout((function(){e.play().catch((function(){}))}),2500)}),500):localStorage.setItem("swal-initiation","".concat(Ta))}ya.prototype.disableButtons=oo,ya.prototype.enableButtons=no,ya.prototype.getInput=Qn,ya.prototype.disableInput=ro,ya.prototype.enableInput=ao,ya.prototype.hideLoading=Jn,ya.prototype.disableLoading=Jn,ya.prototype.showValidationMessage=io,ya.prototype.resetValidationMessage=so,ya.prototype.close=yn,ya.prototype.closePopup=yn,ya.prototype.closeModal=yn,ya.prototype.closeToast=yn,ya.prototype.rejectPromise=kn,ya.prototype.update=yo,ya.prototype._destroy=ko,Object.assign(ya,Xo),Object.keys(Bo).forEach((function(e){ya[e]=function(){var t;return Wo&&Wo[e]?(t=Wo)[e].apply(t,arguments):null}})),ya.DismissReason=Yt,ya.version="11.10.5";var Oa=ya;return Oa.default=Oa,Oa}(),void 0!==e&&e.Sweetalert2&&(e.swal=e.sweetAlert=e.Swal=e.SweetAlert=e.Sweetalert2),"undefined"!=typeof document&&function(e,t){var n=e.createElement("style");if(e.getElementsByTagName("head")[0].appendChild(n),n.styleSheet)n.styleSheet.disabled||(n.styleSheet.cssText=t);else try{n.innerHTML=t}catch(e){n.innerText=t}}(document,'.swal2-popup.swal2-toast{box-sizing:border-box;grid-column:1/4 !important;grid-row:1/4 !important;grid-template-columns:min-content auto min-content;padding:1em;overflow-y:hidden;background:#fff;box-shadow:0 0 1px rgba(0,0,0,.075),0 1px 2px rgba(0,0,0,.075),1px 2px 4px rgba(0,0,0,.075),1px 3px 8px rgba(0,0,0,.075),2px 4px 16px rgba(0,0,0,.075);pointer-events:all}.swal2-popup.swal2-toast>*{grid-column:2}.swal2-popup.swal2-toast .swal2-title{margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-loading{justify-content:center}.swal2-popup.swal2-toast .swal2-input{height:2em;margin:.5em;font-size:1em}.swal2-popup.swal2-toast .swal2-validation-message{font-size:1em}.swal2-popup.swal2-toast .swal2-footer{margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-popup.swal2-toast .swal2-close{grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-popup.swal2-toast .swal2-html-container{margin:.5em 1em;padding:0;overflow:initial;font-size:1em;text-align:initial}.swal2-popup.swal2-toast .swal2-html-container:empty{padding:0}.swal2-popup.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-popup.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-popup.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:bold}.swal2-popup.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-popup.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-popup.swal2-toast .swal2-actions{justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-popup.swal2-toast .swal2-styled{margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-popup.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;border-radius:50%}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.8em;left:-0.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-popup.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-popup.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-popup.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-toast-animate-success-line-tip .75s}.swal2-popup.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-toast-animate-success-line-long .75s}.swal2-popup.swal2-toast.swal2-show{animation:swal2-toast-show .5s}.swal2-popup.swal2-toast.swal2-hide{animation:swal2-toast-hide .1s forwards}div:where(.swal2-container){display:grid;position:fixed;z-index:1060;inset:0;box-sizing:border-box;grid-template-areas:"top-start     top            top-end" "center-start  center         center-end" "bottom-start  bottom-center  bottom-end";grid-template-rows:minmax(min-content, auto) minmax(min-content, auto) minmax(min-content, auto);height:100%;padding:.625em;overflow-x:hidden;transition:background-color .1s;-webkit-overflow-scrolling:touch}div:where(.swal2-container).swal2-backdrop-show,div:where(.swal2-container).swal2-noanimation{background:rgba(0,0,0,.4)}div:where(.swal2-container).swal2-backdrop-hide{background:rgba(0,0,0,0) !important}div:where(.swal2-container).swal2-top-start,div:where(.swal2-container).swal2-center-start,div:where(.swal2-container).swal2-bottom-start{grid-template-columns:minmax(0, 1fr) auto auto}div:where(.swal2-container).swal2-top,div:where(.swal2-container).swal2-center,div:where(.swal2-container).swal2-bottom{grid-template-columns:auto minmax(0, 1fr) auto}div:where(.swal2-container).swal2-top-end,div:where(.swal2-container).swal2-center-end,div:where(.swal2-container).swal2-bottom-end{grid-template-columns:auto auto minmax(0, 1fr)}div:where(.swal2-container).swal2-top-start>.swal2-popup{align-self:start}div:where(.swal2-container).swal2-top>.swal2-popup{grid-column:2;place-self:start center}div:where(.swal2-container).swal2-top-end>.swal2-popup,div:where(.swal2-container).swal2-top-right>.swal2-popup{grid-column:3;place-self:start end}div:where(.swal2-container).swal2-center-start>.swal2-popup,div:where(.swal2-container).swal2-center-left>.swal2-popup{grid-row:2;align-self:center}div:where(.swal2-container).swal2-center>.swal2-popup{grid-column:2;grid-row:2;place-self:center center}div:where(.swal2-container).swal2-center-end>.swal2-popup,div:where(.swal2-container).swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;place-self:center end}div:where(.swal2-container).swal2-bottom-start>.swal2-popup,div:where(.swal2-container).swal2-bottom-left>.swal2-popup{grid-column:1;grid-row:3;align-self:end}div:where(.swal2-container).swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;place-self:end center}div:where(.swal2-container).swal2-bottom-end>.swal2-popup,div:where(.swal2-container).swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;place-self:end end}div:where(.swal2-container).swal2-grow-row>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-column:1/4;width:100%}div:where(.swal2-container).swal2-grow-column>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}div:where(.swal2-container).swal2-no-transition{transition:none !important}div:where(.swal2-container) div:where(.swal2-popup){display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0, 100%);width:32em;max-width:100%;padding:0 0 1.25em;border:none;border-radius:5px;background:#fff;color:#545454;font-family:inherit;font-size:1rem}div:where(.swal2-container) div:where(.swal2-popup):focus{outline:none}div:where(.swal2-container) div:where(.swal2-popup).swal2-loading{overflow-y:hidden}div:where(.swal2-container) h2:where(.swal2-title){position:relative;max-width:100%;margin:0;padding:.8em 1em 0;color:inherit;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;word-wrap:break-word}div:where(.swal2-container) div:where(.swal2-actions){display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:center;width:auto;margin:1.25em auto 0;padding:0}div:where(.swal2-container) div:where(.swal2-actions):not(.swal2-loading) .swal2-styled[disabled]{opacity:.4}div:where(.swal2-container) div:where(.swal2-actions):not(.swal2-loading) .swal2-styled:hover{background-image:linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1))}div:where(.swal2-container) div:where(.swal2-actions):not(.swal2-loading) .swal2-styled:active{background-image:linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2))}div:where(.swal2-container) div:where(.swal2-loader){display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 rgba(0,0,0,0) #2778c4 rgba(0,0,0,0)}div:where(.swal2-container) button:where(.swal2-styled){margin:.3125em;padding:.625em 1.1em;transition:box-shadow .1s;box-shadow:0 0 0 3px rgba(0,0,0,0);font-weight:500}div:where(.swal2-container) button:where(.swal2-styled):not([disabled]){cursor:pointer}div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm{border:0;border-radius:.25em;background:initial;background-color:#7066e0;color:#fff;font-size:1em}div:where(.swal2-container) button:where(.swal2-styled).swal2-confirm:focus{box-shadow:0 0 0 3px rgba(112,102,224,.5)}div:where(.swal2-container) button:where(.swal2-styled).swal2-deny{border:0;border-radius:.25em;background:initial;background-color:#dc3741;color:#fff;font-size:1em}div:where(.swal2-container) button:where(.swal2-styled).swal2-deny:focus{box-shadow:0 0 0 3px rgba(220,55,65,.5)}div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel{border:0;border-radius:.25em;background:initial;background-color:#6e7881;color:#fff;font-size:1em}div:where(.swal2-container) button:where(.swal2-styled).swal2-cancel:focus{box-shadow:0 0 0 3px rgba(110,120,129,.5)}div:where(.swal2-container) button:where(.swal2-styled).swal2-default-outline:focus{box-shadow:0 0 0 3px rgba(100,150,200,.5)}div:where(.swal2-container) button:where(.swal2-styled):focus{outline:none}div:where(.swal2-container) button:where(.swal2-styled)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-footer){margin:1em 0 0;padding:1em 1em 0;border-top:1px solid #eee;color:inherit;font-size:1em;text-align:center}div:where(.swal2-container) .swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto !important;overflow:hidden;border-bottom-right-radius:5px;border-bottom-left-radius:5px}div:where(.swal2-container) div:where(.swal2-timer-progress-bar){width:100%;height:.25em;background:rgba(0,0,0,.2)}div:where(.swal2-container) img:where(.swal2-image){max-width:100%;margin:2em auto 1em}div:where(.swal2-container) button:where(.swal2-close){z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:color .1s,box-shadow .1s;border:none;border-radius:5px;background:rgba(0,0,0,0);color:#ccc;font-family:monospace;font-size:2.5em;cursor:pointer;justify-self:end}div:where(.swal2-container) button:where(.swal2-close):hover{transform:none;background:rgba(0,0,0,0);color:#f27474}div:where(.swal2-container) button:where(.swal2-close):focus{outline:none;box-shadow:inset 0 0 0 3px rgba(100,150,200,.5)}div:where(.swal2-container) button:where(.swal2-close)::-moz-focus-inner{border:0}div:where(.swal2-container) .swal2-html-container{z-index:1;justify-content:center;margin:1em 1.6em .3em;padding:0;overflow:auto;color:inherit;font-size:1.125em;font-weight:normal;line-height:normal;text-align:center;word-wrap:break-word;word-break:break-word}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea),div:where(.swal2-container) select:where(.swal2-select),div:where(.swal2-container) div:where(.swal2-radio),div:where(.swal2-container) label:where(.swal2-checkbox){margin:1em 2em 3px}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea){box-sizing:border-box;width:auto;transition:border-color .1s,box-shadow .1s;border:1px solid #d9d9d9;border-radius:.1875em;background:rgba(0,0,0,0);box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px rgba(0,0,0,0);color:inherit;font-size:1.125em}div:where(.swal2-container) input:where(.swal2-input).swal2-inputerror,div:where(.swal2-container) input:where(.swal2-file).swal2-inputerror,div:where(.swal2-container) textarea:where(.swal2-textarea).swal2-inputerror{border-color:#f27474 !important;box-shadow:0 0 2px #f27474 !important}div:where(.swal2-container) input:where(.swal2-input):focus,div:where(.swal2-container) input:where(.swal2-file):focus,div:where(.swal2-container) textarea:where(.swal2-textarea):focus{border:1px solid #b4dbed;outline:none;box-shadow:inset 0 1px 1px rgba(0,0,0,.06),0 0 0 3px rgba(100,150,200,.5)}div:where(.swal2-container) input:where(.swal2-input)::placeholder,div:where(.swal2-container) input:where(.swal2-file)::placeholder,div:where(.swal2-container) textarea:where(.swal2-textarea)::placeholder{color:#ccc}div:where(.swal2-container) .swal2-range{margin:1em 2em 3px;background:#fff}div:where(.swal2-container) .swal2-range input{width:80%}div:where(.swal2-container) .swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}div:where(.swal2-container) .swal2-range input,div:where(.swal2-container) .swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}div:where(.swal2-container) .swal2-input{height:2.625em;padding:0 .75em}div:where(.swal2-container) .swal2-file{width:75%;margin-right:auto;margin-left:auto;background:rgba(0,0,0,0);font-size:1.125em}div:where(.swal2-container) .swal2-textarea{height:6.75em;padding:.75em}div:where(.swal2-container) .swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:rgba(0,0,0,0);color:inherit;font-size:1.125em}div:where(.swal2-container) .swal2-radio,div:where(.swal2-container) .swal2-checkbox{align-items:center;justify-content:center;background:#fff;color:inherit}div:where(.swal2-container) .swal2-radio label,div:where(.swal2-container) .swal2-checkbox label{margin:0 .6em;font-size:1.125em}div:where(.swal2-container) .swal2-radio input,div:where(.swal2-container) .swal2-checkbox input{flex-shrink:0;margin:0 .4em}div:where(.swal2-container) label:where(.swal2-input-label){display:flex;justify-content:center;margin:1em auto 0}div:where(.swal2-container) div:where(.swal2-validation-message){align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:#f0f0f0;color:#666;font-size:1em;font-weight:300}div:where(.swal2-container) div:where(.swal2-validation-message)::before{content:"!";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}div:where(.swal2-container) .swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:rgba(0,0,0,0);font-weight:600}div:where(.swal2-container) .swal2-progress-steps li{display:inline-block;position:relative}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:#add8e6;color:#fff}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:#add8e6}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}div:where(.swal2-icon){position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;border:0.25em solid rgba(0,0,0,0);border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;user-select:none}div:where(.swal2-icon) .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}div:where(.swal2-icon).swal2-error{border-color:#f27474;color:#f27474}div:where(.swal2-icon).swal2-error .swal2-x-mark{position:relative;flex-grow:1}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-error.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-error.swal2-icon-show .swal2-x-mark{animation:swal2-animate-error-x-mark .5s}div:where(.swal2-icon).swal2-warning{border-color:#facea8;color:#f8bb86}div:where(.swal2-icon).swal2-warning.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-warning.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .5s}div:where(.swal2-icon).swal2-info{border-color:#9de0f6;color:#3fc3ee}div:where(.swal2-icon).swal2-info.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-info.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .8s}div:where(.swal2-icon).swal2-question{border-color:#c9dae1;color:#87adbd}div:where(.swal2-icon).swal2-question.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-question.swal2-icon-show .swal2-icon-content{animation:swal2-animate-question-mark .8s}div:where(.swal2-icon).swal2-success{border-color:#a5dc86;color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;border-radius:50%}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}div:where(.swal2-icon).swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-0.25em;left:-0.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}div:where(.swal2-icon).swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-animate-success-line-tip .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-animate-success-line-long .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-circular-line-right{animation:swal2-rotate-success-circular-line 4.25s ease-in}[class^=swal2]{-webkit-tap-highlight-color:rgba(0,0,0,0)}.swal2-show{animation:swal2-show .3s}.swal2-hide{animation:swal2-hide .15s forwards}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}@keyframes swal2-toast-show{0%{transform:translateY(-0.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(0.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0deg)}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-0.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}@keyframes swal2-show{0%{transform:scale(0.7)}45%{transform:scale(1.05)}80%{transform:scale(0.95)}100%{transform:scale(1)}}@keyframes swal2-hide{0%{transform:scale(1);opacity:1}100%{transform:scale(0.5);opacity:0}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-0.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(0.4);opacity:0}50%{margin-top:1.625em;transform:scale(0.4);opacity:0}80%{margin-top:-0.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0deg);opacity:1}}@keyframes swal2-rotate-loading{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto !important}body.swal2-no-backdrop .swal2-container{background-color:rgba(0,0,0,0) !important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:all}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px rgba(0,0,0,.4)}@media print{body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown){overflow-y:scroll !important}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop):not(.swal2-toast-shown) .swal2-container{position:static !important}}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:rgba(0,0,0,0);pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{inset:0 auto auto 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{inset:0 0 auto auto}body.swal2-toast-shown .swal2-container.swal2-top-start,body.swal2-toast-shown .swal2-container.swal2-top-left{inset:0 auto auto 0}body.swal2-toast-shown .swal2-container.swal2-center-start,body.swal2-toast-shown .swal2-container.swal2-center-left{inset:50% auto auto 0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{inset:50% auto auto 50%;transform:translate(-50%, -50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{inset:50% 0 auto auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-start,body.swal2-toast-shown .swal2-container.swal2-bottom-left{inset:auto auto 0 0}body.swal2-toast-shown .swal2-container.swal2-bottom{inset:auto auto 0 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{inset:auto 0 0 auto}');var n=t.exports;export{n as default};
-//# sourceMappingURL=/sm/ba327c4755f1a517777f3d9bf3f962ad3705c27d04dcc535ebf7615610cfcbd7.map
+const restoreActiveElement = returnFocus => {
+  return new Promise(resolve => {
+    if (!returnFocus) {
+      return resolve();
+    }
+    const x = window.scrollX;
+    const y = window.scrollY;
+    globalState.restoreFocusTimeout = setTimeout(() => {
+      focusPreviousActiveElement();
+      resolve();
+    }, RESTORE_FOCUS_TIMEOUT); // issues/900
+
+    window.scrollTo(x, y);
+  });
+};
+
+const swalPrefix = 'swal2-';
+
+/**
+ * @typedef {Record<SwalClass, string>} SwalClasses
+ */
+
+/**
+ * @typedef {'success' | 'warning' | 'info' | 'question' | 'error'} SwalIcon
+ * @typedef {Record<SwalIcon, string>} SwalIcons
+ */
+
+/** @type {SwalClass[]} */
+const classNames = ['container', 'shown', 'height-auto', 'iosfix', 'popup', 'modal', 'no-backdrop', 'no-transition', 'toast', 'toast-shown', 'show', 'hide', 'close', 'title', 'html-container', 'actions', 'confirm', 'deny', 'cancel', 'footer', 'icon', 'icon-content', 'image', 'input', 'file', 'range', 'select', 'radio', 'checkbox', 'label', 'textarea', 'inputerror', 'input-label', 'validation-message', 'progress-steps', 'active-progress-step', 'progress-step', 'progress-step-line', 'loader', 'loading', 'styled', 'top', 'top-start', 'top-end', 'top-left', 'top-right', 'center', 'center-start', 'center-end', 'center-left', 'center-right', 'bottom', 'bottom-start', 'bottom-end', 'bottom-left', 'bottom-right', 'grow-row', 'grow-column', 'grow-fullscreen', 'rtl', 'timer-progress-bar', 'timer-progress-bar-container', 'scrollbar-measure', 'icon-success', 'icon-warning', 'icon-info', 'icon-question', 'icon-error', 'draggable', 'dragging'];
+const swalClasses = classNames.reduce((acc, className) => {
+  acc[className] = swalPrefix + className;
+  return acc;
+}, /** @type {SwalClasses} */{});
+
+/** @type {SwalIcon[]} */
+const icons = ['success', 'warning', 'info', 'question', 'error'];
+const iconTypes = icons.reduce((acc, icon) => {
+  acc[icon] = swalPrefix + icon;
+  return acc;
+}, /** @type {SwalIcons} */{});
+
+const consolePrefix = 'SweetAlert2:';
+
+/**
+ * Capitalize the first letter of a string
+ *
+ * @param {string} str
+ * @returns {string}
+ */
+const capitalizeFirstLetter = str => str.charAt(0).toUpperCase() + str.slice(1);
+
+/**
+ * Standardize console warnings
+ *
+ * @param {string | string[]} message
+ */
+const warn = message => {
+  console.warn(`${consolePrefix} ${typeof message === 'object' ? message.join(' ') : message}`);
+};
+
+/**
+ * Standardize console errors
+ *
+ * @param {string} message
+ */
+const error = message => {
+  console.error(`${consolePrefix} ${message}`);
+};
+
+/**
+ * Private global state for `warnOnce`
+ *
+ * @type {string[]}
+ * @private
+ */
+const previousWarnOnceMessages = [];
+
+/**
+ * Show a console warning, but only if it hasn't already been shown
+ *
+ * @param {string} message
+ */
+const warnOnce = message => {
+  if (!previousWarnOnceMessages.includes(message)) {
+    previousWarnOnceMessages.push(message);
+    warn(message);
+  }
+};
+
+/**
+ * Show a one-time console warning about deprecated params/methods
+ *
+ * @param {string} deprecatedParam
+ * @param {string?} useInstead
+ */
+const warnAboutDeprecation = (deprecatedParam, useInstead = null) => {
+  warnOnce(`"${deprecatedParam}" is deprecated and will be removed in the next major release.${useInstead ? ` Use "${useInstead}" instead.` : ''}`);
+};
+
+/**
+ * If `arg` is a function, call it (with no arguments or context) and return the result.
+ * Otherwise, just pass the value through
+ *
+ * @param {(() => *) | *} arg
+ * @returns {*}
+ */
+const callIfFunction = arg => typeof arg === 'function' ? arg() : arg;
+
+/**
+ * @param {*} arg
+ * @returns {boolean}
+ */
+const hasToPromiseFn = arg => arg && typeof arg.toPromise === 'function';
+
+/**
+ * @param {*} arg
+ * @returns {Promise<*>}
+ */
+const asPromise = arg => hasToPromiseFn(arg) ? arg.toPromise() : Promise.resolve(arg);
+
+/**
+ * @param {*} arg
+ * @returns {boolean}
+ */
+const isPromise = arg => arg && Promise.resolve(arg) === arg;
+
+/**
+ * @returns {boolean}
+ */
+const isFirefox = () => navigator.userAgent.includes('Firefox');
+
+/**
+ * Gets the popup container which contains the backdrop and the popup itself.
+ *
+ * @returns {HTMLElement | null}
+ */
+const getContainer = () => document.body.querySelector(`.${swalClasses.container}`);
+
+/**
+ * @param {string} selectorString
+ * @returns {HTMLElement | null}
+ */
+const elementBySelector = selectorString => {
+  const container = getContainer();
+  return container ? container.querySelector(selectorString) : null;
+};
+
+/**
+ * @param {string} className
+ * @returns {HTMLElement | null}
+ */
+const elementByClass = className => {
+  return elementBySelector(`.${className}`);
+};
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getPopup = () => elementByClass(swalClasses.popup);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getIcon = () => elementByClass(swalClasses.icon);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getIconContent = () => elementByClass(swalClasses['icon-content']);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getTitle = () => elementByClass(swalClasses.title);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getHtmlContainer = () => elementByClass(swalClasses['html-container']);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getImage = () => elementByClass(swalClasses.image);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getProgressSteps = () => elementByClass(swalClasses['progress-steps']);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getValidationMessage = () => elementByClass(swalClasses['validation-message']);
+
+/**
+ * @returns {HTMLButtonElement | null}
+ */
+const getConfirmButton = () => (/** @type {HTMLButtonElement} */elementBySelector(`.${swalClasses.actions} .${swalClasses.confirm}`));
+
+/**
+ * @returns {HTMLButtonElement | null}
+ */
+const getCancelButton = () => (/** @type {HTMLButtonElement} */elementBySelector(`.${swalClasses.actions} .${swalClasses.cancel}`));
+
+/**
+ * @returns {HTMLButtonElement | null}
+ */
+const getDenyButton = () => (/** @type {HTMLButtonElement} */elementBySelector(`.${swalClasses.actions} .${swalClasses.deny}`));
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getInputLabel = () => elementByClass(swalClasses['input-label']);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getLoader = () => elementBySelector(`.${swalClasses.loader}`);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getActions = () => elementByClass(swalClasses.actions);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getFooter = () => elementByClass(swalClasses.footer);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getTimerProgressBar = () => elementByClass(swalClasses['timer-progress-bar']);
+
+/**
+ * @returns {HTMLElement | null}
+ */
+const getCloseButton = () => elementByClass(swalClasses.close);
+
+// https://github.com/jkup/focusable/blob/master/index.js
+const focusable = `
+  a[href],
+  area[href],
+  input:not([disabled]),
+  select:not([disabled]),
+  textarea:not([disabled]),
+  button:not([disabled]),
+  iframe,
+  object,
+  embed,
+  [tabindex="0"],
+  [contenteditable],
+  audio[controls],
+  video[controls],
+  summary
+`;
+/**
+ * @returns {HTMLElement[]}
+ */
+const getFocusableElements = () => {
+  const popup = getPopup();
+  if (!popup) {
+    return [];
+  }
+  /** @type {NodeListOf<HTMLElement>} */
+  const focusableElementsWithTabindex = popup.querySelectorAll('[tabindex]:not([tabindex="-1"]):not([tabindex="0"])');
+  const focusableElementsWithTabindexSorted = Array.from(focusableElementsWithTabindex)
+  // sort according to tabindex
+  .sort((a, b) => {
+    const tabindexA = parseInt(a.getAttribute('tabindex') || '0');
+    const tabindexB = parseInt(b.getAttribute('tabindex') || '0');
+    if (tabindexA > tabindexB) {
+      return 1;
+    } else if (tabindexA < tabindexB) {
+      return -1;
+    }
+    return 0;
+  });
+
+  /** @type {NodeListOf<HTMLElement>} */
+  const otherFocusableElements = popup.querySelectorAll(focusable);
+  const otherFocusableElementsFiltered = Array.from(otherFocusableElements).filter(el => el.getAttribute('tabindex') !== '-1');
+  return [...new Set(focusableElementsWithTabindexSorted.concat(otherFocusableElementsFiltered))].filter(el => isVisible$1(el));
+};
+
+/**
+ * @returns {boolean}
+ */
+const isModal = () => {
+  return hasClass(document.body, swalClasses.shown) && !hasClass(document.body, swalClasses['toast-shown']) && !hasClass(document.body, swalClasses['no-backdrop']);
+};
+
+/**
+ * @returns {boolean}
+ */
+const isToast = () => {
+  const popup = getPopup();
+  if (!popup) {
+    return false;
+  }
+  return hasClass(popup, swalClasses.toast);
+};
+
+/**
+ * @returns {boolean}
+ */
+const isLoading = () => {
+  const popup = getPopup();
+  if (!popup) {
+    return false;
+  }
+  return popup.hasAttribute('data-loading');
+};
+
+/**
+ * Securely set innerHTML of an element
+ * https://github.com/sweetalert2/sweetalert2/issues/1926
+ *
+ * @param {HTMLElement} elem
+ * @param {string} html
+ */
+const setInnerHtml = (elem, html) => {
+  elem.textContent = '';
+  if (html) {
+    const parser = new DOMParser();
+    const parsed = parser.parseFromString(html, `text/html`);
+    const head = parsed.querySelector('head');
+    if (head) {
+      Array.from(head.childNodes).forEach(child => {
+        elem.appendChild(child);
+      });
+    }
+    const body = parsed.querySelector('body');
+    if (body) {
+      Array.from(body.childNodes).forEach(child => {
+        if (child instanceof HTMLVideoElement || child instanceof HTMLAudioElement) {
+          elem.appendChild(child.cloneNode(true)); // https://github.com/sweetalert2/sweetalert2/issues/2507
+        } else {
+          elem.appendChild(child);
+        }
+      });
+    }
+  }
+};
+
+/**
+ * @param {HTMLElement} elem
+ * @param {string} className
+ * @returns {boolean}
+ */
+const hasClass = (elem, className) => {
+  if (!className) {
+    return false;
+  }
+  return className.split(/\s+/).every(cls => elem.classList.contains(cls));
+};
+
+/**
+ * @param {HTMLElement} elem
+ * @param {SweetAlertOptions} params
+ */
+const removeCustomClasses = (elem, params) => {
+  Array.from(elem.classList).forEach(className => {
+    if (!Object.values(swalClasses).includes(className) && !Object.values(iconTypes).includes(className) && !Object.values(params.showClass || {}).includes(className)) {
+      elem.classList.remove(className);
+    }
+  });
+};
+
+/**
+ * @param {HTMLElement} elem
+ * @param {SweetAlertOptions} params
+ * @param {string} className
+ */
+const applyCustomClass = (elem, params, className) => {
+  removeCustomClasses(elem, params);
+  if (!params.customClass) {
+    return;
+  }
+  const customClass = params.customClass[(/** @type {keyof SweetAlertCustomClass} */className)];
+  if (!customClass) {
+    return;
+  }
+  if (typeof customClass !== 'string' && !customClass.forEach) {
+    warn(`Invalid type of customClass.${className}! Expected string or iterable object, got "${typeof customClass}"`);
+    return;
+  }
+  addClass(elem, customClass);
+};
+
+/**
+ * @param {HTMLElement} popup
+ * @param {import('./renderers/renderInput').InputClass | SweetAlertInput} inputClass
+ * @returns {HTMLInputElement | null}
+ */
+const getInput$1 = (popup, inputClass) => {
+  if (!inputClass) {
+    return null;
+  }
+  switch (inputClass) {
+    case 'select':
+    case 'textarea':
+    case 'file':
+      return popup.querySelector(`.${swalClasses.popup} > .${swalClasses[inputClass]}`);
+    case 'checkbox':
+      return popup.querySelector(`.${swalClasses.popup} > .${swalClasses.checkbox} input`);
+    case 'radio':
+      return popup.querySelector(`.${swalClasses.popup} > .${swalClasses.radio} input:checked`) || popup.querySelector(`.${swalClasses.popup} > .${swalClasses.radio} input:first-child`);
+    case 'range':
+      return popup.querySelector(`.${swalClasses.popup} > .${swalClasses.range} input`);
+    default:
+      return popup.querySelector(`.${swalClasses.popup} > .${swalClasses.input}`);
+  }
+};
+
+/**
+ * @param {HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement} input
+ */
+const focusInput = input => {
+  input.focus();
+
+  // place cursor at end of text in text input
+  if (input.type !== 'file') {
+    // http://stackoverflow.com/a/2345915
+    const val = input.value;
+    input.value = '';
+    input.value = val;
+  }
+};
+
+/**
+ * @param {HTMLElement | HTMLElement[] | null} target
+ * @param {string | string[] | readonly string[] | undefined} classList
+ * @param {boolean} condition
+ */
+const toggleClass = (target, classList, condition) => {
+  if (!target || !classList) {
+    return;
+  }
+  const classes = typeof classList === 'string' ? classList.split(/\s+/).filter(Boolean) : classList;
+  const targets = Array.isArray(target) ? target : [target];
+  targets.forEach(elem => {
+    classes.forEach(className => {
+      if (condition) {
+        elem.classList.add(className);
+      } else {
+        elem.classList.remove(className);
+      }
+    });
+  });
+};
+
+/**
+ * @param {HTMLElement | HTMLElement[] | null} target
+ * @param {string | string[] | readonly string[] | undefined} classList
+ */
+const addClass = (target, classList) => {
+  toggleClass(target, classList, true);
+};
+
+/**
+ * @param {HTMLElement | HTMLElement[] | null} target
+ * @param {string | string[] | readonly string[] | undefined} classList
+ */
+const removeClass = (target, classList) => {
+  toggleClass(target, classList, false);
+};
+
+/**
+ * Get direct child of an element by class name
+ *
+ * @param {HTMLElement} elem
+ * @param {string} className
+ * @returns {HTMLElement | undefined}
+ */
+const getDirectChildByClass = (elem, className) => (/** @type {HTMLElement | undefined} */
+Array.from(elem.children).find(child => child instanceof HTMLElement && hasClass(child, className)));
+
+/**
+ * @param {HTMLElement} elem
+ * @param {string} property
+ * @param {string | number | null | undefined} value
+ */
+const applyNumericalStyle = (elem, property, value) => {
+  if (value === `${parseInt(`${value}`)}`) {
+    value = parseInt(value);
+  }
+  if (value || value === 0) {
+    elem.style.setProperty(property, typeof value === 'number' ? `${value}px` : (/** @type {string} */value));
+  } else {
+    elem.style.removeProperty(property);
+  }
+};
+
+/**
+ * @param {HTMLElement | null} elem
+ * @param {string} display
+ */
+const show = (elem, display = 'flex') => {
+  if (!elem) {
+    return;
+  }
+  elem.style.display = display;
+};
+
+/**
+ * @param {HTMLElement | null} elem
+ */
+const hide = elem => {
+  if (!elem) {
+    return;
+  }
+  elem.style.display = 'none';
+};
+
+/**
+ * @param {HTMLElement | null} elem
+ * @param {string} display
+ */
+const showWhenInnerHtmlPresent = (elem, display = 'block') => {
+  if (!elem) {
+    return;
+  }
+  new MutationObserver(() => {
+    toggle(elem, elem.innerHTML, display);
+  }).observe(elem, {
+    childList: true,
+    subtree: true
+  });
+};
+
+/**
+ * @param {HTMLElement} parent
+ * @param {string} selector
+ * @param {string} property
+ * @param {string} value
+ */
+const setStyle = (parent, selector, property, value) => {
+  /** @type {HTMLElement | null} */
+  const el = parent.querySelector(selector);
+  if (el) {
+    el.style.setProperty(property, value);
+  }
+};
+
+/**
+ * @param {HTMLElement} elem
+ * @param {boolean | string | null | undefined} condition
+ * @param {string} display
+ */
+const toggle = (elem, condition, display = 'flex') => {
+  if (condition) {
+    show(elem, display);
+  } else {
+    hide(elem);
+  }
+};
+
+/**
+ * borrowed from jquery $(elem).is(':visible') implementation
+ *
+ * @param {HTMLElement | null} elem
+ * @returns {boolean}
+ */
+const isVisible$1 = elem => Boolean(elem && (elem.offsetWidth || elem.offsetHeight || elem.getClientRects().length));
+
+/**
+ * @returns {boolean}
+ */
+const allButtonsAreHidden = () => !isVisible$1(getConfirmButton()) && !isVisible$1(getDenyButton()) && !isVisible$1(getCancelButton());
+
+/**
+ * @param {HTMLElement} elem
+ * @returns {boolean}
+ */
+const isScrollable = elem => Boolean(elem.scrollHeight > elem.clientHeight);
+
+/**
+ * @param {HTMLElement} element
+ * @param {HTMLElement} stopElement
+ * @returns {boolean}
+ */
+const selfOrParentIsScrollable = (element, stopElement) => {
+  let parent = /** @type {HTMLElement | null} */element;
+  while (parent && parent !== stopElement) {
+    if (isScrollable(parent)) {
+      return true;
+    }
+    parent = parent.parentElement;
+  }
+  return false;
+};
+
+/**
+ * borrowed from https://stackoverflow.com/a/46352119
+ *
+ * @param {HTMLElement} elem
+ * @returns {boolean}
+ */
+const hasCssAnimation = elem => {
+  const style = window.getComputedStyle(elem);
+  const animDuration = parseFloat(style.getPropertyValue('animation-duration') || '0');
+  const transDuration = parseFloat(style.getPropertyValue('transition-duration') || '0');
+  return animDuration > 0 || transDuration > 0;
+};
+
+/**
+ * @param {number} timer
+ * @param {boolean} reset
+ */
+const animateTimerProgressBar = (timer, reset = false) => {
+  const timerProgressBar = getTimerProgressBar();
+  if (!timerProgressBar) {
+    return;
+  }
+  if (isVisible$1(timerProgressBar)) {
+    if (reset) {
+      timerProgressBar.style.transition = 'none';
+      timerProgressBar.style.width = '100%';
+    }
+    setTimeout(() => {
+      timerProgressBar.style.transition = `width ${timer / 1000}s linear`;
+      timerProgressBar.style.width = '0%';
+    }, 10);
+  }
+};
+const stopTimerProgressBar = () => {
+  const timerProgressBar = getTimerProgressBar();
+  if (!timerProgressBar) {
+    return;
+  }
+  const timerProgressBarWidth = parseInt(window.getComputedStyle(timerProgressBar).width);
+  timerProgressBar.style.removeProperty('transition');
+  timerProgressBar.style.width = '100%';
+  const timerProgressBarFullWidth = parseInt(window.getComputedStyle(timerProgressBar).width);
+  const timerProgressBarPercent = timerProgressBarWidth / timerProgressBarFullWidth * 100;
+  timerProgressBar.style.width = `${timerProgressBarPercent}%`;
+};
+
+/**
+ * Detect Node env
+ *
+ * @returns {boolean}
+ */
+const isNodeEnv = () => typeof window === 'undefined' || typeof document === 'undefined';
+
+const sweetHTML = `
+ <div aria-labelledby="${swalClasses.title}" aria-describedby="${swalClasses['html-container']}" class="${swalClasses.popup}" tabindex="-1">
+   <button type="button" class="${swalClasses.close}"></button>
+   <ul class="${swalClasses['progress-steps']}"></ul>
+   <div class="${swalClasses.icon}"></div>
+   <img class="${swalClasses.image}" />
+   <h2 class="${swalClasses.title}" id="${swalClasses.title}"></h2>
+   <div class="${swalClasses['html-container']}" id="${swalClasses['html-container']}"></div>
+   <input class="${swalClasses.input}" id="${swalClasses.input}" />
+   <input type="file" class="${swalClasses.file}" />
+   <div class="${swalClasses.range}">
+     <input type="range" />
+     <output></output>
+   </div>
+   <select class="${swalClasses.select}" id="${swalClasses.select}"></select>
+   <div class="${swalClasses.radio}"></div>
+   <label class="${swalClasses.checkbox}">
+     <input type="checkbox" id="${swalClasses.checkbox}" />
+     <span class="${swalClasses.label}"></span>
+   </label>
+   <textarea class="${swalClasses.textarea}" id="${swalClasses.textarea}"></textarea>
+   <div class="${swalClasses['validation-message']}" id="${swalClasses['validation-message']}"></div>
+   <div class="${swalClasses.actions}">
+     <div class="${swalClasses.loader}"></div>
+     <button type="button" class="${swalClasses.confirm}"></button>
+     <button type="button" class="${swalClasses.deny}"></button>
+     <button type="button" class="${swalClasses.cancel}"></button>
+   </div>
+   <div class="${swalClasses.footer}"></div>
+   <div class="${swalClasses['timer-progress-bar-container']}">
+     <div class="${swalClasses['timer-progress-bar']}"></div>
+   </div>
+ </div>
+`.replace(/(^|\n)\s*/g, '');
+
+/**
+ * @returns {boolean}
+ */
+const resetOldContainer = () => {
+  const oldContainer = getContainer();
+  if (!oldContainer) {
+    return false;
+  }
+  oldContainer.remove();
+  removeClass([document.documentElement, document.body], [swalClasses['no-backdrop'], swalClasses['toast-shown'],
+  // @ts-ignore: 'has-column' is not defined in swalClasses but may be set dynamically
+  swalClasses['has-column']]);
+  return true;
+};
+const resetValidationMessage$1 = () => {
+  if (globalState.currentInstance) {
+    globalState.currentInstance.resetValidationMessage();
+  }
+};
+const addInputChangeListeners = () => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  const input = getDirectChildByClass(popup, swalClasses.input);
+  const file = getDirectChildByClass(popup, swalClasses.file);
+  /** @type {HTMLInputElement | null} */
+  const range = popup.querySelector(`.${swalClasses.range} input`);
+  /** @type {HTMLOutputElement | null} */
+  const rangeOutput = popup.querySelector(`.${swalClasses.range} output`);
+  const select = getDirectChildByClass(popup, swalClasses.select);
+  /** @type {HTMLInputElement | null} */
+  const checkbox = popup.querySelector(`.${swalClasses.checkbox} input`);
+  const textarea = getDirectChildByClass(popup, swalClasses.textarea);
+  if (input) {
+    input.oninput = resetValidationMessage$1;
+  }
+  if (file) {
+    file.onchange = resetValidationMessage$1;
+  }
+  if (select) {
+    select.onchange = resetValidationMessage$1;
+  }
+  if (checkbox) {
+    checkbox.onchange = resetValidationMessage$1;
+  }
+  if (textarea) {
+    textarea.oninput = resetValidationMessage$1;
+  }
+  if (range && rangeOutput) {
+    range.oninput = () => {
+      resetValidationMessage$1();
+      rangeOutput.value = range.value;
+    };
+    range.onchange = () => {
+      resetValidationMessage$1();
+      rangeOutput.value = range.value;
+    };
+  }
+};
+
+/**
+ * @param {string | HTMLElement} target
+ * @returns {HTMLElement}
+ */
+const getTarget = target => {
+  if (typeof target === 'string') {
+    const element = document.querySelector(target);
+    if (!element) {
+      throw new Error(`Target element "${target}" not found`);
+    }
+    return /** @type {HTMLElement} */element;
+  }
+  return target;
+};
+
+/**
+ * @param {SweetAlertOptions} params
+ */
+const setupAccessibility = params => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  popup.setAttribute('role', params.toast ? 'alert' : 'dialog');
+  popup.setAttribute('aria-live', params.toast ? 'polite' : 'assertive');
+  if (!params.toast) {
+    popup.setAttribute('aria-modal', 'true');
+  }
+};
+
+/**
+ * @param {HTMLElement} targetElement
+ */
+const setupRTL = targetElement => {
+  if (window.getComputedStyle(targetElement).direction === 'rtl') {
+    addClass(getContainer(), swalClasses.rtl);
+    globalState.isRTL = true;
+  }
+};
+
+/**
+ * Add modal + backdrop to DOM
+ *
+ * @param {SweetAlertOptions} params
+ */
+const init = params => {
+  // Clean up the old popup container if it exists
+  const oldContainerExisted = resetOldContainer();
+  if (isNodeEnv()) {
+    error('SweetAlert2 requires document to initialize');
+    return;
+  }
+  const container = document.createElement('div');
+  container.className = swalClasses.container;
+  if (oldContainerExisted) {
+    addClass(container, swalClasses['no-transition']);
+  }
+  setInnerHtml(container, sweetHTML);
+  container.dataset['swal2Theme'] = params.theme;
+  const targetElement = getTarget(params.target || 'body');
+  targetElement.appendChild(container);
+  if (params.topLayer) {
+    container.setAttribute('popover', '');
+    container.showPopover();
+  }
+  setupAccessibility(params);
+  setupRTL(targetElement);
+  addInputChangeListeners();
+};
+
+/**
+ * @param {HTMLElement | object | string} param
+ * @param {HTMLElement} target
+ */
+const parseHtmlToContainer = (param, target) => {
+  // DOM element
+  if (param instanceof HTMLElement) {
+    target.appendChild(param);
+  }
+
+  // Object
+  else if (typeof param === 'object') {
+    handleObject(param, target);
+  }
+
+  // Plain string
+  else if (param) {
+    setInnerHtml(target, param);
+  }
+};
+
+/**
+ * @param {object} param
+ * @param {HTMLElement} target
+ */
+const handleObject = (param, target) => {
+  // JQuery element(s)
+  if ('jquery' in param) {
+    handleJqueryElem(target, param);
+  }
+
+  // For other objects use their string representation
+  else {
+    setInnerHtml(target, param.toString());
+  }
+};
+
+/**
+ * @param {HTMLElement} target
+ * @param {any} elem
+ */
+const handleJqueryElem = (target, elem) => {
+  target.textContent = '';
+  if (0 in elem) {
+    for (let i = 0; i in elem; i++) {
+      target.appendChild(elem[i].cloneNode(true));
+    }
+  } else {
+    target.appendChild(elem.cloneNode(true));
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderActions = (instance, params) => {
+  const actions = getActions();
+  const loader = getLoader();
+  if (!actions || !loader) {
+    return;
+  }
+
+  // Actions (buttons) wrapper
+  if (!params.showConfirmButton && !params.showDenyButton && !params.showCancelButton) {
+    hide(actions);
+  } else {
+    show(actions);
+  }
+
+  // Custom class
+  applyCustomClass(actions, params, 'actions');
+
+  // Render all the buttons
+  renderButtons(actions, loader, params);
+
+  // Loader
+  setInnerHtml(loader, params.loaderHtml || '');
+  applyCustomClass(loader, params, 'loader');
+};
+
+/**
+ * @param {HTMLElement} actions
+ * @param {HTMLElement} loader
+ * @param {SweetAlertOptions} params
+ */
+function renderButtons(actions, loader, params) {
+  const confirmButton = getConfirmButton();
+  const denyButton = getDenyButton();
+  const cancelButton = getCancelButton();
+  if (!confirmButton || !denyButton || !cancelButton) {
+    return;
+  }
+
+  // Render buttons
+  renderButton(confirmButton, 'confirm', params);
+  renderButton(denyButton, 'deny', params);
+  renderButton(cancelButton, 'cancel', params);
+  handleButtonsStyling(confirmButton, denyButton, cancelButton, params);
+  if (params.reverseButtons) {
+    if (params.toast) {
+      actions.insertBefore(cancelButton, confirmButton);
+      actions.insertBefore(denyButton, confirmButton);
+    } else {
+      actions.insertBefore(cancelButton, loader);
+      actions.insertBefore(denyButton, loader);
+      actions.insertBefore(confirmButton, loader);
+    }
+  }
+}
+
+/**
+ * @param {HTMLElement} confirmButton
+ * @param {HTMLElement} denyButton
+ * @param {HTMLElement} cancelButton
+ * @param {SweetAlertOptions} params
+ */
+function handleButtonsStyling(confirmButton, denyButton, cancelButton, params) {
+  if (!params.buttonsStyling) {
+    removeClass([confirmButton, denyButton, cancelButton], swalClasses.styled);
+    return;
+  }
+  addClass([confirmButton, denyButton, cancelButton], swalClasses.styled);
+
+  // Apply custom background colors and outline colors to action buttons
+  /** @type {[HTMLElement, string, string | undefined][]} */
+  const buttons = [[confirmButton, 'confirm', params.confirmButtonColor], [denyButton, 'deny', params.denyButtonColor], [cancelButton, 'cancel', params.cancelButtonColor]];
+  buttons.forEach(([button, type, color]) => {
+    if (color) {
+      button.style.setProperty(`--swal2-${type}-button-background-color`, color);
+    }
+    applyOutlineColor(button);
+  });
+}
+
+/**
+ * @param {HTMLElement} button
+ */
+function applyOutlineColor(button) {
+  const buttonStyle = window.getComputedStyle(button);
+  if (buttonStyle.getPropertyValue('--swal2-action-button-focus-box-shadow')) {
+    // If the button already has a custom outline color, no need to change it
+    return;
+  }
+  const outlineColor = buttonStyle.backgroundColor.replace(/rgba?\((\d+), (\d+), (\d+).*/, 'rgba($1, $2, $3, 0.5)');
+  button.style.setProperty('--swal2-action-button-focus-box-shadow', buttonStyle.getPropertyValue('--swal2-outline').replace(/ rgba\(.*/, ` ${outlineColor}`));
+}
+
+/**
+ * @param {HTMLElement} button
+ * @param {'confirm' | 'deny' | 'cancel'} buttonType
+ * @param {SweetAlertOptions} params
+ */
+function renderButton(button, buttonType, params) {
+  const buttonName = /** @type {'Confirm' | 'Deny' | 'Cancel'} */capitalizeFirstLetter(buttonType);
+  toggle(button, params[`show${buttonName}Button`], 'inline-block');
+  setInnerHtml(button, params[`${buttonType}ButtonText`] || ''); // Set caption text
+  button.setAttribute('aria-label', params[`${buttonType}ButtonAriaLabel`] || ''); // ARIA label
+
+  // Add buttons custom classes
+  button.className = swalClasses[buttonType];
+  applyCustomClass(button, params, `${buttonType}Button`);
+}
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderCloseButton = (instance, params) => {
+  const closeButton = getCloseButton();
+  if (!closeButton) {
+    return;
+  }
+  setInnerHtml(closeButton, params.closeButtonHtml || '');
+
+  // Custom class
+  applyCustomClass(closeButton, params, 'closeButton');
+  toggle(closeButton, params.showCloseButton);
+  closeButton.setAttribute('aria-label', params.closeButtonAriaLabel || '');
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderContainer = (instance, params) => {
+  const container = getContainer();
+  if (!container) {
+    return;
+  }
+  handleBackdropParam(container, params.backdrop);
+  handlePositionParam(container, params.position);
+  handleGrowParam(container, params.grow);
+
+  // Custom class
+  applyCustomClass(container, params, 'container');
+};
+
+/**
+ * @param {HTMLElement} container
+ * @param {SweetAlertOptions['backdrop']} backdrop
+ */
+function handleBackdropParam(container, backdrop) {
+  if (typeof backdrop === 'string') {
+    container.style.background = backdrop;
+  } else if (!backdrop) {
+    addClass([document.documentElement, document.body], swalClasses['no-backdrop']);
+  }
+}
+
+/**
+ * @param {HTMLElement} container
+ * @param {SweetAlertOptions['position']} position
+ */
+function handlePositionParam(container, position) {
+  if (!position) {
+    return;
+  }
+  if (position in swalClasses) {
+    addClass(container, swalClasses[position]);
+  } else {
+    warn('The "position" parameter is not valid, defaulting to "center"');
+    addClass(container, swalClasses.center);
+  }
+}
+
+/**
+ * @param {HTMLElement} container
+ * @param {SweetAlertOptions['grow']} grow
+ */
+function handleGrowParam(container, grow) {
+  if (!grow) {
+    return;
+  }
+  addClass(container, swalClasses[`grow-${grow}`]);
+}
+
+/**
+ * This module contains `WeakMap`s for each effectively-"private  property" that a `Swal` has.
+ * For example, to set the private property "foo" of `this` to "bar", you can `privateProps.foo.set(this, 'bar')`
+ * This is the approach that Babel will probably take to implement private methods/fields
+ *   https://github.com/tc39/proposal-private-methods
+ *   https://github.com/babel/babel/pull/7555
+ * Once we have the changes from that PR in Babel, and our core class fits reasonable in *one module*
+ *   then we can use that language feature.
+ */
+
+var privateProps = {
+  innerParams: new WeakMap(),
+  domCache: new WeakMap(),
+  focusedElement: new WeakMap()
+};
+
+/// <reference path="../../../../sweetalert2.d.ts"/>
+
+
+/** @type {InputClass[]} */
+const inputClasses = ['input', 'file', 'range', 'select', 'radio', 'checkbox', 'textarea'];
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderInput = (instance, params) => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  const innerParams = privateProps.innerParams.get(instance);
+  const rerender = !innerParams || params.input !== innerParams.input;
+  inputClasses.forEach(inputClass => {
+    const inputContainer = getDirectChildByClass(popup, swalClasses[inputClass]);
+    if (!inputContainer) {
+      return;
+    }
+
+    // set attributes
+    setAttributes(inputClass, params.inputAttributes);
+
+    // set class
+    inputContainer.className = swalClasses[inputClass];
+    if (rerender) {
+      hide(inputContainer);
+    }
+  });
+  if (params.input) {
+    if (rerender) {
+      showInput(params);
+    }
+    // set custom class
+    setCustomClass(params);
+  }
+};
+
+/**
+ * @param {SweetAlertOptions} params
+ */
+const showInput = params => {
+  if (!params.input) {
+    return;
+  }
+  if (!renderInputType[params.input]) {
+    error(`Unexpected type of input! Expected ${Object.keys(renderInputType).join(' | ')}, got "${params.input}"`);
+    return;
+  }
+  const inputContainer = getInputContainer(params.input);
+  if (!inputContainer) {
+    return;
+  }
+  const input = renderInputType[params.input](inputContainer, params);
+  show(inputContainer);
+
+  // input autofocus
+  if (params.inputAutoFocus) {
+    setTimeout(() => {
+      focusInput(input);
+    });
+  }
+};
+
+/**
+ * @param {HTMLInputElement} input
+ */
+const removeAttributes = input => {
+  for (const {
+    name
+  } of Array.from(input.attributes)) {
+    if (!['id', 'type', 'value', 'style'].includes(name)) {
+      input.removeAttribute(name);
+    }
+  }
+};
+
+/**
+ * @param {InputClass} inputClass
+ * @param {SweetAlertOptions['inputAttributes']} inputAttributes
+ */
+const setAttributes = (inputClass, inputAttributes) => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  const input = getInput$1(popup, inputClass);
+  if (!input) {
+    return;
+  }
+  removeAttributes(input);
+  for (const attr in inputAttributes) {
+    input.setAttribute(attr, inputAttributes[attr]);
+  }
+};
+
+/**
+ * @param {SweetAlertOptions} params
+ */
+const setCustomClass = params => {
+  if (!params.input) {
+    return;
+  }
+  const inputContainer = getInputContainer(params.input);
+  if (inputContainer) {
+    applyCustomClass(inputContainer, params, 'input');
+  }
+};
+
+/**
+ * @param {HTMLInputElement | HTMLTextAreaElement} input
+ * @param {SweetAlertOptions} params
+ */
+const setInputPlaceholder = (input, params) => {
+  if (!input.placeholder && params.inputPlaceholder) {
+    input.placeholder = params.inputPlaceholder;
+  }
+};
+
+/**
+ * @param {Input} input
+ * @param {Input} prependTo
+ * @param {SweetAlertOptions} params
+ */
+const setInputLabel = (input, prependTo, params) => {
+  if (params.inputLabel) {
+    const label = document.createElement('label');
+    const labelClass = swalClasses['input-label'];
+    label.setAttribute('for', input.id);
+    label.className = labelClass;
+    if (typeof params.customClass === 'object') {
+      addClass(label, params.customClass.inputLabel);
+    }
+    label.innerText = params.inputLabel;
+    prependTo.insertAdjacentElement('beforebegin', label);
+  }
+};
+
+/**
+ * @param {SweetAlertInput} inputType
+ * @returns {HTMLElement | undefined}
+ */
+const getInputContainer = inputType => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  return getDirectChildByClass(popup, swalClasses[(/** @type {SwalClass} */inputType)] || swalClasses.input);
+};
+
+/**
+ * @param {HTMLInputElement | HTMLOutputElement | HTMLTextAreaElement} input
+ * @param {SweetAlertOptions['inputValue']} inputValue
+ */
+const checkAndSetInputValue = (input, inputValue) => {
+  if (['string', 'number'].includes(typeof inputValue)) {
+    input.value = `${inputValue}`;
+  } else if (!isPromise(inputValue)) {
+    warn(`Unexpected type of inputValue! Expected "string", "number" or "Promise", got "${typeof inputValue}"`);
+  }
+};
+
+/** @type {Record<SweetAlertInput, (input: Input | HTMLElement, params: SweetAlertOptions) => Input>} */
+const renderInputType = {};
+
+/**
+ * @param {Input | HTMLElement} input
+ * @param {SweetAlertOptions} params
+ * @returns {Input}
+ */
+renderInputType.text = renderInputType.email = renderInputType.password = renderInputType.number = renderInputType.tel = renderInputType.url = renderInputType.search = renderInputType.date = renderInputType['datetime-local'] = renderInputType.time = renderInputType.week = renderInputType.month = /** @type {(input: Input | HTMLElement, params: SweetAlertOptions) => Input} */
+(input, params) => {
+  // oxfmt-ignore
+  const inputElement = /** @type {HTMLInputElement} */input;
+  checkAndSetInputValue(inputElement, params.inputValue);
+  setInputLabel(inputElement, inputElement, params);
+  setInputPlaceholder(inputElement, params);
+  // oxfmt-ignore
+  inputElement.type = /** @type {string} */params.input;
+  return inputElement;
+};
+
+/**
+ * @param {Input | HTMLElement} input
+ * @param {SweetAlertOptions} params
+ * @returns {Input}
+ */
+renderInputType.file = (input, params) => {
+  const inputElement = /** @type {HTMLInputElement} */input;
+  setInputLabel(inputElement, inputElement, params);
+  setInputPlaceholder(inputElement, params);
+  return inputElement;
+};
+
+/**
+ * @param {Input | HTMLElement} range
+ * @param {SweetAlertOptions} params
+ * @returns {Input}
+ */
+renderInputType.range = (range, params) => {
+  const rangeContainer = /** @type {HTMLElement} */range;
+  const rangeInput = rangeContainer.querySelector('input');
+  const rangeOutput = rangeContainer.querySelector('output');
+  if (rangeInput) {
+    checkAndSetInputValue(rangeInput, params.inputValue);
+    rangeInput.type = /** @type {string} */params.input;
+    setInputLabel(rangeInput, /** @type {Input} */range, params);
+  }
+  if (rangeOutput) {
+    checkAndSetInputValue(rangeOutput, params.inputValue);
+  }
+  return /** @type {Input} */range;
+};
+
+/**
+ * @param {Input | HTMLElement} select
+ * @param {SweetAlertOptions} params
+ * @returns {Input}
+ */
+renderInputType.select = (select, params) => {
+  const selectElement = /** @type {HTMLSelectElement} */select;
+  selectElement.textContent = '';
+  if (params.inputPlaceholder) {
+    const placeholder = document.createElement('option');
+    setInnerHtml(placeholder, params.inputPlaceholder);
+    placeholder.value = '';
+    placeholder.disabled = true;
+    placeholder.selected = true;
+    selectElement.appendChild(placeholder);
+  }
+  setInputLabel(selectElement, selectElement, params);
+  return selectElement;
+};
+
+/**
+ * @param {Input | HTMLElement} radio
+ * @returns {Input}
+ */
+renderInputType.radio = radio => {
+  const radioElement = /** @type {HTMLElement} */radio;
+  radioElement.textContent = '';
+  return /** @type {Input} */radio;
+};
+
+/**
+ * @param {Input | HTMLElement} checkboxContainer
+ * @param {SweetAlertOptions} params
+ * @returns {Input}
+ */
+renderInputType.checkbox = (checkboxContainer, params) => {
+  const popup = getPopup();
+  if (!popup) {
+    throw new Error('Popup not found');
+  }
+  const checkbox = getInput$1(popup, 'checkbox');
+  if (!checkbox) {
+    throw new Error('Checkbox input not found');
+  }
+  checkbox.value = '1';
+  checkbox.checked = Boolean(params.inputValue);
+  const containerElement = /** @type {HTMLElement} */checkboxContainer;
+  const label = containerElement.querySelector('span');
+  if (label) {
+    const placeholderOrLabel = params.inputPlaceholder || params.inputLabel;
+    if (placeholderOrLabel) {
+      setInnerHtml(label, placeholderOrLabel);
+    }
+  }
+  return checkbox;
+};
+
+/**
+ * @param {Input | HTMLElement} textarea
+ * @param {SweetAlertOptions} params
+ * @returns {Input}
+ */
+renderInputType.textarea = (textarea, params) => {
+  const textareaElement = /** @type {HTMLTextAreaElement} */textarea;
+  checkAndSetInputValue(textareaElement, params.inputValue);
+  setInputPlaceholder(textareaElement, params);
+  setInputLabel(textareaElement, textareaElement, params);
+
+  /**
+   * @param {HTMLElement} el
+   * @returns {number}
+   */
+  const getMargin = el => parseInt(window.getComputedStyle(el).marginLeft) + parseInt(window.getComputedStyle(el).marginRight);
+
+  // https://github.com/sweetalert2/sweetalert2/issues/2291
+  setTimeout(() => {
+    // https://github.com/sweetalert2/sweetalert2/issues/1699
+    if ('MutationObserver' in window) {
+      const popup = getPopup();
+      if (!popup) {
+        return;
+      }
+      const initialPopupWidth = parseInt(window.getComputedStyle(popup).width);
+      const textareaResizeHandler = () => {
+        // check if texarea is still in document (i.e. popup wasn't closed in the meantime)
+        if (!document.body.contains(textareaElement)) {
+          return;
+        }
+        const textareaWidth = textareaElement.offsetWidth + getMargin(textareaElement);
+        const popupElement = getPopup();
+        if (popupElement) {
+          if (textareaWidth > initialPopupWidth) {
+            popupElement.style.width = `${textareaWidth}px`;
+          } else {
+            applyNumericalStyle(popupElement, 'width', params.width);
+          }
+        }
+      };
+      new MutationObserver(textareaResizeHandler).observe(textareaElement, {
+        attributes: true,
+        attributeFilter: ['style']
+      });
+    }
+  });
+  return textareaElement;
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderContent = (instance, params) => {
+  const htmlContainer = getHtmlContainer();
+  if (!htmlContainer) {
+    return;
+  }
+  showWhenInnerHtmlPresent(htmlContainer);
+  applyCustomClass(htmlContainer, params, 'htmlContainer');
+
+  // Content as HTML
+  if (params.html) {
+    parseHtmlToContainer(params.html, htmlContainer);
+    show(htmlContainer, 'block');
+  }
+
+  // Content as plain text
+  else if (params.text) {
+    htmlContainer.textContent = params.text;
+    show(htmlContainer, 'block');
+  }
+
+  // No content
+  else {
+    hide(htmlContainer);
+  }
+  renderInput(instance, params);
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderFooter = (instance, params) => {
+  const footer = getFooter();
+  if (!footer) {
+    return;
+  }
+  showWhenInnerHtmlPresent(footer);
+  toggle(footer, Boolean(params.footer), 'block');
+  if (params.footer) {
+    parseHtmlToContainer(params.footer, footer);
+  }
+
+  // Custom class
+  applyCustomClass(footer, params, 'footer');
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderIcon = (instance, params) => {
+  const innerParams = privateProps.innerParams.get(instance);
+  const icon = getIcon();
+  if (!icon) {
+    return;
+  }
+
+  // if the given icon already rendered, apply the styling without re-rendering the icon
+  if (innerParams && params.icon === innerParams.icon) {
+    // Custom or default content
+    setContent(icon, params);
+    applyStyles(icon, params);
+    return;
+  }
+  if (!params.icon && !params.iconHtml) {
+    hide(icon);
+    return;
+  }
+  if (params.icon && Object.keys(iconTypes).indexOf(params.icon) === -1) {
+    error(`Unknown icon! Expected "success", "error", "warning", "info" or "question", got "${params.icon}"`);
+    hide(icon);
+    return;
+  }
+  show(icon);
+
+  // Custom or default content
+  setContent(icon, params);
+  applyStyles(icon, params);
+
+  // Animate icon
+  addClass(icon, params.showClass && params.showClass.icon);
+
+  // Re-adjust the success icon on system theme change
+  const colorSchemeQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+  colorSchemeQueryList.addEventListener('change', adjustSuccessIconBackgroundColor);
+};
+
+/**
+ * @param {HTMLElement} icon
+ * @param {SweetAlertOptions} params
+ */
+const applyStyles = (icon, params) => {
+  for (const [iconType, iconClassName] of Object.entries(iconTypes)) {
+    if (params.icon !== iconType) {
+      removeClass(icon, iconClassName);
+    }
+  }
+  addClass(icon, params.icon && iconTypes[params.icon]);
+
+  // Icon color
+  setColor(icon, params);
+
+  // Success icon background color
+  adjustSuccessIconBackgroundColor();
+
+  // Custom class
+  applyCustomClass(icon, params, 'icon');
+};
+
+// Adjust success icon background color to match the popup background color
+const adjustSuccessIconBackgroundColor = () => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  const popupBackgroundColor = window.getComputedStyle(popup).getPropertyValue('background-color');
+  /** @type {NodeListOf<HTMLElement>} */
+  const successIconParts = popup.querySelectorAll('[class^=swal2-success-circular-line], .swal2-success-fix');
+  successIconParts.forEach(part => {
+    part.style.backgroundColor = popupBackgroundColor;
+  });
+};
+
+/**
+ *
+ * @param {SweetAlertOptions} params
+ * @returns {string}
+ */
+const successIconHtml = params => `
+  ${params.animation ? '<div class="swal2-success-circular-line-left"></div>' : ''}
+  <span class="swal2-success-line-tip"></span> <span class="swal2-success-line-long"></span>
+  <div class="swal2-success-ring"></div>
+  ${params.animation ? '<div class="swal2-success-fix"></div>' : ''}
+  ${params.animation ? '<div class="swal2-success-circular-line-right"></div>' : ''}
+`;
+const errorIconHtml = `
+  <span class="swal2-x-mark">
+    <span class="swal2-x-mark-line-left"></span>
+    <span class="swal2-x-mark-line-right"></span>
+  </span>
+`;
+
+/**
+ * @param {HTMLElement} icon
+ * @param {SweetAlertOptions} params
+ */
+const setContent = (icon, params) => {
+  if (!params.icon && !params.iconHtml) {
+    return;
+  }
+  let oldContent = icon.innerHTML;
+  let newContent = '';
+  if (params.iconHtml) {
+    newContent = iconContent(params.iconHtml);
+  } else if (params.icon === 'success') {
+    newContent = successIconHtml(params);
+    oldContent = oldContent.replace(/ style=".*?"/g, ''); // undo adjustSuccessIconBackgroundColor()
+  } else if (params.icon === 'error') {
+    newContent = errorIconHtml;
+  } else if (params.icon) {
+    const defaultIconHtml = {
+      question: '?',
+      warning: '!',
+      info: 'i'
+    };
+    newContent = iconContent(defaultIconHtml[params.icon]);
+  }
+  if (oldContent.trim() !== newContent.trim()) {
+    setInnerHtml(icon, newContent);
+  }
+};
+
+/**
+ * @param {HTMLElement} icon
+ * @param {SweetAlertOptions} params
+ */
+const setColor = (icon, params) => {
+  if (!params.iconColor) {
+    return;
+  }
+  icon.style.color = params.iconColor;
+  icon.style.borderColor = params.iconColor;
+  for (const sel of ['.swal2-success-line-tip', '.swal2-success-line-long', '.swal2-x-mark-line-left', '.swal2-x-mark-line-right']) {
+    setStyle(icon, sel, 'background-color', params.iconColor);
+  }
+  setStyle(icon, '.swal2-success-ring', 'border-color', params.iconColor);
+};
+
+/**
+ * @param {string} content
+ * @returns {string}
+ */
+const iconContent = content => `<div class="${swalClasses['icon-content']}">${content}</div>`;
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderImage = (instance, params) => {
+  const image = getImage();
+  if (!image) {
+    return;
+  }
+  if (!params.imageUrl) {
+    hide(image);
+    return;
+  }
+  show(image, '');
+
+  // Src, alt
+  image.setAttribute('src', params.imageUrl);
+  image.setAttribute('alt', params.imageAlt || '');
+
+  // Width, height
+  applyNumericalStyle(image, 'width', params.imageWidth);
+  applyNumericalStyle(image, 'height', params.imageHeight);
+
+  // Class
+  image.className = swalClasses.image;
+  applyCustomClass(image, params, 'image');
+};
+
+let dragging = false;
+let mousedownX = 0;
+let mousedownY = 0;
+let initialX = 0;
+let initialY = 0;
+
+/**
+ * @param {HTMLElement} popup
+ */
+const addDraggableListeners = popup => {
+  popup.addEventListener('mousedown', down);
+  document.body.addEventListener('mousemove', move);
+  popup.addEventListener('mouseup', up);
+  popup.addEventListener('touchstart', down);
+  document.body.addEventListener('touchmove', move);
+  popup.addEventListener('touchend', up);
+};
+
+/**
+ * @param {HTMLElement} popup
+ */
+const removeDraggableListeners = popup => {
+  popup.removeEventListener('mousedown', down);
+  document.body.removeEventListener('mousemove', move);
+  popup.removeEventListener('mouseup', up);
+  popup.removeEventListener('touchstart', down);
+  document.body.removeEventListener('touchmove', move);
+  popup.removeEventListener('touchend', up);
+};
+
+/**
+ * @param {MouseEvent | TouchEvent} event
+ */
+const down = event => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  const icon = getIcon();
+  if (event.target === popup || icon && icon.contains(/** @type {HTMLElement} */event.target)) {
+    dragging = true;
+    const clientXY = getClientXY(event);
+    mousedownX = clientXY.clientX;
+    mousedownY = clientXY.clientY;
+    initialX = parseInt(popup.style.insetInlineStart) || 0;
+    initialY = parseInt(popup.style.insetBlockStart) || 0;
+    addClass(popup, 'swal2-dragging');
+  }
+};
+
+/**
+ * @param {MouseEvent | TouchEvent} event
+ */
+const move = event => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  if (dragging) {
+    let {
+      clientX,
+      clientY
+    } = getClientXY(event);
+    const deltaX = clientX - mousedownX;
+    // In RTL mode, negate the horizontal delta since insetInlineStart refers to the right edge
+    popup.style.insetInlineStart = `${initialX + (globalState.isRTL ? -deltaX : deltaX)}px`;
+    popup.style.insetBlockStart = `${initialY + (clientY - mousedownY)}px`;
+  }
+};
+const up = () => {
+  const popup = getPopup();
+  dragging = false;
+  removeClass(popup, 'swal2-dragging');
+};
+
+/**
+ * @param {MouseEvent | TouchEvent} event
+ * @returns {{ clientX: number, clientY: number }}
+ */
+const getClientXY = event => {
+  const source = event.type.startsWith('touch') ? /** @type {TouchEvent} */event.touches[0] : (/** @type {MouseEvent} */event);
+  return {
+    clientX: source.clientX,
+    clientY: source.clientY
+  };
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderPopup = (instance, params) => {
+  const container = getContainer();
+  const popup = getPopup();
+  if (!container || !popup) {
+    return;
+  }
+
+  // Width
+  // https://github.com/sweetalert2/sweetalert2/issues/2170
+  if (params.toast) {
+    applyNumericalStyle(container, 'width', params.width);
+    popup.style.width = '100%';
+    const loader = getLoader();
+    if (loader) {
+      popup.insertBefore(loader, getIcon());
+    }
+  } else {
+    applyNumericalStyle(popup, 'width', params.width);
+  }
+
+  // Padding
+  applyNumericalStyle(popup, 'padding', params.padding);
+
+  // Color
+  if (params.color) {
+    popup.style.color = params.color;
+  }
+
+  // Background
+  if (params.background) {
+    popup.style.background = params.background;
+  }
+  hide(getValidationMessage());
+
+  // Classes
+  addClasses$1(popup, params);
+  if (params.draggable && !params.toast) {
+    addClass(popup, swalClasses.draggable);
+    addDraggableListeners(popup);
+  } else {
+    removeClass(popup, swalClasses.draggable);
+    removeDraggableListeners(popup);
+  }
+};
+
+/**
+ * @param {HTMLElement} popup
+ * @param {SweetAlertOptions} params
+ */
+const addClasses$1 = (popup, params) => {
+  const showClass = params.showClass || {};
+  // Default Class + showClass when updating Swal.update({})
+  popup.className = `${swalClasses.popup} ${isVisible$1(popup) ? showClass.popup : ''}`;
+  if (params.toast) {
+    addClass([document.documentElement, document.body], swalClasses['toast-shown']);
+    addClass(popup, swalClasses.toast);
+  } else {
+    addClass(popup, swalClasses.modal);
+  }
+
+  // Custom class
+  applyCustomClass(popup, params, 'popup');
+  // TODO: remove in the next major
+  if (typeof params.customClass === 'string') {
+    addClass(popup, params.customClass);
+  }
+
+  // Icon class (#1842)
+  if (params.icon) {
+    addClass(popup, swalClasses[`icon-${params.icon}`]);
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderProgressSteps = (instance, params) => {
+  const progressStepsContainer = getProgressSteps();
+  if (!progressStepsContainer) {
+    return;
+  }
+  const {
+    progressSteps,
+    currentProgressStep
+  } = params;
+  if (!progressSteps || progressSteps.length === 0 || currentProgressStep === undefined) {
+    hide(progressStepsContainer);
+    return;
+  }
+  show(progressStepsContainer);
+  progressStepsContainer.textContent = '';
+  if (currentProgressStep >= progressSteps.length) {
+    warn('Invalid currentProgressStep parameter, it should be less than progressSteps.length ' + '(currentProgressStep like JS arrays starts from 0)');
+  }
+  progressSteps.forEach((step, index) => {
+    const stepEl = createStepElement(step);
+    progressStepsContainer.appendChild(stepEl);
+    if (index === currentProgressStep) {
+      addClass(stepEl, swalClasses['active-progress-step']);
+    }
+    if (index !== progressSteps.length - 1) {
+      const lineEl = createLineElement(params);
+      progressStepsContainer.appendChild(lineEl);
+    }
+  });
+};
+
+/**
+ * @param {string} step
+ * @returns {HTMLLIElement}
+ */
+const createStepElement = step => {
+  const stepEl = document.createElement('li');
+  addClass(stepEl, swalClasses['progress-step']);
+  setInnerHtml(stepEl, step);
+  return stepEl;
+};
+
+/**
+ * @param {SweetAlertOptions} params
+ * @returns {HTMLLIElement}
+ */
+const createLineElement = params => {
+  const lineEl = document.createElement('li');
+  addClass(lineEl, swalClasses['progress-step-line']);
+  if (params.progressStepsDistance) {
+    applyNumericalStyle(lineEl, 'width', params.progressStepsDistance);
+  }
+  return lineEl;
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const renderTitle = (instance, params) => {
+  const title = getTitle();
+  if (!title) {
+    return;
+  }
+  showWhenInnerHtmlPresent(title);
+  toggle(title, Boolean(params.title || params.titleText), 'block');
+  if (params.title) {
+    parseHtmlToContainer(params.title, title);
+  }
+  if (params.titleText) {
+    title.innerText = params.titleText;
+  }
+
+  // Custom class
+  applyCustomClass(title, params, 'title');
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const render = (instance, params) => {
+  var _globalState$eventEmi;
+  renderPopup(instance, params);
+  renderContainer(instance, params);
+  renderProgressSteps(instance, params);
+  renderIcon(instance, params);
+  renderImage(instance, params);
+  renderTitle(instance, params);
+  renderCloseButton(instance, params);
+  renderContent(instance, params);
+  renderActions(instance, params);
+  renderFooter(instance, params);
+  const popup = getPopup();
+  if (typeof params.didRender === 'function' && popup) {
+    params.didRender(popup);
+  }
+  (_globalState$eventEmi = globalState.eventEmitter) === null || _globalState$eventEmi === void 0 || _globalState$eventEmi.emit('didRender', popup);
+};
+
+/*
+ * Global function to determine if SweetAlert2 popup is shown
+ */
+const isVisible = () => {
+  return isVisible$1(getPopup());
+};
+
+/*
+ * Global function to click 'Confirm' button
+ */
+const clickConfirm = () => {
+  var _dom$getConfirmButton;
+  return (_dom$getConfirmButton = getConfirmButton()) === null || _dom$getConfirmButton === void 0 ? void 0 : _dom$getConfirmButton.click();
+};
+
+/*
+ * Global function to click 'Deny' button
+ */
+const clickDeny = () => {
+  var _dom$getDenyButton;
+  return (_dom$getDenyButton = getDenyButton()) === null || _dom$getDenyButton === void 0 ? void 0 : _dom$getDenyButton.click();
+};
+
+/*
+ * Global function to click 'Cancel' button
+ */
+const clickCancel = () => {
+  var _dom$getCancelButton;
+  return (_dom$getCancelButton = getCancelButton()) === null || _dom$getCancelButton === void 0 ? void 0 : _dom$getCancelButton.click();
+};
+
+/** @type {Record<DismissReason, DismissReason>} */
+const DismissReason = Object.freeze({
+  cancel: 'cancel',
+  backdrop: 'backdrop',
+  close: 'close',
+  esc: 'esc',
+  timer: 'timer'
+});
+
+/**
+ * @param {GlobalState} globalState
+ */
+const removeKeydownHandler = globalState => {
+  if (globalState.keydownTarget && globalState.keydownHandlerAdded && globalState.keydownHandler) {
+    const handler = /** @type {EventListenerOrEventListenerObject} */
+    /** @type {unknown} */globalState.keydownHandler;
+    globalState.keydownTarget.removeEventListener('keydown', handler, {
+      capture: globalState.keydownListenerCapture
+    });
+    globalState.keydownHandlerAdded = false;
+  }
+};
+
+/**
+ * @param {GlobalState} globalState
+ * @param {SweetAlertOptions} innerParams
+ * @param {(dismiss: DismissReason) => void} dismissWith
+ */
+const addKeydownHandler = (globalState, innerParams, dismissWith) => {
+  removeKeydownHandler(globalState);
+  if (!innerParams.toast) {
+    /** @type {(this: HTMLElement, event: KeyboardEvent) => void} */
+    const handler = e => keydownHandler(innerParams, e, dismissWith);
+    globalState.keydownHandler = handler;
+    const target = innerParams.keydownListenerCapture ? window : getPopup();
+    if (target) {
+      globalState.keydownTarget = target;
+      globalState.keydownListenerCapture = innerParams.keydownListenerCapture;
+      const eventHandler = /** @type {EventListenerOrEventListenerObject} */ /** @type {unknown} */handler;
+      globalState.keydownTarget.addEventListener('keydown', eventHandler, {
+        capture: globalState.keydownListenerCapture
+      });
+      globalState.keydownHandlerAdded = true;
+    }
+  }
+};
+
+/**
+ * @param {number} index
+ * @param {number} increment
+ * @returns {boolean} shouldPreventDefault
+ */
+const setFocus = (index, increment) => {
+  var _dom$getPopup;
+  const focusableElements = getFocusableElements();
+  // search for visible elements and select the next possible match
+  if (focusableElements.length) {
+    index = index + increment;
+
+    // shift + tab when .swal2-popup is focused
+    if (index === -2) {
+      index = focusableElements.length - 1;
+    }
+
+    // rollover to first item
+    if (index === focusableElements.length) {
+      index = 0;
+
+      // go to last item
+    } else if (index === -1) {
+      index = focusableElements.length - 1;
+    }
+    focusableElements[index].focus();
+
+    // don't prevent default for iframes (Firefox fix)
+    // https://github.com/sweetalert2/sweetalert2/issues/2931
+    if (isFirefox() && focusableElements[index] instanceof HTMLIFrameElement) {
+      return false;
+    }
+    return true;
+  }
+  // no visible focusable elements, focus the popup
+  (_dom$getPopup = getPopup()) === null || _dom$getPopup === void 0 || _dom$getPopup.focus();
+  return true;
+};
+const arrowKeysNextButton = ['ArrowRight', 'ArrowDown'];
+const arrowKeysPreviousButton = ['ArrowLeft', 'ArrowUp'];
+
+/**
+ * @param {SweetAlertOptions} innerParams
+ * @param {KeyboardEvent} event
+ * @param {(dismiss: DismissReason) => void} dismissWith
+ */
+const keydownHandler = (innerParams, event, dismissWith) => {
+  if (!innerParams) {
+    return; // This instance has already been destroyed
+  }
+
+  // Ignore keydown during IME composition
+  // https://developer.mozilla.org/en-US/docs/Web/API/Document/keydown_event#ignoring_keydown_during_ime_composition
+  // https://github.com/sweetalert2/sweetalert2/issues/720
+  // https://github.com/sweetalert2/sweetalert2/issues/2406
+  if (event.isComposing || event.keyCode === 229) {
+    return;
+  }
+  if (innerParams.stopKeydownPropagation) {
+    event.stopPropagation();
+  }
+
+  // ENTER
+  if (event.key === 'Enter') {
+    handleEnter(event, innerParams);
+  }
+
+  // TAB
+  else if (event.key === 'Tab') {
+    handleTab(event);
+  }
+
+  // ARROWS - switch focus between buttons
+  else if ([...arrowKeysNextButton, ...arrowKeysPreviousButton].includes(event.key)) {
+    handleArrows(event.key);
+  }
+
+  // ESC
+  else if (event.key === 'Escape') {
+    handleEsc(event, innerParams, dismissWith);
+  }
+};
+
+/**
+ * @param {KeyboardEvent} event
+ * @param {SweetAlertOptions} innerParams
+ */
+const handleEnter = (event, innerParams) => {
+  // https://github.com/sweetalert2/sweetalert2/issues/2386
+  if (!callIfFunction(innerParams.allowEnterKey)) {
+    return;
+  }
+  const popup = getPopup();
+  if (!popup || !innerParams.input) {
+    return;
+  }
+  const input = getInput$1(popup, innerParams.input);
+  if (event.target && input && event.target instanceof HTMLElement && event.target.outerHTML === input.outerHTML) {
+    if (['textarea', 'file'].includes(innerParams.input)) {
+      return; // do not submit
+    }
+    clickConfirm();
+    event.preventDefault();
+  }
+};
+
+/**
+ * @param {KeyboardEvent} event
+ */
+const handleTab = event => {
+  const targetElement = event.target;
+  const focusableElements = getFocusableElements();
+  const btnIndex = focusableElements.findIndex(el => el === targetElement);
+
+  // don't prevent default for iframes (Firefox fix)
+  // https://github.com/sweetalert2/sweetalert2/issues/2931
+  let shouldPreventDefault = true;
+
+  // Cycle to the next button
+  if (!event.shiftKey) {
+    shouldPreventDefault = setFocus(btnIndex, 1);
+  }
+
+  // Cycle to the prev button
+  else {
+    shouldPreventDefault = setFocus(btnIndex, -1);
+  }
+  event.stopPropagation();
+  if (shouldPreventDefault) {
+    event.preventDefault();
+  }
+};
+
+/**
+ * @param {string} key
+ */
+const handleArrows = key => {
+  const actions = getActions();
+  const confirmButton = getConfirmButton();
+  const denyButton = getDenyButton();
+  const cancelButton = getCancelButton();
+  if (!actions || !confirmButton || !denyButton || !cancelButton) {
+    return;
+  }
+  /** @type HTMLElement[] */
+  const buttons = [confirmButton, denyButton, cancelButton];
+  if (document.activeElement instanceof HTMLElement && !buttons.includes(document.activeElement)) {
+    return;
+  }
+  const sibling = arrowKeysNextButton.includes(key) ? 'nextElementSibling' : 'previousElementSibling';
+  let buttonToFocus = document.activeElement;
+  if (!buttonToFocus) {
+    return;
+  }
+  for (let i = 0; i < actions.children.length; i++) {
+    buttonToFocus = buttonToFocus[sibling];
+    if (!buttonToFocus) {
+      return;
+    }
+    if (buttonToFocus instanceof HTMLButtonElement && isVisible$1(buttonToFocus)) {
+      break;
+    }
+  }
+  if (buttonToFocus instanceof HTMLButtonElement) {
+    buttonToFocus.focus();
+  }
+};
+
+/**
+ * @param {KeyboardEvent} event
+ * @param {SweetAlertOptions} innerParams
+ * @param {(dismiss: DismissReason) => void} dismissWith
+ */
+const handleEsc = (event, innerParams, dismissWith) => {
+  event.preventDefault();
+  if (callIfFunction(innerParams.allowEscapeKey)) {
+    dismissWith(DismissReason.esc);
+  }
+};
+
+/**
+ * This module contains `WeakMap`s for each effectively-"private  property" that a `Swal` has.
+ * For example, to set the private property "foo" of `this` to "bar", you can `privateProps.foo.set(this, 'bar')`
+ * This is the approach that Babel will probably take to implement private methods/fields
+ *   https://github.com/tc39/proposal-private-methods
+ *   https://github.com/babel/babel/pull/7555
+ * Once we have the changes from that PR in Babel, and our core class fits reasonable in *one module*
+ *   then we can use that language feature.
+ */
+
+var privateMethods = {
+  swalPromiseResolve: new WeakMap(),
+  swalPromiseReject: new WeakMap()
+};
+
+// From https://developer.paciellogroup.com/blog/2018/06/the-current-state-of-modal-dialog-accessibility/
+// Adding aria-hidden="true" to elements outside of the active modal dialog ensures that
+// elements not within the active modal dialog will not be surfaced if a user opens a screen
+// reader’s list of elements (headings, form controls, landmarks, etc.) in the document.
+
+const setAriaHidden = () => {
+  const container = getContainer();
+  const bodyChildren = Array.from(document.body.children);
+  bodyChildren.forEach(el => {
+    if (el.contains(container)) {
+      return;
+    }
+    if (el.hasAttribute('aria-hidden')) {
+      el.setAttribute('data-previous-aria-hidden', el.getAttribute('aria-hidden') || '');
+    }
+    el.setAttribute('aria-hidden', 'true');
+  });
+};
+const unsetAriaHidden = () => {
+  const bodyChildren = Array.from(document.body.children);
+  bodyChildren.forEach(el => {
+    if (el.hasAttribute('data-previous-aria-hidden')) {
+      el.setAttribute('aria-hidden', el.getAttribute('data-previous-aria-hidden') || '');
+      el.removeAttribute('data-previous-aria-hidden');
+    } else {
+      el.removeAttribute('aria-hidden');
+    }
+  });
+};
+
+// @ts-ignore
+const isSafariOrIOS = typeof window !== 'undefined' && Boolean(window.GestureEvent); // true for Safari desktop + all iOS browsers https://stackoverflow.com/a/70585394
+
+// @ts-ignore
+const isIOS = isSafariOrIOS && /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+/**
+ * Fix iOS scrolling
+ * http://stackoverflow.com/q/39626302
+ */
+const iOSfix = () => {
+  if (isSafariOrIOS && !hasClass(document.body, swalClasses.iosfix)) {
+    const offset = document.body.scrollTop;
+    document.body.style.top = `${offset * -1}px`;
+    addClass(document.body, swalClasses.iosfix);
+    lockBodyScroll();
+  }
+};
+
+/**
+ * https://github.com/sweetalert2/sweetalert2/issues/1246
+ */
+const lockBodyScroll = () => {
+  const container = getContainer();
+  if (!container) {
+    return;
+  }
+  /** @type {boolean} */
+  let preventTouchMove;
+  /**
+   * @param {TouchEvent} event
+   */
+  container.ontouchstart = event => {
+    preventTouchMove = shouldPreventTouchMove(event);
+  };
+  /**
+   * @param {TouchEvent} event
+   */
+  container.ontouchmove = event => {
+    if (preventTouchMove) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  };
+};
+
+/**
+ * @param {TouchEvent} event
+ * @returns {boolean}
+ */
+const shouldPreventTouchMove = event => {
+  const target = event.target;
+  const container = getContainer();
+  const htmlContainer = getHtmlContainer();
+  if (!container || !htmlContainer) {
+    return false;
+  }
+  if (isStylus(event) || isZoom(event)) {
+    return false;
+  }
+  if (target === container) {
+    return true;
+  }
+  if (!isScrollable(container) && target instanceof HTMLElement && !selfOrParentIsScrollable(target, htmlContainer) &&
+  // #2823
+  target.tagName !== 'INPUT' &&
+  // #1603
+  target.tagName !== 'TEXTAREA' &&
+  // #2266
+  !(isScrollable(htmlContainer) &&
+  // #1944
+  htmlContainer.contains(target))) {
+    return true;
+  }
+  return false;
+};
+
+/**
+ * https://github.com/sweetalert2/sweetalert2/issues/1786
+ *
+ * @param {TouchEvent} event
+ * @returns {boolean}
+ */
+const isStylus = event => {
+  return Boolean(event.touches && event.touches.length &&
+  // @ts-ignore - touchType is not a standard property
+  event.touches[0].touchType === 'stylus');
+};
+
+/**
+ * https://github.com/sweetalert2/sweetalert2/issues/1891
+ *
+ * @param {TouchEvent} event
+ * @returns {boolean}
+ */
+const isZoom = event => {
+  return event.touches && event.touches.length > 1;
+};
+const undoIOSfix = () => {
+  if (hasClass(document.body, swalClasses.iosfix)) {
+    const offset = parseInt(document.body.style.top, 10);
+    removeClass(document.body, swalClasses.iosfix);
+    document.body.style.top = '';
+    document.body.scrollTop = offset * -1;
+  }
+};
+
+/**
+ * Measure scrollbar width for padding body during modal show/hide
+ * https://github.com/twbs/bootstrap/blob/master/js/src/modal.js
+ *
+ * @returns {number}
+ */
+const measureScrollbar = () => {
+  const scrollDiv = document.createElement('div');
+  scrollDiv.className = swalClasses['scrollbar-measure'];
+  document.body.appendChild(scrollDiv);
+  const scrollbarWidth = scrollDiv.getBoundingClientRect().width - scrollDiv.clientWidth;
+  document.body.removeChild(scrollDiv);
+  return scrollbarWidth;
+};
+
+/**
+ * Remember state in cases where opening and handling a modal will fiddle with it.
+ * @type {number | null}
+ */
+let previousBodyPadding = null;
+
+/**
+ * @param {string} initialBodyOverflow
+ */
+const replaceScrollbarWithPadding = initialBodyOverflow => {
+  // for queues, do not do this more than once
+  if (previousBodyPadding !== null) {
+    return;
+  }
+  // if the body has overflow
+  if (document.body.scrollHeight > window.innerHeight || initialBodyOverflow === 'scroll' // https://github.com/sweetalert2/sweetalert2/issues/2663
+  ) {
+    // add padding so the content doesn't shift after removal of scrollbar
+    previousBodyPadding = parseInt(window.getComputedStyle(document.body).getPropertyValue('padding-right'));
+    document.body.style.paddingRight = `${previousBodyPadding + measureScrollbar()}px`;
+  }
+};
+const undoReplaceScrollbarWithPadding = () => {
+  if (previousBodyPadding !== null) {
+    document.body.style.paddingRight = `${previousBodyPadding}px`;
+    previousBodyPadding = null;
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {HTMLElement} container
+ * @param {boolean} returnFocus
+ * @param {(() => void) | undefined} didClose
+ */
+function removePopupAndResetState(instance, container, returnFocus, didClose) {
+  if (isToast()) {
+    triggerDidCloseAndDispose(instance, didClose);
+  } else {
+    restoreActiveElement(returnFocus).then(() => triggerDidCloseAndDispose(instance, didClose));
+    removeKeydownHandler(globalState);
+  }
+
+  // workaround for https://github.com/sweetalert2/sweetalert2/issues/2088
+  // for some reason removing the container in Safari will scroll the document to bottom
+  if (isSafariOrIOS) {
+    container.setAttribute('style', 'display:none !important');
+    container.removeAttribute('class');
+    container.innerHTML = '';
+  } else {
+    container.remove();
+  }
+  if (isModal()) {
+    undoReplaceScrollbarWithPadding();
+    undoIOSfix();
+    unsetAriaHidden();
+  }
+  removeBodyClasses();
+}
+
+/**
+ * Remove SweetAlert2 classes from body
+ */
+function removeBodyClasses() {
+  removeClass([document.documentElement, document.body], [swalClasses.shown, swalClasses['height-auto'], swalClasses['no-backdrop'], swalClasses['toast-shown']]);
+}
+
+/**
+ * Instance method to close sweetAlert
+ *
+ * @param {SweetAlertResult | undefined} resolveValue
+ * @this {SweetAlert}
+ */
+function close(resolveValue) {
+  resolveValue = prepareResolveValue(resolveValue);
+  const swalPromiseResolve = privateMethods.swalPromiseResolve.get(this);
+  const didClose = triggerClosePopup(this);
+  if (this.isAwaitingPromise) {
+    // A swal awaiting for a promise (after a click on Confirm or Deny) cannot be dismissed anymore #2335
+    if (!resolveValue.isDismissed) {
+      handleAwaitingPromise(this);
+      swalPromiseResolve(resolveValue);
+    }
+  } else if (didClose) {
+    // Resolve Swal promise
+    swalPromiseResolve(resolveValue);
+  }
+}
+
+/**
+ * @param {SweetAlert} instance
+ * @returns {boolean}
+ */
+const triggerClosePopup = instance => {
+  const popup = getPopup();
+  if (!popup) {
+    return false;
+  }
+  const innerParams = privateProps.innerParams.get(instance);
+  if (!innerParams || hasClass(popup, innerParams.hideClass.popup)) {
+    return false;
+  }
+  removeClass(popup, innerParams.showClass.popup);
+  addClass(popup, innerParams.hideClass.popup);
+  const backdrop = getContainer();
+  removeClass(backdrop, innerParams.showClass.backdrop);
+  addClass(backdrop, innerParams.hideClass.backdrop);
+  handlePopupAnimation(instance, popup, innerParams);
+  return true;
+};
+
+/**
+ * @param {Error | string} error
+ * @this {SweetAlert}
+ */
+function rejectPromise(error) {
+  const rejectPromise = privateMethods.swalPromiseReject.get(this);
+  handleAwaitingPromise(this);
+  if (rejectPromise) {
+    // Reject Swal promise
+    rejectPromise(error);
+  }
+}
+
+/**
+ * @param {SweetAlert} instance
+ */
+const handleAwaitingPromise = instance => {
+  if (instance.isAwaitingPromise) {
+    // @ts-ignore
+    delete instance.isAwaitingPromise;
+    // The instance might have been previously partly destroyed, we must resume the destroy process in this case #2335
+    if (!privateProps.innerParams.get(instance)) {
+      instance._destroy();
+    }
+  }
+};
+
+/**
+ * @param {SweetAlertResult | undefined} resolveValue
+ * @returns {SweetAlertResult}
+ */
+const prepareResolveValue = resolveValue => {
+  // When user calls Swal.close()
+  if (typeof resolveValue === 'undefined') {
+    return {
+      isConfirmed: false,
+      isDenied: false,
+      isDismissed: true
+    };
+  }
+  return Object.assign({
+    isConfirmed: false,
+    isDenied: false,
+    isDismissed: false
+  }, resolveValue);
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {HTMLElement} popup
+ * @param {SweetAlertOptions} innerParams
+ */
+const handlePopupAnimation = (instance, popup, innerParams) => {
+  var _globalState$eventEmi;
+  const container = getContainer();
+  // If animation is supported, animate
+  const animationIsSupported = hasCssAnimation(popup);
+  if (typeof innerParams.willClose === 'function') {
+    innerParams.willClose(popup);
+  }
+  (_globalState$eventEmi = globalState.eventEmitter) === null || _globalState$eventEmi === void 0 || _globalState$eventEmi.emit('willClose', popup);
+  if (animationIsSupported && container) {
+    animatePopup(instance, popup, container, Boolean(innerParams.returnFocus), innerParams.didClose);
+  } else if (container) {
+    // Otherwise, remove immediately
+    removePopupAndResetState(instance, container, Boolean(innerParams.returnFocus), innerParams.didClose);
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {HTMLElement} popup
+ * @param {HTMLElement} container
+ * @param {boolean} returnFocus
+ * @param {(() => void) | undefined} didClose
+ */
+const animatePopup = (instance, popup, container, returnFocus, didClose) => {
+  globalState.swalCloseEventFinishedCallback = removePopupAndResetState.bind(null, instance, container, returnFocus, didClose);
+  /**
+   * @param {AnimationEvent | TransitionEvent} e
+   */
+  const swalCloseAnimationFinished = function (e) {
+    if (e.target === popup) {
+      var _globalState$swalClos;
+      (_globalState$swalClos = globalState.swalCloseEventFinishedCallback) === null || _globalState$swalClos === void 0 || _globalState$swalClos.call(globalState);
+      delete globalState.swalCloseEventFinishedCallback;
+      popup.removeEventListener('animationend', swalCloseAnimationFinished);
+      popup.removeEventListener('transitionend', swalCloseAnimationFinished);
+    }
+  };
+  popup.addEventListener('animationend', swalCloseAnimationFinished);
+  popup.addEventListener('transitionend', swalCloseAnimationFinished);
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {(() => void) | undefined} didClose
+ */
+const triggerDidCloseAndDispose = (instance, didClose) => {
+  setTimeout(() => {
+    var _globalState$eventEmi2;
+    if (typeof didClose === 'function') {
+      didClose.bind(instance.params)();
+    }
+    (_globalState$eventEmi2 = globalState.eventEmitter) === null || _globalState$eventEmi2 === void 0 || _globalState$eventEmi2.emit('didClose');
+    // instance might have been destroyed already
+    if (instance._destroy) {
+      instance._destroy();
+    }
+  });
+};
+
+/**
+ * Shows loader (spinner), this is useful with AJAX requests.
+ * By default the loader be shown instead of the "Confirm" button.
+ *
+ * @param {HTMLButtonElement | null} [buttonToReplace]
+ */
+const showLoading = buttonToReplace => {
+  let popup = getPopup();
+  if (!popup) {
+    new Swal();
+  }
+  popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  const loader = getLoader();
+  if (isToast()) {
+    hide(getIcon());
+  } else {
+    replaceButton(popup, buttonToReplace);
+  }
+  show(loader);
+  popup.setAttribute('data-loading', 'true');
+  popup.setAttribute('aria-busy', 'true');
+  popup.focus();
+};
+
+/**
+ * @param {HTMLElement} popup
+ * @param {HTMLButtonElement | null} [buttonToReplace]
+ */
+const replaceButton = (popup, buttonToReplace) => {
+  const actions = getActions();
+  const loader = getLoader();
+  if (!actions || !loader) {
+    return;
+  }
+  if (!buttonToReplace && isVisible$1(getConfirmButton())) {
+    buttonToReplace = getConfirmButton();
+  }
+  show(actions);
+  if (buttonToReplace) {
+    hide(buttonToReplace);
+    loader.setAttribute('data-button-to-replace', buttonToReplace.className);
+    actions.insertBefore(loader, buttonToReplace);
+  }
+  addClass([popup, actions], swalClasses.loading);
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const handleInputOptionsAndValue = (instance, params) => {
+  if (params.input === 'select' || params.input === 'radio') {
+    handleInputOptions(instance, params);
+  } else if (['text', 'email', 'number', 'tel', 'textarea'].some(i => i === params.input) && (hasToPromiseFn(params.inputValue) || isPromise(params.inputValue))) {
+    showLoading(getConfirmButton());
+    handleInputValue(instance, params);
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} innerParams
+ * @returns {SweetAlertInputValue}
+ */
+const getInputValue = (instance, innerParams) => {
+  const input = instance.getInput();
+  if (!input) {
+    return null;
+  }
+  switch (innerParams.input) {
+    case 'checkbox':
+      return getCheckboxValue(input);
+    case 'radio':
+      return getRadioValue(input);
+    case 'file':
+      return getFileValue(input);
+    default:
+      return innerParams.inputAutoTrim ? input.value.trim() : input.value;
+  }
+};
+
+/**
+ * @param {HTMLInputElement} input
+ * @returns {number}
+ */
+const getCheckboxValue = input => input.checked ? 1 : 0;
+
+/**
+ * @param {HTMLInputElement} input
+ * @returns {string | null}
+ */
+const getRadioValue = input => input.checked ? input.value : null;
+
+/**
+ * @param {HTMLInputElement} input
+ * @returns {FileList | File | null}
+ */
+const getFileValue = input => input.files && input.files.length ? input.getAttribute('multiple') !== null ? input.files : input.files[0] : null;
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const handleInputOptions = (instance, params) => {
+  const popup = getPopup();
+  if (!popup) {
+    return;
+  }
+  /**
+   * @param {*} inputOptions
+   */
+  const processInputOptions = inputOptions => {
+    if (params.input === 'select') {
+      populateSelectOptions(popup, formatInputOptions(inputOptions), params);
+    } else if (params.input === 'radio') {
+      populateRadioOptions(popup, formatInputOptions(inputOptions), params);
+    }
+  };
+  if (hasToPromiseFn(params.inputOptions) || isPromise(params.inputOptions)) {
+    showLoading(getConfirmButton());
+    asPromise(params.inputOptions).then(inputOptions => {
+      instance.hideLoading();
+      processInputOptions(inputOptions);
+    });
+  } else if (typeof params.inputOptions === 'object') {
+    processInputOptions(params.inputOptions);
+  } else {
+    error(`Unexpected type of inputOptions! Expected object, Map or Promise, got ${typeof params.inputOptions}`);
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertOptions} params
+ */
+const handleInputValue = (instance, params) => {
+  const input = instance.getInput();
+  if (!input) {
+    return;
+  }
+  hide(input);
+  asPromise(params.inputValue).then(inputValue => {
+    input.value = params.input === 'number' ? `${parseFloat(inputValue) || 0}` : `${inputValue}`;
+    show(input);
+    input.focus();
+    instance.hideLoading();
+  }).catch(err => {
+    error(`Error in inputValue promise: ${err}`);
+    input.value = '';
+    show(input);
+    input.focus();
+    instance.hideLoading();
+  });
+};
+
+/**
+ * @param {HTMLElement} popup
+ * @param {InputOptionFlattened[]} inputOptions
+ * @param {SweetAlertOptions} params
+ */
+function populateSelectOptions(popup, inputOptions, params) {
+  const select = getDirectChildByClass(popup, swalClasses.select);
+  if (!select) {
+    return;
+  }
+  /**
+   * @param {HTMLElement} parent
+   * @param {string} optionLabel
+   * @param {string} optionValue
+   */
+  const renderOption = (parent, optionLabel, optionValue) => {
+    const option = document.createElement('option');
+    option.value = optionValue;
+    setInnerHtml(option, optionLabel);
+    option.selected = isSelected(optionValue, params.inputValue);
+    parent.appendChild(option);
+  };
+  inputOptions.forEach(inputOption => {
+    const optionValue = inputOption[0];
+    const optionLabel = inputOption[1];
+    // <optgroup> spec:
+    // https://www.w3.org/TR/html401/interact/forms.html#h-17.6
+    // "...all OPTGROUP elements must be specified directly within a SELECT element (i.e., groups may not be nested)..."
+    // check whether this is a <optgroup>
+    if (Array.isArray(optionLabel)) {
+      // if it is an array, then it is an <optgroup>
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = optionValue;
+      optgroup.disabled = false; // not configurable for now
+      select.appendChild(optgroup);
+      optionLabel.forEach(o => renderOption(optgroup, o[1], o[0]));
+    } else {
+      // case of <option>
+      renderOption(select, optionLabel, optionValue);
+    }
+  });
+  select.focus();
+}
+
+/**
+ * @param {HTMLElement} popup
+ * @param {InputOptionFlattened[]} inputOptions
+ * @param {SweetAlertOptions} params
+ */
+function populateRadioOptions(popup, inputOptions, params) {
+  const radio = getDirectChildByClass(popup, swalClasses.radio);
+  if (!radio) {
+    return;
+  }
+  inputOptions.forEach(inputOption => {
+    const radioValue = inputOption[0];
+    const radioLabel = inputOption[1];
+    const radioInput = document.createElement('input');
+    const radioLabelElement = document.createElement('label');
+    radioInput.type = 'radio';
+    radioInput.name = swalClasses.radio;
+    radioInput.value = radioValue;
+    if (isSelected(radioValue, params.inputValue)) {
+      radioInput.checked = true;
+    }
+    const label = document.createElement('span');
+    setInnerHtml(label, radioLabel);
+    label.className = swalClasses.label;
+    radioLabelElement.appendChild(radioInput);
+    radioLabelElement.appendChild(label);
+    radio.appendChild(radioLabelElement);
+  });
+  const radios = radio.querySelectorAll('input');
+  if (radios.length) {
+    radios[0].focus();
+  }
+}
+
+/**
+ * Converts `inputOptions` into an array of `[value, label]`s
+ *
+ * @param {*} inputOptions
+ * @typedef {string[]} InputOptionFlattened
+ * @returns {InputOptionFlattened[]}
+ */
+const formatInputOptions = inputOptions => {
+  const entries = inputOptions instanceof Map ? Array.from(inputOptions) : Object.entries(inputOptions);
+  return entries.map(([key, value]) => [key, typeof value === 'object' ? formatInputOptions(value) : value]); // case of <optgroup>
+};
+
+/**
+ * @param {string} optionValue
+ * @param {SweetAlertInputValue} inputValue
+ * @returns {boolean}
+ */
+const isSelected = (optionValue, inputValue) => Boolean(inputValue) && inputValue != null && inputValue.toString() === optionValue.toString();
+
+/**
+ * @param {SweetAlert} instance
+ */
+const handleConfirmButtonClick = instance => {
+  const innerParams = privateProps.innerParams.get(instance);
+  instance.disableButtons();
+  if (innerParams.input) {
+    handleConfirmOrDenyWithInput(instance, 'confirm');
+  } else {
+    confirm(instance, true);
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ */
+const handleDenyButtonClick = instance => {
+  const innerParams = privateProps.innerParams.get(instance);
+  instance.disableButtons();
+  if (innerParams.returnInputValueOnDeny) {
+    handleConfirmOrDenyWithInput(instance, 'deny');
+  } else {
+    deny(instance, false);
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {(dismiss: DismissReason) => void} dismissWith
+ */
+const handleCancelButtonClick = (instance, dismissWith) => {
+  instance.disableButtons();
+  dismissWith(DismissReason.cancel);
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {'confirm' | 'deny'} type
+ */
+const handleConfirmOrDenyWithInput = (instance, type) => {
+  const innerParams = privateProps.innerParams.get(instance);
+  if (!innerParams.input) {
+    error(`The "input" parameter is needed to be set when using returnInputValueOn${capitalizeFirstLetter(type)}`);
+    return;
+  }
+  const input = instance.getInput();
+  const inputValue = getInputValue(instance, innerParams);
+  if (innerParams.inputValidator) {
+    handleInputValidator(instance, inputValue, type);
+  } else if (input && !input.checkValidity()) {
+    instance.enableButtons();
+    instance.showValidationMessage(innerParams.validationMessage || input.validationMessage);
+  } else if (type === 'deny') {
+    deny(instance, inputValue);
+  } else {
+    confirm(instance, inputValue);
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {SweetAlertInputValue} inputValue
+ * @param {'confirm' | 'deny'} type
+ */
+const handleInputValidator = (instance, inputValue, type) => {
+  const innerParams = privateProps.innerParams.get(instance);
+  instance.disableInput();
+  const validationPromise = Promise.resolve().then(() => asPromise(innerParams.inputValidator(inputValue, innerParams.validationMessage)));
+  validationPromise.then(validationMessage => {
+    instance.enableButtons();
+    instance.enableInput();
+    if (validationMessage) {
+      instance.showValidationMessage(validationMessage);
+    } else if (type === 'deny') {
+      deny(instance, inputValue);
+    } else {
+      confirm(instance, inputValue);
+    }
+  });
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {*} value
+ */
+const deny = (instance, value) => {
+  const innerParams = privateProps.innerParams.get(instance);
+  if (innerParams.showLoaderOnDeny) {
+    showLoading(getDenyButton());
+  }
+  if (innerParams.preDeny) {
+    instance.isAwaitingPromise = true; // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesn't get destroyed until the result from this preDeny's promise is received
+    const preDenyPromise = Promise.resolve().then(() => asPromise(innerParams.preDeny(value, innerParams.validationMessage)));
+    preDenyPromise.then(preDenyValue => {
+      if (preDenyValue === false) {
+        instance.hideLoading();
+        handleAwaitingPromise(instance);
+      } else {
+        instance.close(/** @type SweetAlertResult */{
+          isDenied: true,
+          value: typeof preDenyValue === 'undefined' ? value : preDenyValue
+        });
+      }
+    }).catch(error => rejectWith(instance, error));
+  } else {
+    instance.close(/** @type SweetAlertResult */{
+      isDenied: true,
+      value
+    });
+  }
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @param {*} value
+ */
+const succeedWith = (instance, value) => {
+  instance.close(/** @type SweetAlertResult */{
+    isConfirmed: true,
+    value
+  });
+};
+
+/**
+ *
+ * @param {SweetAlert} instance
+ * @param {string} error
+ */
+const rejectWith = (instance, error) => {
+  instance.rejectPromise(error);
+};
+
+/**
+ *
+ * @param {SweetAlert} instance
+ * @param {*} value
+ */
+const confirm = (instance, value) => {
+  const innerParams = privateProps.innerParams.get(instance);
+  if (innerParams.showLoaderOnConfirm) {
+    showLoading();
+  }
+  if (innerParams.preConfirm) {
+    instance.resetValidationMessage();
+    instance.isAwaitingPromise = true; // Flagging the instance as awaiting a promise so it's own promise's reject/resolve methods doesn't get destroyed until the result from this preConfirm's promise is received
+    const preConfirmPromise = Promise.resolve().then(() => asPromise(innerParams.preConfirm(value, innerParams.validationMessage)));
+    preConfirmPromise.then(preConfirmValue => {
+      if (isVisible$1(getValidationMessage()) || preConfirmValue === false) {
+        instance.hideLoading();
+        handleAwaitingPromise(instance);
+      } else {
+        succeedWith(instance, typeof preConfirmValue === 'undefined' ? value : preConfirmValue);
+      }
+    }).catch(error => rejectWith(instance, error));
+  } else {
+    succeedWith(instance, value);
+  }
+};
+
+/**
+ * Hides loader and shows back the button which was hidden by .showLoading()
+ * @this {SweetAlert}
+ */
+function hideLoading() {
+  // do nothing if popup is closed
+  const innerParams = privateProps.innerParams.get(this);
+  if (!innerParams) {
+    return;
+  }
+  const domCache = privateProps.domCache.get(this);
+  hide(domCache.loader);
+  if (isToast()) {
+    if (innerParams.icon) {
+      show(getIcon());
+    }
+  } else {
+    showRelatedButton(domCache);
+  }
+  removeClass([domCache.popup, domCache.actions], swalClasses.loading);
+  domCache.popup.removeAttribute('aria-busy');
+  domCache.popup.removeAttribute('data-loading');
+  this.enableButtons();
+}
+
+/**
+ * @param {DomCache} domCache
+ */
+const showRelatedButton = domCache => {
+  const dataButtonToReplace = domCache.loader.getAttribute('data-button-to-replace');
+  const buttonToReplace = dataButtonToReplace ? domCache.popup.getElementsByClassName(dataButtonToReplace) : [];
+  if (buttonToReplace.length) {
+    show(/** @type {HTMLElement} */buttonToReplace[0], 'inline-block');
+  } else if (allButtonsAreHidden()) {
+    hide(domCache.actions);
+  }
+};
+
+/**
+ * Gets the input DOM node, this method works with input parameter.
+ *
+ * @returns {HTMLInputElement | null}
+ * @this {SweetAlert}
+ */
+function getInput() {
+  const innerParams = privateProps.innerParams.get(this);
+  const domCache = privateProps.domCache.get(this);
+  if (!domCache) {
+    return null;
+  }
+  return getInput$1(domCache.popup, innerParams.input);
+}
+
+/**
+ * @param {SweetAlert} instance
+ * @param {string[]} buttons
+ * @param {boolean} disabled
+ */
+function setButtonsDisabled(instance, buttons, disabled) {
+  const domCache = privateProps.domCache.get(instance);
+  buttons.forEach(button => {
+    domCache[button].disabled = disabled;
+  });
+}
+
+/**
+ * @param {HTMLInputElement | null} input
+ * @param {boolean} disabled
+ */
+function setInputDisabled(input, disabled) {
+  const popup = getPopup();
+  if (!popup || !input) {
+    return;
+  }
+  if (input.type === 'radio') {
+    /** @type {NodeListOf<HTMLInputElement>} */
+    const radios = popup.querySelectorAll(`[name="${swalClasses.radio}"]`);
+    radios.forEach(radio => {
+      radio.disabled = disabled;
+    });
+  } else {
+    input.disabled = disabled;
+  }
+}
+
+/**
+ * Enable all the buttons
+ * @this {SweetAlert}
+ */
+function enableButtons() {
+  setButtonsDisabled(this, ['confirmButton', 'denyButton', 'cancelButton'], false);
+  const focusedElement = privateProps.focusedElement.get(this);
+  if (focusedElement instanceof HTMLElement && document.activeElement === document.body) {
+    focusedElement.focus();
+  }
+  privateProps.focusedElement.delete(this);
+}
+
+/**
+ * Disable all the buttons
+ * @this {SweetAlert}
+ */
+function disableButtons() {
+  privateProps.focusedElement.set(this, document.activeElement);
+  setButtonsDisabled(this, ['confirmButton', 'denyButton', 'cancelButton'], true);
+}
+
+/**
+ * Enable the input field
+ * @this {SweetAlert}
+ */
+function enableInput() {
+  setInputDisabled(this.getInput(), false);
+}
+
+/**
+ * Disable the input field
+ * @this {SweetAlert}
+ */
+function disableInput() {
+  setInputDisabled(this.getInput(), true);
+}
+
+/**
+ * Show block with validation message
+ *
+ * @param {string} error
+ * @this {SweetAlert}
+ */
+function showValidationMessage(error) {
+  const domCache = privateProps.domCache.get(this);
+  const params = privateProps.innerParams.get(this);
+  setInnerHtml(domCache.validationMessage, error);
+  domCache.validationMessage.className = swalClasses['validation-message'];
+  if (params.customClass && params.customClass.validationMessage) {
+    addClass(domCache.validationMessage, params.customClass.validationMessage);
+  }
+  show(domCache.validationMessage);
+  const input = this.getInput();
+  if (input) {
+    input.setAttribute('aria-invalid', 'true');
+    input.setAttribute('aria-describedby', swalClasses['validation-message']);
+    focusInput(input);
+    addClass(input, swalClasses.inputerror);
+  }
+}
+
+/**
+ * Hide block with validation message
+ *
+ * @this {SweetAlert}
+ */
+function resetValidationMessage() {
+  const domCache = privateProps.domCache.get(this);
+  if (domCache.validationMessage) {
+    hide(domCache.validationMessage);
+  }
+  const input = this.getInput();
+  if (input) {
+    input.removeAttribute('aria-invalid');
+    input.removeAttribute('aria-describedby');
+    removeClass(input, swalClasses.inputerror);
+  }
+}
+
+const defaultParams = {
+  title: '',
+  titleText: '',
+  text: '',
+  html: '',
+  footer: '',
+  icon: undefined,
+  iconColor: undefined,
+  iconHtml: undefined,
+  template: undefined,
+  toast: false,
+  draggable: false,
+  animation: true,
+  theme: 'light',
+  showClass: {
+    popup: 'swal2-show',
+    backdrop: 'swal2-backdrop-show',
+    icon: 'swal2-icon-show'
+  },
+  hideClass: {
+    popup: 'swal2-hide',
+    backdrop: 'swal2-backdrop-hide',
+    icon: 'swal2-icon-hide'
+  },
+  customClass: {},
+  target: 'body',
+  color: undefined,
+  backdrop: true,
+  heightAuto: true,
+  allowOutsideClick: true,
+  allowEscapeKey: true,
+  allowEnterKey: true,
+  stopKeydownPropagation: true,
+  keydownListenerCapture: false,
+  showConfirmButton: true,
+  showDenyButton: false,
+  showCancelButton: false,
+  preConfirm: undefined,
+  preDeny: undefined,
+  confirmButtonText: 'OK',
+  confirmButtonAriaLabel: '',
+  confirmButtonColor: undefined,
+  denyButtonText: 'No',
+  denyButtonAriaLabel: '',
+  denyButtonColor: undefined,
+  cancelButtonText: 'Cancel',
+  cancelButtonAriaLabel: '',
+  cancelButtonColor: undefined,
+  buttonsStyling: true,
+  reverseButtons: false,
+  focusConfirm: true,
+  focusDeny: false,
+  focusCancel: false,
+  returnFocus: true,
+  showCloseButton: false,
+  closeButtonHtml: '&times;',
+  closeButtonAriaLabel: 'Close this dialog',
+  loaderHtml: '',
+  showLoaderOnConfirm: false,
+  showLoaderOnDeny: false,
+  imageUrl: undefined,
+  imageWidth: undefined,
+  imageHeight: undefined,
+  imageAlt: '',
+  timer: undefined,
+  timerProgressBar: false,
+  width: undefined,
+  padding: undefined,
+  background: undefined,
+  input: undefined,
+  inputPlaceholder: '',
+  inputLabel: '',
+  inputValue: '',
+  inputOptions: {},
+  inputAutoFocus: true,
+  inputAutoTrim: true,
+  inputAttributes: {},
+  inputValidator: undefined,
+  returnInputValueOnDeny: false,
+  validationMessage: undefined,
+  grow: false,
+  position: 'center',
+  progressSteps: [],
+  currentProgressStep: undefined,
+  progressStepsDistance: undefined,
+  willOpen: undefined,
+  didOpen: undefined,
+  didRender: undefined,
+  willClose: undefined,
+  didClose: undefined,
+  didDestroy: undefined,
+  scrollbarPadding: true,
+  topLayer: false
+};
+const updatableParams = ['allowEscapeKey', 'allowOutsideClick', 'background', 'buttonsStyling', 'cancelButtonAriaLabel', 'cancelButtonColor', 'cancelButtonText', 'closeButtonAriaLabel', 'closeButtonHtml', 'color', 'confirmButtonAriaLabel', 'confirmButtonColor', 'confirmButtonText', 'currentProgressStep', 'customClass', 'denyButtonAriaLabel', 'denyButtonColor', 'denyButtonText', 'didClose', 'didDestroy', 'draggable', 'footer', 'hideClass', 'html', 'icon', 'iconColor', 'iconHtml', 'imageAlt', 'imageHeight', 'imageUrl', 'imageWidth', 'preConfirm', 'preDeny', 'progressSteps', 'returnFocus', 'reverseButtons', 'showCancelButton', 'showCloseButton', 'showConfirmButton', 'showDenyButton', 'text', 'title', 'titleText', 'theme', 'willClose'];
+
+/** @type {Record<string, string | undefined>} */
+const deprecatedParams = {
+  allowEnterKey: undefined
+};
+const toastIncompatibleParams = ['allowOutsideClick', 'allowEnterKey', 'backdrop', 'draggable', 'focusConfirm', 'focusDeny', 'focusCancel', 'returnFocus', 'heightAuto', 'keydownListenerCapture'];
+
+/**
+ * Is valid parameter
+ *
+ * @param {string} paramName
+ * @returns {boolean}
+ */
+const isValidParameter = paramName => {
+  return Object.prototype.hasOwnProperty.call(defaultParams, paramName);
+};
+
+/**
+ * Is valid parameter for Swal.update() method
+ *
+ * @param {string} paramName
+ * @returns {boolean}
+ */
+const isUpdatableParameter = paramName => {
+  return updatableParams.indexOf(paramName) !== -1;
+};
+
+/**
+ * Is deprecated parameter
+ *
+ * @param {string} paramName
+ * @returns {string | undefined}
+ */
+const isDeprecatedParameter = paramName => {
+  return deprecatedParams[paramName];
+};
+
+/**
+ * @param {string} param
+ */
+const checkIfParamIsValid = param => {
+  if (!isValidParameter(param)) {
+    warn(`Unknown parameter "${param}"`);
+  }
+};
+
+/**
+ * @param {string} param
+ */
+const checkIfToastParamIsValid = param => {
+  if (toastIncompatibleParams.includes(param)) {
+    warn(`The parameter "${param}" is incompatible with toasts`);
+  }
+};
+
+/**
+ * @param {string} param
+ */
+const checkIfParamIsDeprecated = param => {
+  const isDeprecated = isDeprecatedParameter(param);
+  if (isDeprecated) {
+    warnAboutDeprecation(param, isDeprecated);
+  }
+};
+
+/**
+ * Show relevant warnings for given params
+ *
+ * @param {SweetAlertOptions} params
+ */
+const showWarningsForParams = params => {
+  if (params.backdrop === false && params.allowOutsideClick) {
+    warn('"allowOutsideClick" parameter requires `backdrop` parameter to be set to `true`');
+  }
+  if (params.theme && !['light', 'dark', 'auto', 'minimal', 'borderless', 'bootstrap-4', 'bootstrap-4-light', 'bootstrap-4-dark', 'bootstrap-5', 'bootstrap-5-light', 'bootstrap-5-dark', 'material-ui', 'material-ui-light', 'material-ui-dark', 'embed-iframe', 'bulma', 'bulma-light', 'bulma-dark'].includes(params.theme)) {
+    warn(`Invalid theme "${params.theme}"`);
+  }
+  for (const param in params) {
+    checkIfParamIsValid(param);
+    if (params.toast) {
+      checkIfToastParamIsValid(param);
+    }
+    checkIfParamIsDeprecated(param);
+  }
+};
+
+/**
+ * Updates popup parameters.
+ *
+ * @this {any}
+ * @param {SweetAlertOptions} params
+ */
+function update(params) {
+  const container = getContainer();
+  const popup = getPopup();
+  const innerParams = privateProps.innerParams.get(this);
+  if (!popup || hasClass(popup, innerParams.hideClass.popup)) {
+    warn(`You're trying to update the closed or closing popup, that won't work. Use the update() method in preConfirm parameter or show a new popup.`);
+    return;
+  }
+  const validUpdatableParams = filterValidParams(params);
+  const updatedParams = Object.assign({}, innerParams, validUpdatableParams);
+  showWarningsForParams(updatedParams);
+  if (container) {
+    container.dataset['swal2Theme'] = updatedParams.theme;
+  }
+  render(this, updatedParams);
+  privateProps.innerParams.set(this, updatedParams);
+  Object.defineProperties(this, {
+    params: {
+      value: Object.assign({}, this.params, params),
+      writable: false,
+      enumerable: true
+    }
+  });
+}
+
+/**
+ * @param {SweetAlertOptions} params
+ * @returns {SweetAlertOptions}
+ */
+const filterValidParams = params => {
+  /** @type {Record<string, any>} */
+  const validUpdatableParams = {};
+  Object.keys(params).forEach(param => {
+    if (isUpdatableParameter(param)) {
+      const typedParams = /** @type {Record<string, any>} */params;
+      validUpdatableParams[param] = typedParams[param];
+    } else {
+      warn(`Invalid parameter to update: ${param}`);
+    }
+  });
+  return validUpdatableParams;
+};
+
+/**
+ * Dispose the current SweetAlert2 instance
+ * @this {SweetAlert}
+ */
+function _destroy() {
+  var _globalState$eventEmi;
+  const domCache = privateProps.domCache.get(this);
+  const innerParams = privateProps.innerParams.get(this);
+  if (!innerParams) {
+    disposeWeakMaps(this); // The WeakMaps might have been partly destroyed, we must recall it to dispose any remaining WeakMaps #2335
+    return; // This instance has already been destroyed
+  }
+
+  // Check if there is another Swal closing
+  if (domCache.popup && globalState.swalCloseEventFinishedCallback) {
+    globalState.swalCloseEventFinishedCallback();
+    delete globalState.swalCloseEventFinishedCallback;
+  }
+  if (typeof innerParams.didDestroy === 'function') {
+    innerParams.didDestroy();
+  }
+  (_globalState$eventEmi = globalState.eventEmitter) === null || _globalState$eventEmi === void 0 || _globalState$eventEmi.emit('didDestroy');
+  disposeSwal(this);
+}
+
+/**
+ * @param {SweetAlert} instance
+ */
+const disposeSwal = instance => {
+  disposeWeakMaps(instance);
+  // Unset this.params so GC will dispose it (#1569)
+  // @ts-ignore
+  delete instance.params;
+  // Unset globalState props so GC will dispose globalState (#1569)
+  delete globalState.keydownHandler;
+  delete globalState.keydownTarget;
+  // Unset currentInstance
+  delete globalState.currentInstance;
+};
+
+/**
+ * @param {SweetAlert} instance
+ */
+const disposeWeakMaps = instance => {
+  // If the current instance is awaiting a promise result, we keep the privateMethods to call them once the promise result is retrieved #2335
+  if (instance.isAwaitingPromise) {
+    unsetWeakMaps(privateProps, instance);
+    instance.isAwaitingPromise = true;
+  } else {
+    unsetWeakMaps(privateMethods, instance);
+    unsetWeakMaps(privateProps, instance);
+
+    // @ts-ignore
+    delete instance.isAwaitingPromise;
+    // Unset instance methods
+    // @ts-ignore
+    delete instance.disableButtons;
+    // @ts-ignore
+    delete instance.enableButtons;
+    // @ts-ignore
+    delete instance.getInput;
+    // @ts-ignore
+    delete instance.disableInput;
+    // @ts-ignore
+    delete instance.enableInput;
+    // @ts-ignore
+    delete instance.hideLoading;
+    // @ts-ignore
+    delete instance.disableLoading;
+    // @ts-ignore
+    delete instance.showValidationMessage;
+    // @ts-ignore
+    delete instance.resetValidationMessage;
+    // @ts-ignore
+    delete instance.close;
+    // @ts-ignore
+    delete instance.closePopup;
+    // @ts-ignore
+    delete instance.closeModal;
+    // @ts-ignore
+    delete instance.closeToast;
+    // @ts-ignore
+    delete instance.rejectPromise;
+    // @ts-ignore
+    delete instance.update;
+    // @ts-ignore
+    delete instance._destroy;
+  }
+};
+
+/**
+ * @param {Record<string, WeakMap<any, any>>} obj
+ * @param {SweetAlert} instance
+ */
+const unsetWeakMaps = (obj, instance) => {
+  for (const i in obj) {
+    obj[i].delete(instance);
+  }
+};
+
+var instanceMethods = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  _destroy: _destroy,
+  close: close,
+  closeModal: close,
+  closePopup: close,
+  closeToast: close,
+  disableButtons: disableButtons,
+  disableInput: disableInput,
+  disableLoading: hideLoading,
+  enableButtons: enableButtons,
+  enableInput: enableInput,
+  getInput: getInput,
+  handleAwaitingPromise: handleAwaitingPromise,
+  hideLoading: hideLoading,
+  rejectPromise: rejectPromise,
+  resetValidationMessage: resetValidationMessage,
+  showValidationMessage: showValidationMessage,
+  update: update
+});
+
+/**
+ * @param {SweetAlertOptions} innerParams
+ * @param {DomCache} domCache
+ * @param {(dismiss: DismissReason) => void} dismissWith
+ */
+const handlePopupClick = (innerParams, domCache, dismissWith) => {
+  if (innerParams.toast) {
+    handleToastClick(innerParams, domCache, dismissWith);
+  } else {
+    // Ignore click events that had mousedown on the popup but mouseup on the container
+    // This can happen when the user drags a slider
+    handleModalMousedown(domCache);
+
+    // Ignore click events that had mousedown on the container but mouseup on the popup
+    handleContainerMousedown(domCache);
+    handleModalClick(innerParams, domCache, dismissWith);
+  }
+};
+
+/**
+ * @param {SweetAlertOptions} innerParams
+ * @param {DomCache} domCache
+ * @param {(dismiss: DismissReason) => void} dismissWith
+ */
+const handleToastClick = (innerParams, domCache, dismissWith) => {
+  // Closing toast by internal click
+  domCache.popup.onclick = () => {
+    if (innerParams && (isAnyButtonShown(innerParams) || innerParams.timer || innerParams.input)) {
+      return;
+    }
+    dismissWith(DismissReason.close);
+  };
+};
+
+/**
+ * @param {SweetAlertOptions} innerParams
+ * @returns {boolean}
+ */
+const isAnyButtonShown = innerParams => {
+  return Boolean(innerParams.showConfirmButton || innerParams.showDenyButton || innerParams.showCancelButton || innerParams.showCloseButton);
+};
+let ignoreOutsideClick = false;
+
+/**
+ * @param {DomCache} domCache
+ */
+const handleModalMousedown = domCache => {
+  domCache.popup.onmousedown = () => {
+    domCache.container.onmouseup = function (e) {
+      domCache.container.onmouseup = () => {};
+      // We only check if the mouseup target is the container because usually it doesn't
+      // have any other direct children aside of the popup
+      if (e.target === domCache.container) {
+        ignoreOutsideClick = true;
+      }
+    };
+  };
+};
+
+/**
+ * @param {DomCache} domCache
+ */
+const handleContainerMousedown = domCache => {
+  domCache.container.onmousedown = e => {
+    // prevent the modal text from being selected on double click on the container (allowOutsideClick: false)
+    if (e.target === domCache.container) {
+      e.preventDefault();
+    }
+    domCache.popup.onmouseup = function (e) {
+      domCache.popup.onmouseup = () => {};
+      // We also need to check if the mouseup target is a child of the popup
+      if (e.target === domCache.popup || e.target instanceof HTMLElement && domCache.popup.contains(e.target)) {
+        ignoreOutsideClick = true;
+      }
+    };
+  };
+};
+
+/**
+ * @param {SweetAlertOptions} innerParams
+ * @param {DomCache} domCache
+ * @param {(dismiss: DismissReason) => void} dismissWith
+ */
+const handleModalClick = (innerParams, domCache, dismissWith) => {
+  domCache.container.onclick = e => {
+    if (ignoreOutsideClick) {
+      ignoreOutsideClick = false;
+      return;
+    }
+    if (e.target === domCache.container && callIfFunction(innerParams.allowOutsideClick)) {
+      dismissWith(DismissReason.backdrop);
+    }
+  };
+};
+
+/**
+ * @param {unknown} elem
+ * @returns {boolean}
+ */
+const isJqueryElement = elem => typeof elem === 'object' && elem !== null && 'jquery' in elem;
+
+/**
+ * @param {unknown} elem
+ * @returns {boolean}
+ */
+const isElement = elem => elem instanceof Element || isJqueryElement(elem);
+
+/**
+ * @param {ReadonlyArray<unknown>} args
+ * @returns {SweetAlertOptions}
+ */
+const argsToParams = args => {
+  /** @type {Record<string, unknown>} */
+  const params = {};
+  if (typeof args[0] === 'object' && !isElement(args[0])) {
+    Object.assign(params, args[0]);
+  } else {
+    ['title', 'html', 'icon'].forEach((name, index) => {
+      const arg = args[index];
+      if (typeof arg === 'string' || isElement(arg)) {
+        params[name] = arg;
+      } else if (arg !== undefined) {
+        error(`Unexpected type of ${name}! Expected "string" or "Element", got ${typeof arg}`);
+      }
+    });
+  }
+  return /** @type {SweetAlertOptions} */params;
+};
+
+/**
+ * Main method to create a new SweetAlert2 popup
+ *
+ * @this {new (...args: any[]) => any}
+ * @param  {...SweetAlertOptions} args
+ * @returns {Promise<SweetAlertResult>}
+ */
+function fire(...args) {
+  return new this(...args);
+}
+
+/**
+ * Returns an extended version of `Swal` containing `params` as defaults.
+ * Useful for reusing Swal configuration.
+ *
+ * For example:
+ *
+ * Before:
+ * const textPromptOptions = { input: 'text', showCancelButton: true }
+ * const {value: firstName} = await Swal.fire({ ...textPromptOptions, title: 'What is your first name?' })
+ * const {value: lastName} = await Swal.fire({ ...textPromptOptions, title: 'What is your last name?' })
+ *
+ * After:
+ * const TextPrompt = Swal.mixin({ input: 'text', showCancelButton: true })
+ * const {value: firstName} = await TextPrompt('What is your first name?')
+ * const {value: lastName} = await TextPrompt('What is your last name?')
+ *
+ * @param {SweetAlertOptions} mixinParams
+ * @returns {SweetAlert}
+ * @this {typeof import('../SweetAlert.js').SweetAlert}
+ */
+function mixin(mixinParams) {
+  // @ts-ignore: 'this' refers to the SweetAlert constructor
+  class MixinSwal extends this {
+    /**
+     * @param {any} params
+     * @param {any} priorityMixinParams
+     */
+    _main(params, priorityMixinParams) {
+      return super._main(params, Object.assign({}, mixinParams, priorityMixinParams));
+    }
+  }
+  // @ts-ignore
+  return MixinSwal;
+}
+
+/**
+ * If `timer` parameter is set, returns number of milliseconds of timer remained.
+ * Otherwise, returns undefined.
+ *
+ * @returns {number | undefined}
+ */
+const getTimerLeft = () => {
+  return globalState.timeout && globalState.timeout.getTimerLeft();
+};
+
+/**
+ * Stop timer. Returns number of milliseconds of timer remained.
+ * If `timer` parameter isn't set, returns undefined.
+ *
+ * @returns {number | undefined}
+ */
+const stopTimer = () => {
+  if (globalState.timeout) {
+    stopTimerProgressBar();
+    return globalState.timeout.stop();
+  }
+};
+
+/**
+ * Resume timer. Returns number of milliseconds of timer remained.
+ * If `timer` parameter isn't set, returns undefined.
+ *
+ * @returns {number | undefined}
+ */
+const resumeTimer = () => {
+  if (globalState.timeout) {
+    const remaining = globalState.timeout.start();
+    animateTimerProgressBar(remaining);
+    return remaining;
+  }
+};
+
+/**
+ * Resume timer. Returns number of milliseconds of timer remained.
+ * If `timer` parameter isn't set, returns undefined.
+ *
+ * @returns {number | undefined}
+ */
+const toggleTimer = () => {
+  const timer = globalState.timeout;
+  return timer && (timer.running ? stopTimer() : resumeTimer());
+};
+
+/**
+ * Increase timer. Returns number of milliseconds of an updated timer.
+ * If `timer` parameter isn't set, returns undefined.
+ *
+ * @param {number} ms
+ * @returns {number | undefined}
+ */
+const increaseTimer = ms => {
+  if (globalState.timeout) {
+    const remaining = globalState.timeout.increase(ms);
+    animateTimerProgressBar(remaining, true);
+    return remaining;
+  }
+};
+
+/**
+ * Check if timer is running. Returns true if timer is running
+ * or false if timer is paused or stopped.
+ * If `timer` parameter isn't set, returns undefined
+ *
+ * @returns {boolean}
+ */
+const isTimerRunning = () => {
+  return Boolean(globalState.timeout && globalState.timeout.isRunning());
+};
+
+let bodyClickListenerAdded = false;
+/** @type {Record<string, any>} */
+const clickHandlers = {};
+
+/**
+ * @this {any}
+ * @param {string} attr
+ */
+function bindClickHandler(attr = 'data-swal-template') {
+  clickHandlers[attr] = this;
+  if (!bodyClickListenerAdded) {
+    document.body.addEventListener('click', bodyClickListener);
+    bodyClickListenerAdded = true;
+  }
+}
+
+/**
+ * @param {MouseEvent} event
+ */
+const bodyClickListener = event => {
+  for (let el = /** @type {any} */event.target; el && el !== document; el = el.parentNode) {
+    for (const attr in clickHandlers) {
+      const template = el.getAttribute && el.getAttribute(attr);
+      if (template) {
+        clickHandlers[attr].fire({
+          template
+        });
+        return;
+      }
+    }
+  }
+};
+
+// Source: https://gist.github.com/mudge/5830382?permalink_comment_id=2691957#gistcomment-2691957
+
+class EventEmitter {
+  constructor() {
+    /** @type {Events} */
+    this.events = {};
+  }
+
+  /**
+   * @param {string} eventName
+   * @returns {EventHandlers}
+   */
+  _getHandlersByEventName(eventName) {
+    if (typeof this.events[eventName] === 'undefined') {
+      // not Set because we need to keep the FIFO order
+      // https://github.com/sweetalert2/sweetalert2/pull/2763#discussion_r1748990334
+      this.events[eventName] = [];
+    }
+    return this.events[eventName];
+  }
+
+  /**
+   * @param {string} eventName
+   * @param {EventHandler} eventHandler
+   */
+  on(eventName, eventHandler) {
+    const currentHandlers = this._getHandlersByEventName(eventName);
+    if (!currentHandlers.includes(eventHandler)) {
+      currentHandlers.push(eventHandler);
+    }
+  }
+
+  /**
+   * @param {string} eventName
+   * @param {EventHandler} eventHandler
+   */
+  once(eventName, eventHandler) {
+    /**
+     * @param {...any} args
+     */
+    const onceFn = (...args) => {
+      this.removeListener(eventName, onceFn);
+      // @ts-ignore
+      eventHandler.apply(this, args);
+    };
+    this.on(eventName, onceFn);
+  }
+
+  /**
+   * @param {string} eventName
+   * @param {...any} args
+   */
+  emit(eventName, ...args) {
+    this._getHandlersByEventName(eventName).forEach(
+    /**
+     * @param {EventHandler} eventHandler
+     */
+    eventHandler => {
+      try {
+        // @ts-ignore
+        eventHandler.apply(this, args);
+      } catch (error) {
+        console.error(error);
+      }
+    });
+  }
+
+  /**
+   * @param {string} eventName
+   * @param {EventHandler} eventHandler
+   */
+  removeListener(eventName, eventHandler) {
+    const currentHandlers = this._getHandlersByEventName(eventName);
+    const index = currentHandlers.indexOf(eventHandler);
+    if (index > -1) {
+      currentHandlers.splice(index, 1);
+    }
+  }
+
+  /**
+   * @param {string} eventName
+   */
+  removeAllListeners(eventName) {
+    if (this.events[eventName] !== undefined) {
+      // https://github.com/sweetalert2/sweetalert2/pull/2763#discussion_r1749239222
+      this.events[eventName].length = 0;
+    }
+  }
+  reset() {
+    this.events = {};
+  }
+}
+
+globalState.eventEmitter = new EventEmitter();
+
+/**
+ * @param {string} eventName
+ * @param {EventHandler} eventHandler
+ */
+const on = (eventName, eventHandler) => {
+  if (globalState.eventEmitter) {
+    globalState.eventEmitter.on(eventName, eventHandler);
+  }
+};
+
+/**
+ * @param {string} eventName
+ * @param {EventHandler} eventHandler
+ */
+const once = (eventName, eventHandler) => {
+  if (globalState.eventEmitter) {
+    globalState.eventEmitter.once(eventName, eventHandler);
+  }
+};
+
+/**
+ * @param {string} [eventName]
+ * @param {EventHandler} [eventHandler]
+ */
+const off = (eventName, eventHandler) => {
+  if (!globalState.eventEmitter) {
+    return;
+  }
+
+  // Remove all handlers for all events
+  if (!eventName) {
+    globalState.eventEmitter.reset();
+    return;
+  }
+  if (eventHandler) {
+    // Remove a specific handler
+    globalState.eventEmitter.removeListener(eventName, eventHandler);
+  } else {
+    // Remove all handlers for a specific event
+    globalState.eventEmitter.removeAllListeners(eventName);
+  }
+};
+
+var staticMethods = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  argsToParams: argsToParams,
+  bindClickHandler: bindClickHandler,
+  clickCancel: clickCancel,
+  clickConfirm: clickConfirm,
+  clickDeny: clickDeny,
+  enableLoading: showLoading,
+  fire: fire,
+  getActions: getActions,
+  getCancelButton: getCancelButton,
+  getCloseButton: getCloseButton,
+  getConfirmButton: getConfirmButton,
+  getContainer: getContainer,
+  getDenyButton: getDenyButton,
+  getFocusableElements: getFocusableElements,
+  getFooter: getFooter,
+  getHtmlContainer: getHtmlContainer,
+  getIcon: getIcon,
+  getIconContent: getIconContent,
+  getImage: getImage,
+  getInputLabel: getInputLabel,
+  getLoader: getLoader,
+  getPopup: getPopup,
+  getProgressSteps: getProgressSteps,
+  getTimerLeft: getTimerLeft,
+  getTimerProgressBar: getTimerProgressBar,
+  getTitle: getTitle,
+  getValidationMessage: getValidationMessage,
+  increaseTimer: increaseTimer,
+  isDeprecatedParameter: isDeprecatedParameter,
+  isLoading: isLoading,
+  isTimerRunning: isTimerRunning,
+  isUpdatableParameter: isUpdatableParameter,
+  isValidParameter: isValidParameter,
+  isVisible: isVisible,
+  mixin: mixin,
+  off: off,
+  on: on,
+  once: once,
+  resumeTimer: resumeTimer,
+  showLoading: showLoading,
+  stopTimer: stopTimer,
+  toggleTimer: toggleTimer
+});
+
+class Timer {
+  /**
+   * @param {() => void} callback
+   * @param {number} delay
+   */
+  constructor(callback, delay) {
+    this.callback = callback;
+    this.remaining = delay;
+    this.running = false;
+    this.start();
+  }
+
+  /**
+   * @returns {number}
+   */
+  start() {
+    if (!this.running) {
+      this.running = true;
+      this.started = new Date();
+      this.id = setTimeout(this.callback, this.remaining);
+    }
+    return this.remaining;
+  }
+
+  /**
+   * @returns {number}
+   */
+  stop() {
+    if (this.started && this.running) {
+      this.running = false;
+      clearTimeout(this.id);
+      this.remaining -= new Date().getTime() - this.started.getTime();
+    }
+    return this.remaining;
+  }
+
+  /**
+   * @param {number} n
+   * @returns {number}
+   */
+  increase(n) {
+    const running = this.running;
+    if (running) {
+      this.stop();
+    }
+    this.remaining += n;
+    if (running) {
+      this.start();
+    }
+    return this.remaining;
+  }
+
+  /**
+   * @returns {number}
+   */
+  getTimerLeft() {
+    if (this.running) {
+      this.stop();
+      this.start();
+    }
+    return this.remaining;
+  }
+
+  /**
+   * @returns {boolean}
+   */
+  isRunning() {
+    return this.running;
+  }
+}
+
+const swalStringParams = ['swal-title', 'swal-html', 'swal-footer'];
+
+/**
+ * @param {SweetAlertOptions} params
+ * @returns {SweetAlertOptions}
+ */
+const getTemplateParams = params => {
+  const template = typeof params.template === 'string' ? (/** @type {HTMLTemplateElement} */document.querySelector(params.template)) : params.template;
+  if (!template) {
+    return {};
+  }
+  /** @type {DocumentFragment} */
+  const templateContent = template.content;
+  showWarningsForElements(templateContent);
+  const result = Object.assign(getSwalParams(templateContent), getSwalFunctionParams(templateContent), getSwalButtons(templateContent), getSwalImage(templateContent), getSwalIcon(templateContent), getSwalInput(templateContent), getSwalStringParams(templateContent, swalStringParams));
+  return result;
+};
+
+/**
+ * @param {DocumentFragment} templateContent
+ * @returns {Record<string, string | boolean | number>}
+ */
+const getSwalParams = templateContent => {
+  /** @type {Record<string, string | boolean | number>} */
+  const result = {};
+  /** @type {HTMLElement[]} */
+  const swalParams = Array.from(templateContent.querySelectorAll('swal-param'));
+  swalParams.forEach(param => {
+    showWarningsForAttributes(param, ['name', 'value']);
+    const paramName = /** @type {keyof SweetAlertOptions} */param.getAttribute('name');
+    const value = param.getAttribute('value');
+    if (!paramName || !value) {
+      return;
+    }
+    if (paramName in defaultParams && typeof defaultParams[(/** @type {keyof typeof defaultParams} */paramName)] === 'boolean') {
+      result[paramName] = value !== 'false';
+    } else if (paramName in defaultParams && typeof defaultParams[(/** @type {keyof typeof defaultParams} */paramName)] === 'object') {
+      result[paramName] = JSON.parse(value);
+    } else {
+      result[paramName] = value;
+    }
+  });
+  return result;
+};
+
+/**
+ * @param {DocumentFragment} templateContent
+ * @returns {Record<string, () => void>}
+ */
+const getSwalFunctionParams = templateContent => {
+  /** @type {Record<string, () => void>} */
+  const result = {};
+  /** @type {HTMLElement[]} */
+  const swalFunctions = Array.from(templateContent.querySelectorAll('swal-function-param'));
+  swalFunctions.forEach(param => {
+    const paramName = /** @type {keyof SweetAlertOptions} */param.getAttribute('name');
+    const value = param.getAttribute('value');
+    if (!paramName || !value) {
+      return;
+    }
+    result[paramName] = new Function(`return ${value}`)();
+  });
+  return result;
+};
+
+/**
+ * @param {DocumentFragment} templateContent
+ * @returns {Record<string, string | boolean>}
+ */
+const getSwalButtons = templateContent => {
+  /** @type {Record<string, string | boolean>} */
+  const result = {};
+  /** @type {HTMLElement[]} */
+  const swalButtons = Array.from(templateContent.querySelectorAll('swal-button'));
+  swalButtons.forEach(button => {
+    showWarningsForAttributes(button, ['type', 'color', 'aria-label']);
+    const type = button.getAttribute('type');
+    if (!type || !['confirm', 'cancel', 'deny'].includes(type)) {
+      return;
+    }
+    result[`${type}ButtonText`] = button.innerHTML;
+    result[`show${capitalizeFirstLetter(type)}Button`] = true;
+    const color = button.getAttribute('color');
+    if (color !== null) {
+      result[`${type}ButtonColor`] = color;
+    }
+    const ariaLabel = button.getAttribute('aria-label');
+    if (ariaLabel !== null) {
+      result[`${type}ButtonAriaLabel`] = ariaLabel;
+    }
+  });
+  return result;
+};
+
+/**
+ * @param {DocumentFragment} templateContent
+ * @returns {Pick<SweetAlertOptions, 'imageUrl' | 'imageWidth' | 'imageHeight' | 'imageAlt'>}
+ */
+const getSwalImage = templateContent => {
+  const result = {};
+  /** @type {HTMLElement | null} */
+  const image = templateContent.querySelector('swal-image');
+  if (image) {
+    showWarningsForAttributes(image, ['src', 'width', 'height', 'alt']);
+    // getAttribute returns null if attribute is absent; `|| undefined` converts empty string to undefined
+    const src = image.getAttribute('src');
+    if (src !== null) result.imageUrl = src || undefined;
+    const width = image.getAttribute('width');
+    if (width !== null) result.imageWidth = width || undefined;
+    const height = image.getAttribute('height');
+    if (height !== null) result.imageHeight = height || undefined;
+    const alt = image.getAttribute('alt');
+    if (alt !== null) result.imageAlt = alt || undefined;
+  }
+  return result;
+};
+
+/**
+ * @param {DocumentFragment} templateContent
+ * @returns {object}
+ */
+const getSwalIcon = templateContent => {
+  const result = {};
+  /** @type {HTMLElement | null} */
+  const icon = templateContent.querySelector('swal-icon');
+  if (icon) {
+    showWarningsForAttributes(icon, ['type', 'color']);
+    if (icon.hasAttribute('type')) {
+      result.icon = icon.getAttribute('type');
+    }
+    if (icon.hasAttribute('color')) {
+      result.iconColor = icon.getAttribute('color');
+    }
+    result.iconHtml = icon.innerHTML;
+  }
+  return result;
+};
+
+/**
+ * @param {DocumentFragment} templateContent
+ * @returns {object}
+ */
+const getSwalInput = templateContent => {
+  /** @type {Record<string, any>} */
+  const result = {};
+  /** @type {HTMLElement | null} */
+  const input = templateContent.querySelector('swal-input');
+  if (input) {
+    showWarningsForAttributes(input, ['type', 'label', 'placeholder', 'value']);
+    result.input = input.getAttribute('type') || 'text';
+    if (input.hasAttribute('label')) {
+      result.inputLabel = input.getAttribute('label');
+    }
+    if (input.hasAttribute('placeholder')) {
+      result.inputPlaceholder = input.getAttribute('placeholder');
+    }
+    if (input.hasAttribute('value')) {
+      result.inputValue = input.getAttribute('value');
+    }
+  }
+  /** @type {HTMLElement[]} */
+  const inputOptions = Array.from(templateContent.querySelectorAll('swal-input-option'));
+  if (inputOptions.length) {
+    result.inputOptions = {};
+    inputOptions.forEach(option => {
+      showWarningsForAttributes(option, ['value']);
+      const optionValue = option.getAttribute('value');
+      if (!optionValue) {
+        return;
+      }
+      const optionName = option.innerHTML;
+      result.inputOptions[optionValue] = optionName;
+    });
+  }
+  return result;
+};
+
+/**
+ * @param {DocumentFragment} templateContent
+ * @param {string[]} paramNames
+ * @returns {Record<string, string>}
+ */
+const getSwalStringParams = (templateContent, paramNames) => {
+  /** @type {Record<string, string>} */
+  const result = {};
+  for (const i in paramNames) {
+    const paramName = paramNames[i];
+    /** @type {HTMLElement | null} */
+    const tag = templateContent.querySelector(paramName);
+    if (tag) {
+      showWarningsForAttributes(tag, []);
+      result[paramName.replace(/^swal-/, '')] = tag.innerHTML.trim();
+    }
+  }
+  return result;
+};
+
+/**
+ * @param {DocumentFragment} templateContent
+ */
+const showWarningsForElements = templateContent => {
+  const allowedElements = swalStringParams.concat(['swal-param', 'swal-function-param', 'swal-button', 'swal-image', 'swal-icon', 'swal-input', 'swal-input-option']);
+  Array.from(templateContent.children).forEach(el => {
+    const tagName = el.tagName.toLowerCase();
+    if (!allowedElements.includes(tagName)) {
+      warn(`Unrecognized element <${tagName}>`);
+    }
+  });
+};
+
+/**
+ * @param {HTMLElement} el
+ * @param {string[]} allowedAttributes
+ */
+const showWarningsForAttributes = (el, allowedAttributes) => {
+  Array.from(el.attributes).forEach(attribute => {
+    if (allowedAttributes.indexOf(attribute.name) === -1) {
+      warn([`Unrecognized attribute "${attribute.name}" on <${el.tagName.toLowerCase()}>.`, `${allowedAttributes.length ? `Allowed attributes are: ${allowedAttributes.join(', ')}` : 'To set the value, use HTML within the element.'}`]);
+    }
+  });
+};
+
+const SHOW_CLASS_TIMEOUT = 10;
+
+/**
+ * Open popup, add necessary classes and styles, fix scrollbar
+ *
+ * @param {SweetAlertOptions} params
+ */
+const openPopup = params => {
+  var _globalState$eventEmi, _globalState$eventEmi2;
+  const container = getContainer();
+  const popup = getPopup();
+  if (!container || !popup) {
+    return;
+  }
+  if (typeof params.willOpen === 'function') {
+    params.willOpen(popup);
+  }
+  (_globalState$eventEmi = globalState.eventEmitter) === null || _globalState$eventEmi === void 0 || _globalState$eventEmi.emit('willOpen', popup);
+  const bodyStyles = window.getComputedStyle(document.body);
+  const initialBodyOverflow = bodyStyles.overflowY;
+  addClasses(container, popup, params);
+
+  // scrolling is 'hidden' until animation is done, after that 'auto'
+  setTimeout(() => {
+    setScrollingVisibility(container, popup);
+  }, SHOW_CLASS_TIMEOUT);
+  if (isModal()) {
+    fixScrollContainer(container, params.scrollbarPadding !== undefined ? params.scrollbarPadding : false, initialBodyOverflow);
+    setAriaHidden();
+  }
+
+  // https://github.com/sweetalert2/sweetalert2/issues/2923
+  if (isIOS && params.backdrop === false && popup.scrollHeight > container.clientHeight) {
+    // remove pointer-events: none from container, it breaks scrolling tall popups in iOS
+    container.style.pointerEvents = 'auto';
+  }
+  if (!isToast() && !globalState.previousActiveElement) {
+    globalState.previousActiveElement = document.activeElement;
+  }
+  if (typeof params.didOpen === 'function') {
+    const didOpen = params.didOpen;
+    setTimeout(() => didOpen(popup));
+  }
+  (_globalState$eventEmi2 = globalState.eventEmitter) === null || _globalState$eventEmi2 === void 0 || _globalState$eventEmi2.emit('didOpen', popup);
+};
+
+/**
+ * @param {Event} event
+ */
+const swalOpenAnimationFinished = event => {
+  const popup = getPopup();
+  if (!popup || event.target !== popup) {
+    return;
+  }
+  const container = getContainer();
+  if (!container) {
+    return;
+  }
+  popup.removeEventListener('animationend', swalOpenAnimationFinished);
+  popup.removeEventListener('transitionend', swalOpenAnimationFinished);
+  container.style.overflowY = 'auto';
+
+  // no-transition is added in init() in case one swal is opened right after another
+  removeClass(container, swalClasses['no-transition']);
+};
+
+/**
+ * @param {HTMLElement} container
+ * @param {HTMLElement} popup
+ */
+const setScrollingVisibility = (container, popup) => {
+  if (hasCssAnimation(popup)) {
+    container.style.overflowY = 'hidden';
+    popup.addEventListener('animationend', swalOpenAnimationFinished);
+    popup.addEventListener('transitionend', swalOpenAnimationFinished);
+  } else {
+    container.style.overflowY = 'auto';
+  }
+};
+
+/**
+ * @param {HTMLElement} container
+ * @param {boolean} scrollbarPadding
+ * @param {string} initialBodyOverflow
+ */
+const fixScrollContainer = (container, scrollbarPadding, initialBodyOverflow) => {
+  iOSfix();
+  if (scrollbarPadding && initialBodyOverflow !== 'hidden') {
+    replaceScrollbarWithPadding(initialBodyOverflow);
+  }
+
+  // sweetalert2/issues/1247
+  setTimeout(() => {
+    container.scrollTop = 0;
+  });
+};
+
+/**
+ * @param {HTMLElement} container
+ * @param {HTMLElement} popup
+ * @param {SweetAlertOptions} params
+ */
+const addClasses = (container, popup, params) => {
+  var _params$showClass;
+  if ((_params$showClass = params.showClass) !== null && _params$showClass !== void 0 && _params$showClass.backdrop) {
+    addClass(container, params.showClass.backdrop);
+  }
+  if (params.animation) {
+    // this workaround with opacity is needed for https://github.com/sweetalert2/sweetalert2/issues/2059
+    popup.style.setProperty('opacity', '0', 'important');
+    show(popup, 'grid');
+    setTimeout(() => {
+      var _params$showClass2;
+      // Animate popup right after showing it
+      if ((_params$showClass2 = params.showClass) !== null && _params$showClass2 !== void 0 && _params$showClass2.popup) {
+        addClass(popup, params.showClass.popup);
+      }
+      // and remove the opacity workaround
+      popup.style.removeProperty('opacity');
+    }, SHOW_CLASS_TIMEOUT); // 10ms in order to fix #2062
+  } else {
+    show(popup, 'grid');
+  }
+  addClass([document.documentElement, document.body], swalClasses.shown);
+  if (params.heightAuto && params.backdrop && !params.toast) {
+    addClass([document.documentElement, document.body], swalClasses['height-auto']);
+  }
+};
+
+var defaultInputValidators = {
+  /**
+   * @param {string} string
+   * @param {string} [validationMessage]
+   * @returns {Promise<string | void>}
+   */
+  email: (string, validationMessage) => {
+    return /^[a-zA-Z0-9.+_'-]+@[a-zA-Z0-9.-]+\.[a-zA-Z0-9-]+$/.test(string) ? Promise.resolve() : Promise.resolve(validationMessage || 'Invalid email address');
+  },
+  /**
+   * @param {string} string
+   * @param {string} [validationMessage]
+   * @returns {Promise<string | void>}
+   */
+  url: (string, validationMessage) => {
+    // taken from https://stackoverflow.com/a/3809435 with a small change from #1306 and #2013
+    return /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-z]{2,63}\b([-a-zA-Z0-9@:%_+.~#?&/=]*)$/.test(string) ? Promise.resolve() : Promise.resolve(validationMessage || 'Invalid URL');
+  }
+};
+
+/**
+ * @param {SweetAlertOptions} params
+ */
+function setDefaultInputValidators(params) {
+  // Use default `inputValidator` for supported input types if not provided
+  if (params.inputValidator) {
+    return;
+  }
+  if (params.input === 'email') {
+    params.inputValidator = defaultInputValidators['email'];
+  }
+  if (params.input === 'url') {
+    params.inputValidator = defaultInputValidators['url'];
+  }
+}
+
+/**
+ * @param {SweetAlertOptions} params
+ */
+function validateCustomTargetElement(params) {
+  // Determine if the custom target element is valid
+  if (!params.target || typeof params.target === 'string' && !document.querySelector(params.target) || typeof params.target !== 'string' && !params.target.appendChild) {
+    warn('Target parameter is not valid, defaulting to "body"');
+    params.target = 'body';
+  }
+}
+
+/**
+ * Set type, text and actions on popup
+ *
+ * @param {SweetAlertOptions} params
+ */
+function setParameters(params) {
+  setDefaultInputValidators(params);
+
+  // showLoaderOnConfirm && preConfirm
+  if (params.showLoaderOnConfirm && !params.preConfirm) {
+    warn('showLoaderOnConfirm is set to true, but preConfirm is not defined.\n' + 'showLoaderOnConfirm should be used together with preConfirm, see usage example:\n' + 'https://sweetalert2.github.io/#ajax-request');
+  }
+  validateCustomTargetElement(params);
+
+  // Replace newlines with <br> in title
+  if (typeof params.title === 'string') {
+    params.title = params.title.split('\n').join('<br />');
+  }
+  init(params);
+}
+
+/** @type {SweetAlert} */
+let currentInstance;
+var _promise = /*#__PURE__*/new WeakMap();
+class SweetAlert {
+  /**
+   * @param {...(SweetAlertOptions | string)} args
+   * @this {SweetAlert}
+   */
+  constructor(...args) {
+    /**
+     * @type {Promise<SweetAlertResult>}
+     */
+    _classPrivateFieldInitSpec(this, _promise, /** @type {Promise<SweetAlertResult>} */
+    Promise.resolve({
+      isConfirmed: false,
+      isDenied: false,
+      isDismissed: true
+    }));
+    // Prevent run in Node env
+    if (typeof window === 'undefined') {
+      return;
+    }
+    currentInstance = this;
+
+    // @ts-ignore
+    const outerParams = Object.freeze(this.constructor.argsToParams(args));
+
+    /** @type {Readonly<SweetAlertOptions>} */
+    this.params = outerParams;
+
+    /** @type {boolean} */
+    this.isAwaitingPromise = false;
+    _classPrivateFieldSet2(_promise, this, this._main(currentInstance.params));
+  }
+
+  /**
+   * @param {any} userParams
+   * @param {any} mixinParams
+   */
+  _main(userParams, mixinParams = {}) {
+    showWarningsForParams(Object.assign({}, mixinParams, userParams));
+    if (globalState.currentInstance) {
+      const swalPromiseResolve = privateMethods.swalPromiseResolve.get(globalState.currentInstance);
+      const {
+        isAwaitingPromise
+      } = globalState.currentInstance;
+      globalState.currentInstance._destroy();
+      if (!isAwaitingPromise) {
+        swalPromiseResolve({
+          isDismissed: true
+        });
+      }
+      if (isModal()) {
+        unsetAriaHidden();
+      }
+    }
+    globalState.currentInstance = currentInstance;
+    const innerParams = prepareParams(userParams, mixinParams);
+    setParameters(innerParams);
+    Object.freeze(innerParams);
+
+    // clear the previous timer
+    if (globalState.timeout) {
+      globalState.timeout.stop();
+      delete globalState.timeout;
+    }
+
+    // clear the restore focus timeout
+    clearTimeout(globalState.restoreFocusTimeout);
+    const domCache = populateDomCache(currentInstance);
+    render(currentInstance, innerParams);
+    privateProps.innerParams.set(currentInstance, innerParams);
+    return swalPromise(currentInstance, domCache, innerParams);
+  }
+
+  // `catch` cannot be the name of a module export, so we define our thenable methods here instead
+  /**
+   * @param {any} onFulfilled
+   */
+  // oxlint-disable-next-line unicorn/no-thenable
+  then(onFulfilled) {
+    return _classPrivateFieldGet2(_promise, this).then(onFulfilled);
+  }
+
+  /**
+   * @param {any} onFinally
+   */
+  finally(onFinally) {
+    return _classPrivateFieldGet2(_promise, this).finally(onFinally);
+  }
+}
+
+/**
+ * @param {SweetAlert} instance
+ * @param {DomCache} domCache
+ * @param {SweetAlertOptions} innerParams
+ * @returns {Promise<SweetAlertResult>}
+ */
+const swalPromise = (instance, domCache, innerParams) => {
+  return new Promise((resolve, reject) => {
+    // functions to handle all closings/dismissals
+    /**
+     * @param {DismissReason} dismiss
+     */
+    const dismissWith = dismiss => {
+      instance.close({
+        isDismissed: true,
+        dismiss,
+        isConfirmed: false,
+        isDenied: false
+      });
+    };
+    privateMethods.swalPromiseResolve.set(instance, resolve);
+    privateMethods.swalPromiseReject.set(instance, reject);
+    domCache.confirmButton.onclick = () => {
+      handleConfirmButtonClick(instance);
+    };
+    domCache.denyButton.onclick = () => {
+      handleDenyButtonClick(instance);
+    };
+    domCache.cancelButton.onclick = () => {
+      handleCancelButtonClick(instance, dismissWith);
+    };
+    domCache.closeButton.onclick = () => {
+      dismissWith(DismissReason.close);
+    };
+    handlePopupClick(innerParams, domCache, dismissWith);
+    addKeydownHandler(globalState, innerParams, dismissWith);
+    handleInputOptionsAndValue(instance, innerParams);
+    openPopup(innerParams);
+    setupTimer(globalState, innerParams, dismissWith);
+    initFocus(domCache, innerParams);
+
+    // Scroll container to top on open (#1247, #1946)
+    setTimeout(() => {
+      domCache.container.scrollTop = 0;
+    });
+  });
+};
+
+/**
+ * @param {SweetAlertOptions} userParams
+ * @param {SweetAlertOptions} mixinParams
+ * @returns {SweetAlertOptions}
+ */
+const prepareParams = (userParams, mixinParams) => {
+  const templateParams = getTemplateParams(userParams);
+  const params = Object.assign({}, defaultParams, mixinParams, templateParams, userParams); // precedence is described in #2131
+  params.showClass = Object.assign({}, defaultParams.showClass, params.showClass);
+  params.hideClass = Object.assign({}, defaultParams.hideClass, params.hideClass);
+  if (params.animation === false) {
+    params.showClass = {
+      backdrop: 'swal2-noanimation'
+    };
+    params.hideClass = {};
+  }
+  return params;
+};
+
+/**
+ * @param {SweetAlert} instance
+ * @returns {DomCache}
+ */
+const populateDomCache = instance => {
+  const domCache = /** @type {DomCache} */{
+    popup: (/** @type {HTMLElement} */getPopup()),
+    container: (/** @type {HTMLElement} */getContainer()),
+    actions: (/** @type {HTMLElement} */getActions()),
+    confirmButton: (/** @type {HTMLElement} */getConfirmButton()),
+    denyButton: (/** @type {HTMLElement} */getDenyButton()),
+    cancelButton: (/** @type {HTMLElement} */getCancelButton()),
+    loader: (/** @type {HTMLElement} */getLoader()),
+    closeButton: (/** @type {HTMLElement} */getCloseButton()),
+    validationMessage: (/** @type {HTMLElement} */getValidationMessage()),
+    progressSteps: (/** @type {HTMLElement} */getProgressSteps())
+  };
+  privateProps.domCache.set(instance, domCache);
+  return domCache;
+};
+
+/**
+ * @param {GlobalState} globalState
+ * @param {SweetAlertOptions} innerParams
+ * @param {(dismiss: DismissReason) => void} dismissWith
+ */
+const setupTimer = (globalState, innerParams, dismissWith) => {
+  const timerProgressBar = getTimerProgressBar();
+  hide(timerProgressBar);
+  if (innerParams.timer) {
+    globalState.timeout = new Timer(() => {
+      dismissWith('timer');
+      delete globalState.timeout;
+    }, innerParams.timer);
+    if (innerParams.timerProgressBar && timerProgressBar) {
+      show(timerProgressBar);
+      applyCustomClass(timerProgressBar, innerParams, 'timerProgressBar');
+      setTimeout(() => {
+        if (globalState.timeout && globalState.timeout.running) {
+          // timer can be already stopped or unset at this point
+          animateTimerProgressBar(/** @type {number} */innerParams.timer);
+        }
+      });
+    }
+  }
+};
+
+/**
+ * Initialize focus in the popup:
+ *
+ * 1. If `toast` is `true`, don't steal focus from the document.
+ * 2. Else if there is an [autofocus] element, focus it.
+ * 3. Else if `focusConfirm` is `true` and confirm button is visible, focus it.
+ * 4. Else if `focusDeny` is `true` and deny button is visible, focus it.
+ * 5. Else if `focusCancel` is `true` and cancel button is visible, focus it.
+ * 6. Else focus the first focusable element in a popup (if any).
+ *
+ * @param {DomCache} domCache
+ * @param {SweetAlertOptions} innerParams
+ */
+const initFocus = (domCache, innerParams) => {
+  if (innerParams.toast) {
+    return;
+  }
+  // TODO: this is dumb, remove `allowEnterKey` param in the next major version
+  if (!callIfFunction(innerParams.allowEnterKey)) {
+    warnAboutDeprecation('allowEnterKey', 'preConfirm: () => false');
+    domCache.popup.focus();
+    return;
+  }
+  if (focusAutofocus(domCache)) {
+    return;
+  }
+  if (focusButton(domCache, innerParams)) {
+    return;
+  }
+  setFocus(-1, 1);
+};
+
+/**
+ * @param {DomCache} domCache
+ * @returns {boolean}
+ */
+const focusAutofocus = domCache => {
+  const autofocusElements = Array.from(domCache.popup.querySelectorAll('[autofocus]'));
+  for (const autofocusElement of autofocusElements) {
+    if (autofocusElement instanceof HTMLElement && isVisible$1(autofocusElement)) {
+      autofocusElement.focus();
+      return true;
+    }
+  }
+  return false;
+};
+
+/**
+ * @param {DomCache} domCache
+ * @param {SweetAlertOptions} innerParams
+ * @returns {boolean}
+ */
+const focusButton = (domCache, innerParams) => {
+  if (innerParams.focusDeny && isVisible$1(domCache.denyButton)) {
+    domCache.denyButton.focus();
+    return true;
+  }
+  if (innerParams.focusCancel && isVisible$1(domCache.cancelButton)) {
+    domCache.cancelButton.focus();
+    return true;
+  }
+  if (innerParams.focusConfirm && isVisible$1(domCache.confirmButton)) {
+    domCache.confirmButton.focus();
+    return true;
+  }
+  return false;
+};
+
+// Assign instance methods from src/instanceMethods/*.js to prototype
+SweetAlert.prototype.disableButtons = disableButtons;
+SweetAlert.prototype.enableButtons = enableButtons;
+SweetAlert.prototype.getInput = getInput;
+SweetAlert.prototype.disableInput = disableInput;
+SweetAlert.prototype.enableInput = enableInput;
+SweetAlert.prototype.hideLoading = hideLoading;
+SweetAlert.prototype.disableLoading = hideLoading;
+SweetAlert.prototype.showValidationMessage = showValidationMessage;
+SweetAlert.prototype.resetValidationMessage = resetValidationMessage;
+SweetAlert.prototype.close = close;
+SweetAlert.prototype.closePopup = close;
+SweetAlert.prototype.closeModal = close;
+SweetAlert.prototype.closeToast = close;
+SweetAlert.prototype.rejectPromise = rejectPromise;
+SweetAlert.prototype.update = update;
+SweetAlert.prototype._destroy = _destroy;
+
+// Assign static methods from src/staticMethods/*.js to constructor
+Object.assign(SweetAlert, staticMethods);
+
+// Proxy to instance methods to constructor, for now, for backwards compatibility
+Object.keys(instanceMethods).forEach(key => {
+  /**
+   * @param {...(SweetAlertOptions | string | undefined)} args
+   * @returns {SweetAlertResult | Promise<SweetAlertResult> | undefined}
+   */
+  // @ts-ignore: Dynamic property assignment for backwards compatibility
+  SweetAlert[key] = function (...args) {
+    // @ts-ignore
+    if (currentInstance && currentInstance[key]) {
+      // @ts-ignore
+      return currentInstance[key](...args);
+    }
+    return undefined;
+  };
+});
+SweetAlert.DismissReason = DismissReason;
+SweetAlert.version = '11.26.25';
+
+const Swal = SweetAlert;
+// @ts-ignore
+Swal.default = Swal;
+
+export { Swal as default };
+"undefined"!=typeof document&&function(e,t){var n=e.createElement("style");if(e.getElementsByTagName("head")[0].appendChild(n),n.styleSheet)n.styleSheet.disabled||(n.styleSheet.cssText=t);else try{n.innerHTML=t}catch(e){n.innerText=t}}(document,":root{--swal2-outline: 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-container-padding: 0.625em;--swal2-backdrop: rgba(0, 0, 0, 0.4);--swal2-backdrop-transition: background-color 0.15s;--swal2-width: 32em;--swal2-padding: 0 0 1.25em;--swal2-border: none;--swal2-border-radius: 0.3125rem;--swal2-background: white;--swal2-color: #545454;--swal2-show-animation: swal2-show 0.3s;--swal2-hide-animation: swal2-hide 0.15s forwards;--swal2-icon-zoom: 1;--swal2-title-padding: 0.8em 1em 0;--swal2-html-container-padding: 1em 1.6em 0.3em;--swal2-input-border: 1px solid #d9d9d9;--swal2-input-border-radius: 0.1875em;--swal2-input-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-background: transparent;--swal2-input-transition: border-color 0.2s, box-shadow 0.2s;--swal2-input-hover-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;--swal2-input-focus-border: 1px solid #b4dbed;--swal2-input-focus-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px rgba(100, 150, 200, 0.5);--swal2-progress-step-background: #add8e6;--swal2-validation-message-background: #f0f0f0;--swal2-validation-message-color: #666;--swal2-footer-border-color: #eee;--swal2-footer-background: transparent;--swal2-footer-color: inherit;--swal2-timer-progress-bar-background: rgba(0, 0, 0, 0.3);--swal2-close-button-position: initial;--swal2-close-button-inset: auto;--swal2-close-button-font-size: 2.5em;--swal2-close-button-color: #ccc;--swal2-close-button-transition: color 0.2s, box-shadow 0.2s;--swal2-close-button-outline: initial;--swal2-close-button-box-shadow: inset 0 0 0 3px transparent;--swal2-close-button-focus-box-shadow: inset var(--swal2-outline);--swal2-close-button-hover-transform: none;--swal2-actions-justify-content: center;--swal2-actions-width: auto;--swal2-actions-margin: 1.25em auto 0;--swal2-actions-padding: 0;--swal2-actions-border-radius: 0;--swal2-actions-background: transparent;--swal2-action-button-transition: background-color 0.2s, box-shadow 0.2s;--swal2-action-button-hover: black 10%;--swal2-action-button-active: black 10%;--swal2-confirm-button-box-shadow: none;--swal2-confirm-button-border-radius: 0.25em;--swal2-confirm-button-background-color: #7066e0;--swal2-confirm-button-color: #fff;--swal2-deny-button-box-shadow: none;--swal2-deny-button-border-radius: 0.25em;--swal2-deny-button-background-color: #dc3741;--swal2-deny-button-color: #fff;--swal2-cancel-button-box-shadow: none;--swal2-cancel-button-border-radius: 0.25em;--swal2-cancel-button-background-color: #6e7881;--swal2-cancel-button-color: #fff;--swal2-toast-show-animation: swal2-toast-show 0.5s;--swal2-toast-hide-animation: swal2-toast-hide 0.1s forwards;--swal2-toast-border: none;--swal2-toast-box-shadow: 0 0 1px hsl(0deg 0% 0% / 0.075), 0 1px 2px hsl(0deg 0% 0% / 0.075), 1px 2px 4px hsl(0deg 0% 0% / 0.075), 1px 3px 8px hsl(0deg 0% 0% / 0.075), 2px 4px 16px hsl(0deg 0% 0% / 0.075)}[data-swal2-theme=dark]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}@media(prefers-color-scheme: dark){[data-swal2-theme=auto]{--swal2-dark-theme-black: #19191a;--swal2-dark-theme-white: #e1e1e1;--swal2-background: var(--swal2-dark-theme-black);--swal2-color: var(--swal2-dark-theme-white);--swal2-footer-border-color: #555;--swal2-input-background: color-mix(in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10%);--swal2-validation-message-background: color-mix( in srgb, var(--swal2-dark-theme-black), var(--swal2-dark-theme-white) 10% );--swal2-validation-message-color: var(--swal2-dark-theme-white);--swal2-timer-progress-bar-background: rgba(255, 255, 255, 0.7)}}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow:hidden}body.swal2-height-auto{height:auto !important}body.swal2-no-backdrop .swal2-container{background-color:rgba(0,0,0,0) !important;pointer-events:none}body.swal2-no-backdrop .swal2-container .swal2-popup{pointer-events:auto}body.swal2-no-backdrop .swal2-container .swal2-modal{box-shadow:0 0 10px var(--swal2-backdrop)}body.swal2-toast-shown .swal2-container{box-sizing:border-box;width:360px;max-width:100%;background-color:rgba(0,0,0,0);pointer-events:none}body.swal2-toast-shown .swal2-container.swal2-top{inset:0 auto auto 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-top-end,body.swal2-toast-shown .swal2-container.swal2-top-right{inset:0 0 auto auto}body.swal2-toast-shown .swal2-container.swal2-top-start,body.swal2-toast-shown .swal2-container.swal2-top-left{inset:0 auto auto 0}body.swal2-toast-shown .swal2-container.swal2-center-start,body.swal2-toast-shown .swal2-container.swal2-center-left{inset:50% auto auto 0;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-center{inset:50% auto auto 50%;transform:translate(-50%, -50%)}body.swal2-toast-shown .swal2-container.swal2-center-end,body.swal2-toast-shown .swal2-container.swal2-center-right{inset:50% 0 auto auto;transform:translateY(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-start,body.swal2-toast-shown .swal2-container.swal2-bottom-left{inset:auto auto 0 0}body.swal2-toast-shown .swal2-container.swal2-bottom{inset:auto auto 0 50%;transform:translateX(-50%)}body.swal2-toast-shown .swal2-container.swal2-bottom-end,body.swal2-toast-shown .swal2-container.swal2-bottom-right{inset:auto 0 0 auto}@media print{body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown){overflow-y:scroll !important}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown)>[aria-hidden=true]{display:none}body.swal2-shown:not(.swal2-no-backdrop,.swal2-toast-shown) .swal2-container{position:static !important}}div:where(.swal2-container){display:grid;position:fixed;z-index:1060;inset:0;box-sizing:border-box;grid-template-areas:\"top-start     top            top-end\" \"center-start  center         center-end\" \"bottom-start  bottom-center  bottom-end\";grid-template-rows:minmax(min-content, auto) minmax(min-content, auto) minmax(min-content, auto);height:100%;padding:var(--swal2-container-padding);overflow-x:hidden;transition:var(--swal2-backdrop-transition);-webkit-overflow-scrolling:touch}div:where(.swal2-container).swal2-backdrop-show,div:where(.swal2-container).swal2-noanimation{background:var(--swal2-backdrop)}div:where(.swal2-container).swal2-backdrop-hide{background:rgba(0,0,0,0) !important}div:where(.swal2-container).swal2-top-start,div:where(.swal2-container).swal2-center-start,div:where(.swal2-container).swal2-bottom-start{grid-template-columns:minmax(0, 1fr) auto auto}div:where(.swal2-container).swal2-top,div:where(.swal2-container).swal2-center,div:where(.swal2-container).swal2-bottom{grid-template-columns:auto minmax(0, 1fr) auto}div:where(.swal2-container).swal2-top-end,div:where(.swal2-container).swal2-center-end,div:where(.swal2-container).swal2-bottom-end{grid-template-columns:auto auto minmax(0, 1fr)}div:where(.swal2-container).swal2-top-start>.swal2-popup{align-self:start}div:where(.swal2-container).swal2-top>.swal2-popup{grid-column:2;place-self:start center}div:where(.swal2-container).swal2-top-end>.swal2-popup,div:where(.swal2-container).swal2-top-right>.swal2-popup{grid-column:3;place-self:start end}div:where(.swal2-container).swal2-center-start>.swal2-popup,div:where(.swal2-container).swal2-center-left>.swal2-popup{grid-row:2;align-self:center}div:where(.swal2-container).swal2-center>.swal2-popup{grid-column:2;grid-row:2;place-self:center center}div:where(.swal2-container).swal2-center-end>.swal2-popup,div:where(.swal2-container).swal2-center-right>.swal2-popup{grid-column:3;grid-row:2;place-self:center end}div:where(.swal2-container).swal2-bottom-start>.swal2-popup,div:where(.swal2-container).swal2-bottom-left>.swal2-popup{grid-column:1;grid-row:3;align-self:end}div:where(.swal2-container).swal2-bottom>.swal2-popup{grid-column:2;grid-row:3;place-self:end center}div:where(.swal2-container).swal2-bottom-end>.swal2-popup,div:where(.swal2-container).swal2-bottom-right>.swal2-popup{grid-column:3;grid-row:3;place-self:end end}div:where(.swal2-container).swal2-grow-row>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-column:1/4;width:100%}div:where(.swal2-container).swal2-grow-column>.swal2-popup,div:where(.swal2-container).swal2-grow-fullscreen>.swal2-popup{grid-row:1/4;align-self:stretch}div:where(.swal2-container).swal2-no-transition{transition:none !important}div:where(.swal2-container)[popover]{width:auto;border:0}div:where(.swal2-container) div:where(.swal2-popup){display:none;position:relative;box-sizing:border-box;grid-template-columns:minmax(0, 100%);width:var(--swal2-width);max-width:100%;padding:var(--swal2-padding);border:var(--swal2-border);border-radius:var(--swal2-border-radius);background:var(--swal2-background);color:var(--swal2-color);font-family:inherit;font-size:1rem}div:where(.swal2-container) div:where(.swal2-popup):focus{outline:none}div:where(.swal2-container) div:where(.swal2-popup).swal2-loading{overflow-y:hidden}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable{cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-draggable div:where(.swal2-icon){cursor:grab}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging{cursor:grabbing}div:where(.swal2-container) div:where(.swal2-popup).swal2-dragging div:where(.swal2-icon){cursor:grabbing}div:where(.swal2-container) h2:where(.swal2-title){position:relative;max-width:100%;margin:0;padding:var(--swal2-title-padding);color:inherit;font-size:1.875em;font-weight:600;text-align:center;text-transform:none;overflow-wrap:break-word;cursor:initial}div:where(.swal2-container) div:where(.swal2-actions){display:flex;z-index:1;box-sizing:border-box;flex-wrap:wrap;align-items:center;justify-content:var(--swal2-actions-justify-content);width:var(--swal2-actions-width);margin:var(--swal2-actions-margin);padding:var(--swal2-actions-padding);border-radius:var(--swal2-actions-border-radius);background:var(--swal2-actions-background)}div:where(.swal2-container) div:where(.swal2-loader){display:none;align-items:center;justify-content:center;width:2.2em;height:2.2em;margin:0 1.875em;animation:swal2-rotate-loading 1.5s linear 0s infinite normal;border-width:.25em;border-style:solid;border-radius:100%;border-color:#2778c4 rgba(0,0,0,0) #2778c4 rgba(0,0,0,0)}div:where(.swal2-container) button:where(.swal2-styled){margin:.3125em;padding:.625em 1.1em;transition:var(--swal2-action-button-transition);border:none;box-shadow:0 0 0 3px rgba(0,0,0,0);font-weight:500}div:where(.swal2-container) button:where(.swal2-styled):not([disabled]){cursor:pointer}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm){border-radius:var(--swal2-confirm-button-border-radius);background:initial;background-color:var(--swal2-confirm-button-background-color);box-shadow:var(--swal2-confirm-button-box-shadow);color:var(--swal2-confirm-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):hover{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-confirm):active{background-color:color-mix(in srgb, var(--swal2-confirm-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny){border-radius:var(--swal2-deny-button-border-radius);background:initial;background-color:var(--swal2-deny-button-background-color);box-shadow:var(--swal2-deny-button-box-shadow);color:var(--swal2-deny-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):hover{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-deny):active{background-color:color-mix(in srgb, var(--swal2-deny-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel){border-radius:var(--swal2-cancel-button-border-radius);background:initial;background-color:var(--swal2-cancel-button-background-color);box-shadow:var(--swal2-cancel-button-box-shadow);color:var(--swal2-cancel-button-color);font-size:1em}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):hover{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-hover))}div:where(.swal2-container) button:where(.swal2-styled):where(.swal2-cancel):active{background-color:color-mix(in srgb, var(--swal2-cancel-button-background-color), var(--swal2-action-button-active))}div:where(.swal2-container) button:where(.swal2-styled):focus-visible{outline:none;box-shadow:var(--swal2-action-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-styled)[disabled]:not(.swal2-loading){opacity:.4}div:where(.swal2-container) button:where(.swal2-styled)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-footer){margin:1em 0 0;padding:1em 1em 0;border-top:1px solid var(--swal2-footer-border-color);background:var(--swal2-footer-background);color:var(--swal2-footer-color);font-size:1em;text-align:center;cursor:initial}div:where(.swal2-container) .swal2-timer-progress-bar-container{position:absolute;right:0;bottom:0;left:0;grid-column:auto !important;overflow:hidden;border-bottom-right-radius:var(--swal2-border-radius);border-bottom-left-radius:var(--swal2-border-radius)}div:where(.swal2-container) div:where(.swal2-timer-progress-bar){width:100%;height:.25em;background:var(--swal2-timer-progress-bar-background)}div:where(.swal2-container) img:where(.swal2-image){max-width:100%;margin:2em auto 1em;cursor:initial}div:where(.swal2-container) button:where(.swal2-close){position:var(--swal2-close-button-position);inset:var(--swal2-close-button-inset);z-index:2;align-items:center;justify-content:center;width:1.2em;height:1.2em;margin-top:0;margin-right:0;margin-bottom:-1.2em;padding:0;overflow:hidden;transition:var(--swal2-close-button-transition);border:none;border-radius:var(--swal2-border-radius);outline:var(--swal2-close-button-outline);background:rgba(0,0,0,0);color:var(--swal2-close-button-color);font-family:monospace;font-size:var(--swal2-close-button-font-size);cursor:pointer;justify-self:end}div:where(.swal2-container) button:where(.swal2-close):hover{transform:var(--swal2-close-button-hover-transform);background:rgba(0,0,0,0);color:#f27474}div:where(.swal2-container) button:where(.swal2-close):focus-visible{outline:none;box-shadow:var(--swal2-close-button-focus-box-shadow)}div:where(.swal2-container) button:where(.swal2-close)::-moz-focus-inner{border:0}div:where(.swal2-container) div:where(.swal2-html-container){z-index:1;justify-content:center;margin:0;padding:var(--swal2-html-container-padding);overflow:auto;color:inherit;font-size:1.125em;font-weight:normal;line-height:normal;text-align:center;overflow-wrap:break-word;word-break:break-word;cursor:initial}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea),div:where(.swal2-container) select:where(.swal2-select),div:where(.swal2-container) div:where(.swal2-radio),div:where(.swal2-container) label:where(.swal2-checkbox){margin:1em 2em 3px}div:where(.swal2-container) input:where(.swal2-input),div:where(.swal2-container) input:where(.swal2-file),div:where(.swal2-container) textarea:where(.swal2-textarea){box-sizing:border-box;width:auto;transition:var(--swal2-input-transition);border:var(--swal2-input-border);border-radius:var(--swal2-input-border-radius);background:var(--swal2-input-background);box-shadow:var(--swal2-input-box-shadow);color:inherit;font-size:1.125em}div:where(.swal2-container) input:where(.swal2-input).swal2-inputerror,div:where(.swal2-container) input:where(.swal2-file).swal2-inputerror,div:where(.swal2-container) textarea:where(.swal2-textarea).swal2-inputerror{border-color:#f27474 !important;box-shadow:0 0 2px #f27474 !important}div:where(.swal2-container) input:where(.swal2-input):hover,div:where(.swal2-container) input:where(.swal2-file):hover,div:where(.swal2-container) textarea:where(.swal2-textarea):hover{box-shadow:var(--swal2-input-hover-box-shadow)}div:where(.swal2-container) input:where(.swal2-input):focus,div:where(.swal2-container) input:where(.swal2-file):focus,div:where(.swal2-container) textarea:where(.swal2-textarea):focus{border:var(--swal2-input-focus-border);outline:none;box-shadow:var(--swal2-input-focus-box-shadow)}div:where(.swal2-container) input:where(.swal2-input)::placeholder,div:where(.swal2-container) input:where(.swal2-file)::placeholder,div:where(.swal2-container) textarea:where(.swal2-textarea)::placeholder{color:#ccc}div:where(.swal2-container) .swal2-range{margin:1em 2em 3px;background:var(--swal2-background)}div:where(.swal2-container) .swal2-range input{width:80%}div:where(.swal2-container) .swal2-range output{width:20%;color:inherit;font-weight:600;text-align:center}div:where(.swal2-container) .swal2-range input,div:where(.swal2-container) .swal2-range output{height:2.625em;padding:0;font-size:1.125em;line-height:2.625em}div:where(.swal2-container) .swal2-input{height:2.625em;padding:0 .75em}div:where(.swal2-container) .swal2-file{width:75%;margin-right:auto;margin-left:auto;background:var(--swal2-input-background);font-size:1.125em}div:where(.swal2-container) .swal2-textarea{height:6.75em;padding:.75em}div:where(.swal2-container) .swal2-select{min-width:50%;max-width:100%;padding:.375em .625em;background:var(--swal2-input-background);color:inherit;font-size:1.125em}div:where(.swal2-container) .swal2-radio,div:where(.swal2-container) .swal2-checkbox{align-items:center;justify-content:center;background:var(--swal2-background);color:inherit}div:where(.swal2-container) .swal2-radio label,div:where(.swal2-container) .swal2-checkbox label{margin:0 .6em;font-size:1.125em}div:where(.swal2-container) .swal2-radio input,div:where(.swal2-container) .swal2-checkbox input{flex-shrink:0;margin:0 .4em}div:where(.swal2-container) label:where(.swal2-input-label){display:flex;justify-content:center;margin:1em auto 0}div:where(.swal2-container) div:where(.swal2-validation-message){align-items:center;justify-content:center;margin:1em 0 0;padding:.625em;overflow:hidden;background:var(--swal2-validation-message-background);color:var(--swal2-validation-message-color);font-size:1em;font-weight:300}div:where(.swal2-container) div:where(.swal2-validation-message)::before{content:\"!\";display:inline-block;width:1.5em;min-width:1.5em;height:1.5em;margin:0 .625em;border-radius:50%;background-color:#f27474;color:#fff;font-weight:600;line-height:1.5em;text-align:center}div:where(.swal2-container) .swal2-progress-steps{flex-wrap:wrap;align-items:center;max-width:100%;margin:1.25em auto;padding:0;background:rgba(0,0,0,0);font-weight:600}div:where(.swal2-container) .swal2-progress-steps li{display:inline-block;position:relative}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step{z-index:20;flex-shrink:0;width:2em;height:2em;border-radius:2em;background:#2778c4;color:#fff;line-height:2em;text-align:center}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step{background:#2778c4}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step{background:var(--swal2-progress-step-background);color:#fff}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step.swal2-active-progress-step~.swal2-progress-step-line{background:var(--swal2-progress-step-background)}div:where(.swal2-container) .swal2-progress-steps .swal2-progress-step-line{z-index:10;flex-shrink:0;width:2.5em;height:.4em;margin:0 -1px;background:#2778c4}div:where(.swal2-icon){position:relative;box-sizing:content-box;justify-content:center;width:5em;height:5em;margin:2.5em auto .6em;zoom:var(--swal2-icon-zoom);border:.25em solid rgba(0,0,0,0);border-radius:50%;border-color:#000;font-family:inherit;line-height:5em;cursor:default;user-select:none}div:where(.swal2-icon) .swal2-icon-content{display:flex;align-items:center;font-size:3.75em}div:where(.swal2-icon).swal2-error{border-color:#f27474;color:#f27474}div:where(.swal2-icon).swal2-error .swal2-x-mark{position:relative;flex-grow:1}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line]{display:block;position:absolute;top:2.3125em;width:2.9375em;height:.3125em;border-radius:.125em;background-color:#f27474}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=left]{left:1.0625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-error [class^=swal2-x-mark-line][class$=right]{right:1em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-error.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-error.swal2-icon-show .swal2-x-mark{animation:swal2-animate-error-x-mark .5s}div:where(.swal2-icon).swal2-warning{border-color:#f8bb86;color:#f8bb86}div:where(.swal2-icon).swal2-warning.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-warning.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .5s}div:where(.swal2-icon).swal2-info{border-color:#3fc3ee;color:#3fc3ee}div:where(.swal2-icon).swal2-info.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-info.swal2-icon-show .swal2-icon-content{animation:swal2-animate-i-mark .8s}div:where(.swal2-icon).swal2-question{border-color:#87adbd;color:#87adbd}div:where(.swal2-icon).swal2-question.swal2-icon-show{animation:swal2-animate-error-icon .5s}div:where(.swal2-icon).swal2-question.swal2-icon-show .swal2-icon-content{animation:swal2-animate-question-mark .8s}div:where(.swal2-icon).swal2-success{border-color:#a5dc86;color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line]{position:absolute;width:3.75em;height:7.5em;border-radius:50%}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.4375em;left:-2.0635em;transform:rotate(-45deg);transform-origin:3.75em 3.75em;border-radius:7.5em 0 0 7.5em}div:where(.swal2-icon).swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.6875em;left:1.875em;transform:rotate(-45deg);transform-origin:0 3.75em;border-radius:0 7.5em 7.5em 0}div:where(.swal2-icon).swal2-success .swal2-success-ring{position:absolute;z-index:2;top:-0.25em;left:-0.25em;box-sizing:content-box;width:100%;height:100%;border:.25em solid rgba(165,220,134,.3);border-radius:50%}div:where(.swal2-icon).swal2-success .swal2-success-fix{position:absolute;z-index:1;top:.5em;left:1.625em;width:.4375em;height:5.625em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line]{display:block;position:absolute;z-index:2;height:.3125em;border-radius:.125em;background-color:#a5dc86}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=tip]{top:2.875em;left:.8125em;width:1.5625em;transform:rotate(45deg)}div:where(.swal2-icon).swal2-success [class^=swal2-success-line][class$=long]{top:2.375em;right:.5em;width:2.9375em;transform:rotate(-45deg)}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-animate-success-line-tip .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-animate-success-line-long .75s}div:where(.swal2-icon).swal2-success.swal2-icon-show .swal2-success-circular-line-right{animation:swal2-rotate-success-circular-line 4.25s ease-in}[class^=swal2]{-webkit-tap-highlight-color:rgba(0,0,0,0)}.swal2-show{animation:var(--swal2-show-animation)}.swal2-hide{animation:var(--swal2-hide-animation)}.swal2-noanimation{transition:none}.swal2-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}.swal2-rtl .swal2-close{margin-right:initial;margin-left:0}.swal2-rtl .swal2-timer-progress-bar{right:0;left:auto}.swal2-toast{box-sizing:border-box;grid-column:1/4 !important;grid-row:1/4 !important;grid-template-columns:min-content auto min-content;padding:1em;overflow-y:hidden;border:var(--swal2-toast-border);background:var(--swal2-background);box-shadow:var(--swal2-toast-box-shadow);pointer-events:auto}.swal2-toast>*{grid-column:2}.swal2-toast h2:where(.swal2-title){margin:.5em 1em;padding:0;font-size:1em;text-align:initial}.swal2-toast .swal2-loading{justify-content:center}.swal2-toast input:where(.swal2-input){height:2em;margin:.5em;font-size:1em}.swal2-toast .swal2-validation-message{font-size:1em}.swal2-toast div:where(.swal2-footer){margin:.5em 0 0;padding:.5em 0 0;font-size:.8em}.swal2-toast button:where(.swal2-close){grid-column:3/3;grid-row:1/99;align-self:center;width:.8em;height:.8em;margin:0;font-size:2em}.swal2-toast div:where(.swal2-html-container){margin:.5em 1em;padding:0;overflow:initial;font-size:1em;text-align:initial}.swal2-toast div:where(.swal2-html-container):empty{padding:0}.swal2-toast .swal2-loader{grid-column:1;grid-row:1/99;align-self:center;width:2em;height:2em;margin:.25em}.swal2-toast .swal2-icon{grid-column:1;grid-row:1/99;align-self:center;width:2em;min-width:2em;height:2em;margin:0 .5em 0 0}.swal2-toast .swal2-icon .swal2-icon-content{display:flex;align-items:center;font-size:1.8em;font-weight:bold}.swal2-toast .swal2-icon.swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line]{top:.875em;width:1.375em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=left]{left:.3125em}.swal2-toast .swal2-icon.swal2-error [class^=swal2-x-mark-line][class$=right]{right:.3125em}.swal2-toast div:where(.swal2-actions){justify-content:flex-start;height:auto;margin:0;margin-top:.5em;padding:0 .5em}.swal2-toast button:where(.swal2-styled){margin:.25em .5em;padding:.4em .6em;font-size:1em}.swal2-toast .swal2-success{border-color:#a5dc86}.swal2-toast .swal2-success [class^=swal2-success-circular-line]{position:absolute;width:1.6em;height:3em;border-radius:50%}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=left]{top:-0.8em;left:-0.5em;transform:rotate(-45deg);transform-origin:2em 2em;border-radius:4em 0 0 4em}.swal2-toast .swal2-success [class^=swal2-success-circular-line][class$=right]{top:-0.25em;left:.9375em;transform-origin:0 1.5em;border-radius:0 4em 4em 0}.swal2-toast .swal2-success .swal2-success-ring{width:2em;height:2em}.swal2-toast .swal2-success .swal2-success-fix{top:0;left:.4375em;width:.4375em;height:2.6875em}.swal2-toast .swal2-success [class^=swal2-success-line]{height:.3125em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=tip]{top:1.125em;left:.1875em;width:.75em}.swal2-toast .swal2-success [class^=swal2-success-line][class$=long]{top:.9375em;right:.1875em;width:1.375em}.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-tip{animation:swal2-toast-animate-success-line-tip .75s}.swal2-toast .swal2-success.swal2-icon-show .swal2-success-line-long{animation:swal2-toast-animate-success-line-long .75s}.swal2-toast.swal2-show{animation:var(--swal2-toast-show-animation)}.swal2-toast.swal2-hide{animation:var(--swal2-toast-hide-animation)}@keyframes swal2-show{0%{transform:translate3d(0, -50px, 0) scale(0.9);opacity:0}100%{transform:translate3d(0, 0, 0) scale(1);opacity:1}}@keyframes swal2-hide{0%{transform:translate3d(0, 0, 0) scale(1);opacity:1}100%{transform:translate3d(0, -50px, 0) scale(0.9);opacity:0}}@keyframes swal2-animate-success-line-tip{0%{top:1.1875em;left:.0625em;width:0}54%{top:1.0625em;left:.125em;width:0}70%{top:2.1875em;left:-0.375em;width:3.125em}84%{top:3em;left:1.3125em;width:1.0625em}100%{top:2.8125em;left:.8125em;width:1.5625em}}@keyframes swal2-animate-success-line-long{0%{top:3.375em;right:2.875em;width:0}65%{top:3.375em;right:2.875em;width:0}84%{top:2.1875em;right:0;width:3.4375em}100%{top:2.375em;right:.5em;width:2.9375em}}@keyframes swal2-rotate-success-circular-line{0%{transform:rotate(-45deg)}5%{transform:rotate(-45deg)}12%{transform:rotate(-405deg)}100%{transform:rotate(-405deg)}}@keyframes swal2-animate-error-x-mark{0%{margin-top:1.625em;transform:scale(0.4);opacity:0}50%{margin-top:1.625em;transform:scale(0.4);opacity:0}80%{margin-top:-0.375em;transform:scale(1.15)}100%{margin-top:0;transform:scale(1);opacity:1}}@keyframes swal2-animate-error-icon{0%{transform:rotateX(100deg);opacity:0}100%{transform:rotateX(0deg);opacity:1}}@keyframes swal2-rotate-loading{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}@keyframes swal2-animate-question-mark{0%{transform:rotateY(-360deg)}100%{transform:rotateY(0)}}@keyframes swal2-animate-i-mark{0%{transform:rotateZ(45deg);opacity:0}25%{transform:rotateZ(-25deg);opacity:.4}50%{transform:rotateZ(15deg);opacity:.8}75%{transform:rotateZ(-5deg);opacity:1}100%{transform:rotateX(0);opacity:1}}@keyframes swal2-toast-show{0%{transform:translateY(-0.625em) rotateZ(2deg)}33%{transform:translateY(0) rotateZ(-2deg)}66%{transform:translateY(0.3125em) rotateZ(2deg)}100%{transform:translateY(0) rotateZ(0deg)}}@keyframes swal2-toast-hide{100%{transform:rotateZ(1deg);opacity:0}}@keyframes swal2-toast-animate-success-line-tip{0%{top:.5625em;left:.0625em;width:0}54%{top:.125em;left:.125em;width:0}70%{top:.625em;left:-0.25em;width:1.625em}84%{top:1.0625em;left:.75em;width:.5em}100%{top:1.125em;left:.1875em;width:.75em}}@keyframes swal2-toast-animate-success-line-long{0%{top:1.625em;right:1.375em;width:0}65%{top:1.25em;right:.9375em;width:0}84%{top:.9375em;right:0;width:1.125em}100%{top:.9375em;right:.1875em;width:1.375em}}");
