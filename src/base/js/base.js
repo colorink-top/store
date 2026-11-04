@@ -127,6 +127,7 @@ export class BaseStore {
     })
   }
   async initAuth(){
+    return await this.auth()
     const result = await Swal.fire({
       title: "Authorization",
       showDenyButton: false,
