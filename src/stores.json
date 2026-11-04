@@ -3,26 +3,27 @@
   "stores": {
     "dropbox": {
       "name": "dropbox",
+      "displayName": "Dropbox",
       "url": "dropbox/index.html"
     },
     "box": {
       "name": "box",
-      "displayName": "box",
+      "displayName": "Box",
       "url": "box/index.html"
     },
     "gdrive": {
       "name": "gdrive",
-      "displayName": "google drive",
+      "displayName": "Google Drive",
       "url": "gdrive/index.html"
     },
     "onedrive": {
       "name": "onedrive",
-      "displayName": "one drive",
+      "displayName": "Microsoft OneDrive",
       "url": "onedrive/index.html"
     },
     "onenote": {
       "name": "onenote",
-      "displayName": "one note",
+      "displayName": "Microsoft OneNote",
       "url": "onenote/index.html"
     }
   }
